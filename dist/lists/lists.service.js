@@ -16,17 +16,27 @@ exports.ListsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const rxjs_1 = require("rxjs");
+const user_service_1 = require("../user/user.service");
 let ListsService = class ListsService {
-    constructor(listModel) {
+    constructor(userService, listModel) {
+        this.userService = userService;
         this.listModel = listModel;
     }
-    async createList(list) {
+    async createList(list, userId) {
         let newList = new this.listModel({
             name: list.name,
             description: list.description,
             listItems: list.listItems,
         });
-        await newList.save();
+        await this.userService.addListToUser(newList.id, userId);
+        try {
+            await newList.save();
+            return { message: "List was created.", listId: newList.id, userId: userId, status: 200 };
+        }
+        catch (_a) {
+            throw new rxjs_1.TimeoutError();
+        }
     }
     async getSingleList(listId) {
         const list = await this.findList(listId);
@@ -36,10 +46,6 @@ let ListsService = class ListsService {
             description: list.description,
             listItems: list.listItems
         };
-    }
-    async deleteSingleList(listId) {
-        await this.listModel.deleteOne({ _id: listId }).exec();
-        return listId;
     }
     async findList(listId) {
         let list;
@@ -54,12 +60,32 @@ let ListsService = class ListsService {
         }
         return list;
     }
+    async getUserListsId(userId) {
+        const userLists = await this.userService.findUserListsById(userId);
+        const userListsIds = userLists.lists;
+        return userListsIds;
+    }
     async addListItem(listId, listItem) {
         let list = await this.findList(listId);
-        console.log('liste:');
-        console.log(list);
         list.listItems.push(listItem);
         list.save();
+    }
+    async updateListItem(listId, itemId, updatedListItem) {
+        let list = await this.findList(listId);
+        const index = list.listItems.findIndex((listItem) => listItem.id === itemId);
+        if (index == -1) {
+            throw new common_1.NotFoundException('No list item with this id was found!');
+        }
+        list.listItems[index].name = updatedListItem.name;
+        list.listItems[index].amount = updatedListItem.amount;
+        list.listItems[index].unit = updatedListItem.unit;
+        list.listItems[index].isDone = updatedListItem.isDone;
+        list.save();
+    }
+    async deleteSingleList(userId, listId) {
+        await this.listModel.deleteOne({ _id: listId }).exec();
+        await this.userService.deleteUserList(userId, listId);
+        return listId;
     }
     async deleteListItem(listId, itemId) {
         let list = await this.findList(listId);
@@ -73,8 +99,9 @@ let ListsService = class ListsService {
 };
 ListsService = __decorate([
     common_1.Injectable(),
-    __param(0, mongoose_1.InjectModel('List')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, mongoose_1.InjectModel('List')),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        mongoose_2.Model])
 ], ListsService);
 exports.ListsService = ListsService;
 //# sourceMappingURL=lists.service.js.map

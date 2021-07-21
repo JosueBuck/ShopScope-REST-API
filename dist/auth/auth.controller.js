@@ -25,15 +25,6 @@ let AuthController = class AuthController {
     }
     async register(registerData) {
         const response = await this.authService.registerUser(registerData);
-        if (response) {
-            return "register was sucessfull!";
-        }
-        else {
-            return "register was not sucessfull";
-        }
-    }
-    async deleteUser(username) {
-        const response = await this.authService.deleteUser(username);
         return response;
     }
 };
@@ -51,13 +42,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
-__decorate([
-    common_1.Delete('deleteUser/:username'),
-    __param(0, common_1.Param('username')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "deleteUser", null);
 AuthController = __decorate([
     common_1.Controller('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

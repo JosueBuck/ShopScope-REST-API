@@ -9,9 +9,10 @@ export class RecipesController {
         private readonly recipesService: RecipesService
     ) { }
 
-    @Post('createRecipe')
-    async createRecipe(@Body() recipeDto: INewRecipeDto) {
-        const result = await this.recipesService.createRecipe(recipeDto);
+    @Post('createRecipe/:userId')
+    async createRecipe(@Body() recipeDto: INewRecipeDto, @Param('userId') userId: string) {
+        const result = await this.recipesService.createRecipe(recipeDto, userId);
+        return result;
     }
 
     @Post('updateRecipe')
@@ -26,9 +27,15 @@ export class RecipesController {
         return result;
     }
 
-    @Delete('deleteRecipe/:id')
-    async deleteRecipe(@Param('id') recipeId: string) {
-        const result = await this.recipesService.deleteRecipe(recipeId);
+    @Get('getUserRecipes/:userId')
+    async getUserRecipes(@Param('userId') userId: string) {
+        const result = await this.recipesService.getUserRecipesId(userId);
+        return result;
+    }
+
+    @Delete('deleteRecipe/:userId/:recipeId')
+    async deleteRecipe(@Param('userId') userId: string, @Param('recipeId') recipeId: string) {
+        const result = await this.recipesService.deleteRecipe(userId, recipeId);
         return result;
     }
 }

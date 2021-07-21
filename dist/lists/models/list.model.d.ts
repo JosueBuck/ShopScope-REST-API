@@ -17,10 +17,26 @@ export interface INewList {
     listItems: IListItem[];
 }
 export interface IListItem {
+    id: string;
     name: string;
+    amount: number;
+    unit: string;
+    isDone: boolean;
+}
+export interface INewListItem {
+    name: string;
+    amoung: number;
+    unit: string;
     isDone: boolean;
 }
 export interface IListItemDto {
     name: string;
+    amoung: number;
+    unit: string;
     isDone: boolean;
+}
+export interface IUpdatedListItemDto {
+    listId: string;
+    itemId: string;
+    updatedListItem: IListItem;
 }

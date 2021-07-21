@@ -19,8 +19,9 @@ let RecipesController = class RecipesController {
     constructor(recipesService) {
         this.recipesService = recipesService;
     }
-    async createRecipe(recipeDto) {
-        const result = await this.recipesService.createRecipe(recipeDto);
+    async createRecipe(recipeDto, userId) {
+        const result = await this.recipesService.createRecipe(recipeDto, userId);
+        return result;
     }
     async updateRecipe(updateRecipeDto) {
         const result = await this.recipesService.updateRecipe(updateRecipeDto);
@@ -30,16 +31,21 @@ let RecipesController = class RecipesController {
         const result = await this.recipesService.getSingleRecipe(recipeId);
         return result;
     }
-    async deleteRecipe(recipeId) {
-        const result = await this.recipesService.deleteRecipe(recipeId);
+    async getUserRecipes(userId) {
+        const result = await this.recipesService.getUserRecipesId(userId);
+        return result;
+    }
+    async deleteRecipe(userId, recipeId) {
+        const result = await this.recipesService.deleteRecipe(userId, recipeId);
         return result;
     }
 };
 __decorate([
-    common_1.Post('createRecipe'),
+    common_1.Post('createRecipe/:userId'),
     __param(0, common_1.Body()),
+    __param(1, common_1.Param('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "createRecipe", null);
 __decorate([
@@ -57,10 +63,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getSingleRecipe", null);
 __decorate([
-    common_1.Delete('deleteRecipe/:id'),
-    __param(0, common_1.Param('id')),
+    common_1.Get('getUserRecipes/:userId'),
+    __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], RecipesController.prototype, "getUserRecipes", null);
+__decorate([
+    common_1.Delete('deleteRecipe/:userId/:recipeId'),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('recipeId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "deleteRecipe", null);
 RecipesController = __decorate([

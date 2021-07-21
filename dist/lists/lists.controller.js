@@ -19,20 +19,32 @@ let ListsController = class ListsController {
     constructor(listService) {
         this.listService = listService;
     }
-    async createList(newListDto) {
-        const response = await this.listService.createList(newListDto);
+    async createList(newListDto, userId) {
+        const response = await this.listService.createList(newListDto, userId);
+        return response;
+    }
+    async getUserLists(userId) {
+        const response = await this.listService.getUserListsId(userId);
         return response;
     }
     async getSingleList(listId) {
         const response = await this.listService.getSingleList(listId);
         return response;
     }
-    async deleteSingleList(listId) {
-        const response = await this.listService.deleteSingleList(listId);
+    async deleteSingleList(userId, listId) {
+        const response = await this.listService.deleteSingleList(userId, listId);
         return response;
     }
     async addListItem(listId, newListItem) {
         const response = await this.listService.addListItem(listId, newListItem);
+        return response;
+    }
+    async updateListItem(updatedListItemDto) {
+        const listId = updatedListItemDto.listId;
+        const updatedListItem = updatedListItemDto.updatedListItem;
+        const itemId = updatedListItem.id;
+        const response = await this.listService.updateListItem(listId, itemId, updatedListItem);
+        return response;
     }
     async deleteListItem(listId, itemId) {
         const response = await this.listService.deleteListItem(listId, itemId);
@@ -40,12 +52,20 @@ let ListsController = class ListsController {
     }
 };
 __decorate([
-    common_1.Post('createList'),
+    common_1.Post('createList/:userId'),
     __param(0, common_1.Body()),
+    __param(1, common_1.Param('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
+__decorate([
+    common_1.Get('getUserLists/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "getUserLists", null);
 __decorate([
     common_1.Get('getSingleList/:listId'),
     __param(0, common_1.Param('listId')),
@@ -54,10 +74,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "getSingleList", null);
 __decorate([
-    common_1.Delete('deleteSingleList/:listId'),
-    __param(0, common_1.Param('listId')),
+    common_1.Delete('deleteSingleList/:userId/:listId'),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "deleteSingleList", null);
 __decorate([
@@ -68,6 +89,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "addListItem", null);
+__decorate([
+    common_1.Patch('updateListItem'),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "updateListItem", null);
 __decorate([
     common_1.Delete('deleteListItem/:listId/:itemId'),
     __param(0, common_1.Param('listId')),

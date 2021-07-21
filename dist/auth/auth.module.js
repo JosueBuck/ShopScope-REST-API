@@ -13,7 +13,8 @@ const jwt_1 = require("@nestjs/jwt");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const mongoose_1 = require("@nestjs/mongoose");
-const user_model_1 = require("./models/user.model");
+const user_model_1 = require("../user/models/user.model");
+const user_module_1 = require("../user/user.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -27,7 +28,8 @@ AuthModule = __decorate([
                     secret: process.env.JWT_SECRET,
                     signOptions: { expiresIn: '1000s' }
                 })
-            })
+            }),
+            user_module_1.UserModule
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService],

@@ -1,16 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { TimeoutError } from 'rxjs';
+import { UserService } from 'src/user/user.service';
 import { IRecipe, INewRecipe, IRecipeMongoose } from './models/recipe.model';
 
 @Injectable()
 export class RecipesService {
 
     constructor(
+        private readonly userService: UserService,
         @InjectModel('Recipe') private readonly recipeModel: Model<IRecipe>
     ) { }
 
-    async createRecipe(recipe: INewRecipe) {
+    async createRecipe(recipe: INewRecipe, userId: string) {
         const newRecipe = new this.recipeModel(
             {
                 name: recipe.name,
@@ -21,8 +24,14 @@ export class RecipesService {
                 instructions: recipe.instructions
             }
         );
-        console.log(newRecipe);
-        await newRecipe.save();
+        await this.userService.addRecipeToUser(newRecipe.id, userId);
+        try {
+            await newRecipe.save();
+            return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 } 
+        } catch {
+            throw new TimeoutError();
+        }
+        
     }
 
     async updateRecipe(updatedRecipe: IRecipe) {
@@ -33,8 +42,12 @@ export class RecipesService {
         recipe.description = updatedRecipe.description;
         recipe.ingredients = updatedRecipe.ingredients;
         recipe.instructions = updatedRecipe.instructions;
-        recipe.save();
-        return recipe;
+        try {
+            await recipe.save()
+            return { message: "Recipe was updated", updatedRecipe: recipe, status: 200 };;
+        } catch {
+            throw new TimeoutError();
+        } 
     }
 
     async getSingleRecipe(recipeId: string) {
@@ -77,9 +90,16 @@ export class RecipesService {
             instructions: recipe.instructions
         }));
     }
+    
+    async getUserRecipesId(userId: string) {
+        const userRecipes = await this.userService.findUserRecipesById(userId);
+        const userRecipeIds = userRecipes.recipes;
+        return userRecipeIds;
+    }
 
-    async deleteRecipe(recipeId: string) {
+    async deleteRecipe(userId: string, recipeId: string) {
         await this.recipeModel.deleteOne({_id: recipeId}).exec();
+        await this.userService.deleteUserRecipe(userId, recipeId);
         return recipeId;
     }
 }

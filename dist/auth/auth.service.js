@@ -8,23 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const mongoose_1 = require("@nestjs/mongoose");
-const mongoose_2 = require("mongoose");
+const user_service_1 = require("../user/user.service");
 const bcrypt = require('bcrypt');
 let AuthService = class AuthService {
-    constructor(jwtService, userModel) {
+    constructor(jwtService, userService) {
         this.jwtService = jwtService;
-        this.userModel = userModel;
+        this.userService = userService;
     }
     async authenticateUser(loginData) {
-        const user = await this.findUser(loginData.username);
+        const user = await this.userService.findUserByName(loginData.username);
         if (!user) {
             console.log("No user with this username");
             return false;
@@ -48,31 +44,26 @@ let AuthService = class AuthService {
     async comparePasswords(newPassword, passwordHash) {
         return await bcrypt.compare(newPassword, passwordHash);
     }
-    async findUser(username) {
-        const user = await this.userModel.findOne({ username: username }).exec();
-        return user;
-    }
     async registerUser(registerData) {
-        const existingUsers = await this.userModel.find({ username: new RegExp('^' + registerData.username + '$', "i") });
-        if (existingUsers.length >= 1) {
+        const existingUsers = await this.userService.findUserByName(registerData.username);
+        if (existingUsers) {
             console.log("user with this name already exists!");
             return false;
         }
         const hashedPassword = await this.hashPassword(registerData.password);
-        const newUser = new this.userModel({ username: registerData.username, password: hashedPassword, email: registerData.email });
-        await newUser.save();
-        return true;
-    }
-    async deleteUser(username) {
-        await this.userModel.deleteOne({ username: username });
-        return username;
+        const userRegisterData = {
+            username: registerData.username,
+            password: hashedPassword,
+            email: registerData.email
+        };
+        const newUser = await this.userService.createNewUser(userRegisterData);
+        return { message: "User is now registered.", user: { username: newUser.username, email: newUser.email }, status: 200 };
     }
 };
 AuthService = __decorate([
     common_1.Injectable(),
-    __param(1, mongoose_1.InjectModel('User')),
     __metadata("design:paramtypes", [jwt_1.JwtService,
-        mongoose_2.Model])
+        user_service_1.UserService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

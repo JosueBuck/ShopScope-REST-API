@@ -16,11 +16,14 @@ exports.RecipesService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const rxjs_1 = require("rxjs");
+const user_service_1 = require("../user/user.service");
 let RecipesService = class RecipesService {
-    constructor(recipeModel) {
+    constructor(userService, recipeModel) {
+        this.userService = userService;
         this.recipeModel = recipeModel;
     }
-    async createRecipe(recipe) {
+    async createRecipe(recipe, userId) {
         const newRecipe = new this.recipeModel({
             name: recipe.name,
             recipeType: recipe.recipeType,
@@ -29,8 +32,14 @@ let RecipesService = class RecipesService {
             ingredients: recipe.ingredients,
             instructions: recipe.instructions
         });
-        console.log(newRecipe);
-        await newRecipe.save();
+        await this.userService.addRecipeToUser(newRecipe.id, userId);
+        try {
+            await newRecipe.save();
+            return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 };
+        }
+        catch (_a) {
+            throw new rxjs_1.TimeoutError();
+        }
     }
     async updateRecipe(updatedRecipe) {
         let recipe = await this.findRecipe(updatedRecipe.id);
@@ -40,8 +49,14 @@ let RecipesService = class RecipesService {
         recipe.description = updatedRecipe.description;
         recipe.ingredients = updatedRecipe.ingredients;
         recipe.instructions = updatedRecipe.instructions;
-        recipe.save();
-        return recipe;
+        try {
+            await recipe.save();
+            return { message: "Recipe was updated", updatedRecipe: recipe, status: 200 };
+            ;
+        }
+        catch (_a) {
+            throw new rxjs_1.TimeoutError();
+        }
     }
     async getSingleRecipe(recipeId) {
         const recipe = await this.findRecipe(recipeId);
@@ -80,15 +95,22 @@ let RecipesService = class RecipesService {
             instructions: recipe.instructions
         }));
     }
-    async deleteRecipe(recipeId) {
+    async getUserRecipesId(userId) {
+        const userRecipes = await this.userService.findUserRecipesById(userId);
+        const userRecipeIds = userRecipes.recipes;
+        return userRecipeIds;
+    }
+    async deleteRecipe(userId, recipeId) {
         await this.recipeModel.deleteOne({ _id: recipeId }).exec();
+        await this.userService.deleteUserRecipe(userId, recipeId);
         return recipeId;
     }
 };
 RecipesService = __decorate([
     common_1.Injectable(),
-    __param(0, mongoose_1.InjectModel('Recipe')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, mongoose_1.InjectModel('Recipe')),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        mongoose_2.Model])
 ], RecipesService);
 exports.RecipesService = RecipesService;
 //# sourceMappingURL=recipes.service.js.map

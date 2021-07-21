@@ -5,6 +5,12 @@ export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
     login(loginData: ILoginData): Promise<string | false>;
-    register(registerData: IRegisterData): Promise<"register was sucessfull!" | "register was not sucessfull">;
-    deleteUser(username: string): Promise<string>;
+    register(registerData: IRegisterData): Promise<false | {
+        message: string;
+        user: {
+            username: string;
+            email: string;
+        };
+        status: number;
+    }>;
 }

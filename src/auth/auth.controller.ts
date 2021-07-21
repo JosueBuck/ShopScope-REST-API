@@ -19,17 +19,9 @@ export class AuthController {
     @Post('register')
     async register(@Body() registerData: IRegisterData) {
         const response = await this.authService.registerUser(registerData);
-        if (response) {
-            return "register was sucessfull!";
-        } else {
-            return "register was not sucessfull";
-        }
+        return response;
         
     }
 
-    @Delete('deleteUser/:username')
-        async deleteUser(@Param('username') username: string) {
-            const response = await this.authService.deleteUser(username);
-            return response;
-        }
+    
 }

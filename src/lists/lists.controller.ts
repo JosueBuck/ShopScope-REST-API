@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ListsService } from './lists.service';
-import { IListItemDto, INewListDto } from './models/list.model';
+import { IListItemDto, INewListDto, IUpdatedListItemDto } from './models/list.model';
 
 @Controller('lists')
 export class ListsController {
@@ -10,9 +10,15 @@ export class ListsController {
     ) {}
 
 
-    @Post('createList')
-    async createList(@Body() newListDto: INewListDto) {
-        const response = await this.listService.createList(newListDto);
+    @Post('createList/:userId')
+    async createList(@Body() newListDto: INewListDto, @Param('userId') userId: string) {
+        const response = await this.listService.createList(newListDto, userId);
+        return response;
+    }
+
+    @Get('getUserLists/:userId')
+    async getUserLists(@Param('userId') userId: string) {
+        const response = await this.listService.getUserListsId(userId);
         return response;
     }
 
@@ -22,15 +28,26 @@ export class ListsController {
         return response;
     }
 
-    @Delete('deleteSingleList/:listId')
-    async deleteSingleList(@Param('listId') listId: string) {
-        const response = await this.listService.deleteSingleList(listId);
+    @Delete('deleteSingleList/:userId/:listId')
+    async deleteSingleList(@Param('userId') userId: string, @Param('listId') listId: string) {
+        const response = await this.listService.deleteSingleList(userId, listId);
         return response;
     }
 
     @Put('addListItem/:listId')
     async addListItem(@Param('listId') listId: string, @Body() newListItem: IListItemDto) {
         const response = await this.listService.addListItem(listId, newListItem);
+        return response;
+    }
+
+    @Patch('updateListItem')
+    async updateListItem(@Body() updatedListItemDto: IUpdatedListItemDto) {
+        const listId = updatedListItemDto.listId;
+        const updatedListItem = updatedListItemDto.updatedListItem;
+        const itemId = updatedListItem.id;
+        
+        const response = await this.listService.updateListItem(listId, itemId, updatedListItem);
+        return response;
     }
 
     @Delete('deleteListItem/:listId/:itemId')

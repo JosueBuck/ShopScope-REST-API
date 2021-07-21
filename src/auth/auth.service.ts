@@ -4,7 +4,9 @@ import { ILoginData } from './models/loginData.model';
 import { IRegisterData } from './models/registerData.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from './models/user.model';
+import { IUser } from '../user/models/user.model';
+import { TimeoutError } from 'rxjs';
+import { UserService } from 'src/user/user.service';
 const bcrypt = require('bcrypt');
 
 
@@ -13,13 +15,13 @@ export class AuthService {
 
     constructor(
         private readonly jwtService: JwtService,
-        @InjectModel('User') private readonly userModel: Model<IUser>
+        private readonly userService: UserService
     ) { }
 
 
     async authenticateUser(loginData: ILoginData) {
 
-        const user = await this.findUser(loginData.username);
+        const user = await this.userService.findUserByName(loginData.username);
 
         if (!user) {
             console.log("No user with this username")
@@ -48,29 +50,27 @@ export class AuthService {
         return await bcrypt.compare(newPassword, passwordHash);
     }
 
-    async findUser(username: string): Promise<IUser> {
+   /*  async findUser(username: string): Promise<IUser> {
         const user = await this.userModel.findOne({ username: username }).exec();
         return user;
-    }
+    } */
 
     async registerUser(registerData: IRegisterData) {
-        const existingUsers = await this.userModel.find({ username: new RegExp('^' + registerData.username + '$', "i") });
-
-        if (existingUsers.length >= 1) {
+        const existingUsers: IUser = await this.userService.findUserByName(registerData.username);
+        if (existingUsers) {
             console.log("user with this name already exists!");
             return false;
         }
 
         const hashedPassword = await this.hashPassword(registerData.password);
-        const newUser = new this.userModel({ username: registerData.username, password: hashedPassword, email: registerData.email });
-        await newUser.save();
-        return true;
+        const userRegisterData: IRegisterData = {
+            username: registerData.username,
+            password: hashedPassword,
+            email: registerData.email
+        }
+        const newUser = await this.userService.createNewUser(userRegisterData)
+
+        return { message: "User is now registered.", user: { username: newUser.username, email: newUser.email }, status: 200 }  
+
     }
-
-    async deleteUser(username: string) {
-        await this.userModel.deleteOne({username: username});
-        return username;
-    }
-
-
 }
