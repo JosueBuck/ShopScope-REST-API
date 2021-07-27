@@ -98,6 +98,11 @@ export class UserService {
         return userId;
     }
 
+    async getUserWeek(userId: string) {
+        let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
+        return userWeek;
+    }
+
     async addRecipeToDay(userId: string, userDayRecipe: IUserDayRecipeData) {
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
         let days = userWeek.week;
@@ -109,11 +114,21 @@ export class UserService {
             switch(userDayRecipe.type) {
                 case "breakfast": {
                     day.breakfast.push(userDayRecipe.recipe);
+                    break;
+                }
+                case "lunch": {
+                    day.lunch.push(userDayRecipe.recipe);
+                    break;
+                }
+                case "dinner": {
+                    day.dinner.push(userDayRecipe.recipe);
+                    break;
                 }
             }
-            console.log(day);
         });
+
         userWeek.save();
+        return userWeek;
     }
 
     async removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData) {
@@ -123,24 +138,51 @@ export class UserService {
             if (day.id != userDayRecipe.dayId) {
                 return;
             }
-            console.log('test');
+            
             switch(userDayRecipe.type) {
                 case "breakfast": {
-                    const index = day.breakfast.findIndex((recipe) => recipe.recipeId === userDayRecipe.recipe.recipeId);
-                    console.log(index);
-                    console.log(day);
-                    day.breakfast.splice(index, 1);
-                    console.log(day);
+                    const index = day.breakfast.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.breakfast.splice(index, 1);
+                    }
+                    break;
+                }
+                case "lunch": {
+                    const index = day.lunch.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.lunch.splice(index, 1);
+                    }
+                    break;
+                }
+                case "dinner": {
+                    const index = day.dinner.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.dinner.splice(index, 1);
+                    }
+                    break;
                 }
             }
         });
+
         userWeek.save();
+        return userWeek;
+    }
+
+    async removeAllRecipesFromWeek(userId: string) {
+        let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
+        userWeek.week.map((day) => {
+            day.breakfast = [];
+            day.lunch = [];
+            day.dinner = [];
+        });
+        userWeek.save();
+        return userWeek;
     }
 
     /* TO-DO: add clear the whole week functionallity */
 
-    async addRecipeToUser(recipeId: string, userId: string) {
-        const userRecipes: IUserRecipesMongoose = await this.findUserRecipesById(userId)
+    async addRecipeIdToUser(recipeId: string, userId: string) {
+        const userRecipes: IUserRecipesMongoose = await this.findUserRecipesIdsByUserId(userId)
         userRecipes.recipes.push(recipeId);
         try {
             await userRecipes.save();
@@ -148,9 +190,22 @@ export class UserService {
             throw new TimeoutError();
         } 
     }
+    
+    async getUserRecipesIds(userId: string) {
+        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
+        const userRecipeIds = userRecipes.recipes;
+        return userRecipeIds;
+    }
+
+    async deleteUsersRecipeId(userId: string, recipeId: string) {
+        this.userRecipesModel.findOneAndUpdate(
+           {userId: userId },
+           { $pull: {recipes: {_id: recipeId} }}
+       ).exec();
+    }
 
     async getUsersLatestRecipes(userId: string) {
-        const userRecipes = await this.findUserRecipesById(userId);
+        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
         const recipes = userRecipes.recipes;
         const latestRecipes = recipes.slice(-4);
         return latestRecipes;
@@ -164,6 +219,12 @@ export class UserService {
         } catch {
             throw new TimeoutError();
         } 
+    }
+
+    async getUserListsIds(userId: string) {
+        const userLists = await this.findUserListsById(userId);
+        const userListsIds = userLists.lists;
+        return userListsIds;
     }
 
     async findUserByName(username: string): Promise<IUser> {
@@ -191,7 +252,7 @@ export class UserService {
         return user;
     }
 
-    async findUserRecipesById(userId: string): Promise<IUserRecipesMongoose> {
+    async findUserRecipesIdsByUserId(userId: string): Promise<IUserRecipesMongoose> {
         let userRecipes: IUserRecipesMongoose;
         try {
             userRecipes = await this.userRecipesModel.findOne({ userId: userId }).exec();
@@ -235,12 +296,7 @@ export class UserService {
         return userWeek;
     }
 
-    async deleteUserRecipe(userId: string, recipeId: string) {
-        this.userRecipesModel.findOneAndUpdate(
-           {userId: userId },
-           { $pull: {recipes: {_id: recipeId} }}
-       ).exec();
-    }
+    
 
     async deleteUserList(userId: string, listId: string) {
         this.userListsModel.findOneAndUpdate(

@@ -99,6 +99,10 @@ let UserService = class UserService {
         await this.userModel.deleteOne({ _id: userId });
         return userId;
     }
+    async getUserWeek(userId) {
+        let userWeek = await this.findUserWeekById(userId);
+        return userWeek;
+    }
     async addRecipeToDay(userId, userDayRecipe) {
         let userWeek = await this.findUserWeekById(userId);
         let days = userWeek.week;
@@ -109,11 +113,20 @@ let UserService = class UserService {
             switch (userDayRecipe.type) {
                 case "breakfast": {
                     day.breakfast.push(userDayRecipe.recipe);
+                    break;
+                }
+                case "lunch": {
+                    day.lunch.push(userDayRecipe.recipe);
+                    break;
+                }
+                case "dinner": {
+                    day.dinner.push(userDayRecipe.recipe);
+                    break;
                 }
             }
-            console.log(day);
         });
         userWeek.save();
+        return userWeek;
     }
     async removeRecipeFromDay(userId, userDayRecipe) {
         let userWeek = await this.findUserWeekById(userId);
@@ -122,21 +135,45 @@ let UserService = class UserService {
             if (day.id != userDayRecipe.dayId) {
                 return;
             }
-            console.log('test');
             switch (userDayRecipe.type) {
                 case "breakfast": {
-                    const index = day.breakfast.findIndex((recipe) => recipe.recipeId === userDayRecipe.recipe.recipeId);
-                    console.log(index);
-                    console.log(day);
-                    day.breakfast.splice(index, 1);
-                    console.log(day);
+                    const index = day.breakfast.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.breakfast.splice(index, 1);
+                    }
+                    break;
+                }
+                case "lunch": {
+                    const index = day.lunch.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.lunch.splice(index, 1);
+                    }
+                    break;
+                }
+                case "dinner": {
+                    const index = day.dinner.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                    if (index > -1) {
+                        day.dinner.splice(index, 1);
+                    }
+                    break;
                 }
             }
         });
         userWeek.save();
+        return userWeek;
     }
-    async addRecipeToUser(recipeId, userId) {
-        const userRecipes = await this.findUserRecipesById(userId);
+    async removeAllRecipesFromWeek(userId) {
+        let userWeek = await this.findUserWeekById(userId);
+        userWeek.week.map((day) => {
+            day.breakfast = [];
+            day.lunch = [];
+            day.dinner = [];
+        });
+        userWeek.save();
+        return userWeek;
+    }
+    async addRecipeIdToUser(recipeId, userId) {
+        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
         userRecipes.recipes.push(recipeId);
         try {
             await userRecipes.save();
@@ -145,8 +182,16 @@ let UserService = class UserService {
             throw new rxjs_1.TimeoutError();
         }
     }
+    async getUserRecipesIds(userId) {
+        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
+        const userRecipeIds = userRecipes.recipes;
+        return userRecipeIds;
+    }
+    async deleteUsersRecipeId(userId, recipeId) {
+        this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
+    }
     async getUsersLatestRecipes(userId) {
-        const userRecipes = await this.findUserRecipesById(userId);
+        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
         const recipes = userRecipes.recipes;
         const latestRecipes = recipes.slice(-4);
         return latestRecipes;
@@ -160,6 +205,11 @@ let UserService = class UserService {
         catch (_a) {
             throw new rxjs_1.TimeoutError();
         }
+    }
+    async getUserListsIds(userId) {
+        const userLists = await this.findUserListsById(userId);
+        const userListsIds = userLists.lists;
+        return userListsIds;
     }
     async findUserByName(username) {
         let user;
@@ -185,7 +235,7 @@ let UserService = class UserService {
         }
         return user;
     }
-    async findUserRecipesById(userId) {
+    async findUserRecipesIdsByUserId(userId) {
         let userRecipes;
         try {
             userRecipes = await this.userRecipesModel.findOne({ userId: userId }).exec();
@@ -223,9 +273,6 @@ let UserService = class UserService {
             throw new common_1.NotFoundException('Could not find user week');
         }
         return userWeek;
-    }
-    async deleteUserRecipe(userId, recipeId) {
-        this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
     }
     async deleteUserList(userId, listId) {
         this.userListsModel.findOneAndUpdate({ userId: userId }, { $pull: { lists: { _id: listId } } }).exec();

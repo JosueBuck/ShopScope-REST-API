@@ -31,10 +31,6 @@ let RecipesController = class RecipesController {
         const result = await this.recipesService.getSingleRecipe(recipeId);
         return result;
     }
-    async getUserRecipes(userId) {
-        const result = await this.recipesService.getUserRecipesId(userId);
-        return result;
-    }
     async deleteRecipe(userId, recipeId) {
         const result = await this.recipesService.deleteRecipe(userId, recipeId);
         return result;
@@ -62,13 +58,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getSingleRecipe", null);
-__decorate([
-    common_1.Get('getUserRecipes/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], RecipesController.prototype, "getUserRecipes", null);
 __decorate([
     common_1.Delete('deleteRecipe/:userId/:recipeId'),
     __param(0, common_1.Param('userId')),

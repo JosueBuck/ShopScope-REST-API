@@ -24,7 +24,7 @@ export class RecipesService {
                 instructions: recipe.instructions
             }
         );
-        await this.userService.addRecipeToUser(newRecipe.id, userId);
+        await this.userService.addRecipeIdToUser(newRecipe.id, userId);
         try {
             await newRecipe.save();
             return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 } 
@@ -90,16 +90,10 @@ export class RecipesService {
             instructions: recipe.instructions
         }));
     }
-    
-    async getUserRecipesId(userId: string) {
-        const userRecipes = await this.userService.findUserRecipesById(userId);
-        const userRecipeIds = userRecipes.recipes;
-        return userRecipeIds;
-    }
 
     async deleteRecipe(userId: string, recipeId: string) {
         await this.recipeModel.deleteOne({_id: recipeId}).exec();
-        await this.userService.deleteUserRecipe(userId, recipeId);
+        await this.userService.deleteUsersRecipeId(userId, recipeId);
         return recipeId;
     }
 }

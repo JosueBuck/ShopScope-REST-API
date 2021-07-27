@@ -32,7 +32,7 @@ let RecipesService = class RecipesService {
             ingredients: recipe.ingredients,
             instructions: recipe.instructions
         });
-        await this.userService.addRecipeToUser(newRecipe.id, userId);
+        await this.userService.addRecipeIdToUser(newRecipe.id, userId);
         try {
             await newRecipe.save();
             return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 };
@@ -95,14 +95,9 @@ let RecipesService = class RecipesService {
             instructions: recipe.instructions
         }));
     }
-    async getUserRecipesId(userId) {
-        const userRecipes = await this.userService.findUserRecipesById(userId);
-        const userRecipeIds = userRecipes.recipes;
-        return userRecipeIds;
-    }
     async deleteRecipe(userId, recipeId) {
         await this.recipeModel.deleteOne({ _id: recipeId }).exec();
-        await this.userService.deleteUserRecipe(userId, recipeId);
+        await this.userService.deleteUsersRecipeId(userId, recipeId);
         return recipeId;
     }
 };

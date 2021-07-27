@@ -27,12 +27,6 @@ export class RecipesController {
         return result;
     }
 
-    @Get('getUserRecipes/:userId')
-    async getUserRecipes(@Param('userId') userId: string) {
-        const result = await this.recipesService.getUserRecipesId(userId);
-        return result;
-    }
-
     @Delete('deleteRecipe/:userId/:recipeId')
     async deleteRecipe(@Param('userId') userId: string, @Param('recipeId') recipeId: string) {
         const result = await this.recipesService.deleteRecipe(userId, recipeId);

@@ -27,6 +27,5 @@ export declare class RecipesService {
     }>;
     findRecipe(id: string): Promise<IRecipeMongoose>;
     getAllRecipes(): Promise<IRecipe[]>;
-    getUserRecipesId(userId: string): Promise<string[]>;
     deleteRecipe(userId: string, recipeId: string): Promise<string>;
 }

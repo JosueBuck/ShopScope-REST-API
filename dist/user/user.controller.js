@@ -23,8 +23,20 @@ let UserController = class UserController {
         const response = await this.userService.deleteUser(username);
         return response;
     }
-    async getUsersLatestRecipes(userId) {
+    async getUserRecipesIds(userId) {
+        const result = await this.userService.getUserRecipesIds(userId);
+        return result;
+    }
+    async getUsersLatestRecipesIds(userId) {
         const response = await this.userService.getUsersLatestRecipes(userId);
+        return response;
+    }
+    async getUserLists(userId) {
+        const response = await this.userService.getUserListsIds(userId);
+        return response;
+    }
+    async getUserWeek(userId) {
+        const response = await this.userService.getUserWeek(userId);
         return response;
     }
     async addRecipeToDay(userId, userDayRecipe) {
@@ -33,6 +45,10 @@ let UserController = class UserController {
     }
     async removeRecipeFromDay(userId, userDayRecipe) {
         const response = await this.userService.removeRecipeFromDay(userId, userDayRecipe);
+        return response;
+    }
+    async removeAllRecipesFromWeek(userId) {
+        const response = await this.userService.removeAllRecipesFromWeek(userId);
         return response;
     }
 };
@@ -44,12 +60,33 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
 __decorate([
-    common_1.Get('getUsersLatestRecipes/:userId'),
+    common_1.Get('getUserRecipesIds/:userId'),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUsersLatestRecipes", null);
+], UserController.prototype, "getUserRecipesIds", null);
+__decorate([
+    common_1.Get('getUsersLatestRecipesIds/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUsersLatestRecipesIds", null);
+__decorate([
+    common_1.Get('getUserLists/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserLists", null);
+__decorate([
+    common_1.Get('getUserWeek/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserWeek", null);
 __decorate([
     common_1.Put('addRecipeToDay/:userId'),
     __param(0, common_1.Param('userId')),
@@ -66,6 +103,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "removeRecipeFromDay", null);
+__decorate([
+    common_1.Delete('removeAllRecipesFromWeek/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "removeAllRecipesFromWeek", null);
 UserController = __decorate([
     common_1.Controller('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

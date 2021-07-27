@@ -134,12 +134,8 @@ export interface IUserDay {
     dinner: IUserDayRecipe[];
 }
 
-/* export interface IDayRecipe {
-    recipeName: string;
-    recipeId: string;
-} */
-
 export interface IUserDayRecipe {
+    id?: string;
     recipeName: string;
     recipeId: string;
 }

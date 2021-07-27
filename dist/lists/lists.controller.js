@@ -23,10 +23,6 @@ let ListsController = class ListsController {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
-    async getUserLists(userId) {
-        const response = await this.listService.getUserListsId(userId);
-        return response;
-    }
     async getSingleList(listId) {
         const response = await this.listService.getSingleList(listId);
         return response;
@@ -59,13 +55,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
-__decorate([
-    common_1.Get('getUserLists/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], ListsController.prototype, "getUserLists", null);
 __decorate([
     common_1.Get('getSingleList/:listId'),
     __param(0, common_1.Param('listId')),

@@ -57,12 +57,6 @@ export class ListsService {
         return list;
     }
 
-    async getUserListsId(userId: string) {
-        const userLists = await this.userService.findUserListsById(userId);
-        const userListsIds = userLists.lists;
-        return userListsIds;
-    }
-
     async addListItem(listId: string, listItem: INewListItem) {
         let list = await this.findList(listId);
         list.listItems.push(listItem);

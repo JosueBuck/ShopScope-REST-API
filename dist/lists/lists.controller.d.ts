@@ -9,7 +9,6 @@ export declare class ListsController {
         userId: string;
         status: number;
     }>;
-    getUserLists(userId: string): Promise<string[]>;
     getSingleList(listId: string): Promise<{
         id: any;
         name: any;

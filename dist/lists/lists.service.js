@@ -60,11 +60,6 @@ let ListsService = class ListsService {
         }
         return list;
     }
-    async getUserListsId(userId) {
-        const userLists = await this.userService.findUserListsById(userId);
-        const userListsIds = userLists.lists;
-        return userListsIds;
-    }
     async addListItem(listId, listItem) {
         let list = await this.findList(listId);
         list.listItems.push(listItem);

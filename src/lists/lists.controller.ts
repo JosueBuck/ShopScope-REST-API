@@ -16,12 +16,6 @@ export class ListsController {
         return response;
     }
 
-    @Get('getUserLists/:userId')
-    async getUserLists(@Param('userId') userId: string) {
-        const response = await this.listService.getUserListsId(userId);
-        return response;
-    }
-
     @Get('getSingleList/:listId')
     async getSingleList(@Param('listId') listId: string) {
         const response = await this.listService.getSingleList(listId);

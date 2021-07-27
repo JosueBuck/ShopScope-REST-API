@@ -9,16 +9,20 @@ export declare class UserService {
     constructor(userModel: Model<IUser>, userRecipesModel: Model<IUserRecipes>, userListsModel: Model<IUserLists>, userWeekModel: Model<IUserWeek>);
     createNewUser(userRegisterData: IRegisterData): Promise<IUser & import("mongoose").Document<any, any>>;
     deleteUser(userId: string): Promise<string>;
-    addRecipeToDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<void>;
-    removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<void>;
-    addRecipeToUser(recipeId: string, userId: string): Promise<void>;
+    getUserWeek(userId: string): Promise<IUserWeekMongoose>;
+    addRecipeToDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<IUserWeekMongoose>;
+    removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<IUserWeekMongoose>;
+    removeAllRecipesFromWeek(userId: string): Promise<IUserWeekMongoose>;
+    addRecipeIdToUser(recipeId: string, userId: string): Promise<void>;
+    getUserRecipesIds(userId: string): Promise<string[]>;
+    deleteUsersRecipeId(userId: string, recipeId: string): Promise<void>;
     getUsersLatestRecipes(userId: string): Promise<string[]>;
     addListToUser(listId: string, userId: string): Promise<void>;
+    getUserListsIds(userId: string): Promise<string[]>;
     findUserByName(username: string): Promise<IUser>;
     findUserById(userId: string): Promise<IUserMongoose>;
-    findUserRecipesById(userId: string): Promise<IUserRecipesMongoose>;
+    findUserRecipesIdsByUserId(userId: string): Promise<IUserRecipesMongoose>;
     findUserListsById(userId: string): Promise<IUserListsMongoose>;
     findUserWeekById(userId: string): Promise<IUserWeekMongoose>;
-    deleteUserRecipe(userId: string, recipeId: string): Promise<void>;
     deleteUserList(userId: string, listId: string): Promise<void>;
 }

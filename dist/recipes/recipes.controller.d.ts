@@ -23,6 +23,5 @@ export declare class RecipesController {
         ingredients: import("./models/recipe.model").IIngredient[];
         instructions: string[];
     }>;
-    getUserRecipes(userId: string): Promise<string[]>;
     deleteRecipe(userId: string, recipeId: string): Promise<string>;
 }
