@@ -276,15 +276,13 @@ export class UserService {
 
     async findUserByName(username: string): Promise<IUser> {
         let user: IUserMongoose;
+        
         try {
             user = await this.userModel.findOne({ username: new RegExp('^' + username + '$', "i") });;
         } catch {
             throw new RequestTimeoutException();
         }
 
-        if (!user) {
-            throw new NotFoundException('Could not find user');
-        }
         return user;
     }
 

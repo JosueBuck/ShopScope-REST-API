@@ -1,10 +1,23 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNumber, IsNotEmpty, IsArray, ValidateNested, ArrayMinSize } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsArray, ValidateNested, ArrayMinSize, IsEnum, ArrayUnique } from 'class-validator';
 import { Type } from 'class-transformer';
+
+export enum RecipeType {
+
+    VEGETARIAN = "VEGETARIAN",
+    VEGAN = "VEGAN",
+    BREAKFAST = "BREAKFAST",
+    FASTFOOD = "FASTFOOD",
+    HOMECOOKED = "HOMECOOKED",
+    ONEPOT = "ONEPOT",
+    DESSERT = "DESSERT",
+    DRINKS = "DRINKS"
+
+}
 
 export const RecipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    recipeType: { type: String, required: true },
+    recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
     ingredients: { type: [ { _id: false, name: String, amount: Number, unit: String}], required: true },
@@ -14,7 +27,7 @@ export const RecipeSchema = new mongoose.Schema({
 export interface IRecipeMongoose extends mongoose.Document {
     id: string;
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
@@ -27,9 +40,12 @@ export class NewRecipeDto {
     @IsNotEmpty()
     name: string;
 
-    @IsString()
+    @IsEnum(RecipeType, {each: true})
     @IsNotEmpty()
-    recipeType: string;
+    @IsArray()
+    @ArrayMinSize(1)
+    @ArrayUnique()
+    recipeType: RecipeType[];
 
     @IsNumber()
     @IsNotEmpty()
@@ -79,9 +95,12 @@ export class UpdatedRecipeDto {
     @IsNotEmpty()
     name: string;
 
-    @IsString()
+    @IsEnum(RecipeType, {each: true})
     @IsNotEmpty()
-    recipeType: string;
+    @IsArray()
+    @ArrayMinSize(1)
+    @ArrayUnique()
+    recipeType: RecipeType[];
 
     @IsNumber()
     @IsNotEmpty()
@@ -105,10 +124,21 @@ export class UpdatedRecipeDto {
     instructions: string[];
 }
 
+export class RecipeTypeDto {
+
+    @IsEnum(RecipeType, {each: true})
+    @IsNotEmpty()
+    @IsArray()
+    @ArrayMinSize(1)
+    @ArrayUnique()
+    recipeType: RecipeType[];
+
+}
+
 export interface IRecipe {
     id: string;
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
@@ -126,7 +156,7 @@ export interface IIngredient {
 
 export interface INewRecipe {
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];

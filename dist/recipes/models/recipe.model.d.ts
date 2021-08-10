@@ -1,9 +1,19 @@
 import * as mongoose from 'mongoose';
+export declare enum RecipeType {
+    VEGETARIAN = "VEGETARIAN",
+    VEGAN = "VEGAN",
+    BREAKFAST = "BREAKFAST",
+    FASTFOOD = "FASTFOOD",
+    HOMECOOKED = "HOMECOOKED",
+    ONEPOT = "ONEPOT",
+    DESSERT = "DESSERT",
+    DRINKS = "DRINKS"
+}
 export declare const RecipeSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IRecipeMongoose extends mongoose.Document {
     id: string;
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
@@ -11,7 +21,7 @@ export interface IRecipeMongoose extends mongoose.Document {
 }
 export declare class NewRecipeDto {
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IngredientDto[];
@@ -25,16 +35,19 @@ export declare class IngredientDto {
 export declare class UpdatedRecipeDto {
     id: string;
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IngredientDto[];
     instructions: string[];
 }
+export declare class RecipeTypeDto {
+    recipeType: RecipeType[];
+}
 export interface IRecipe {
     id: string;
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
@@ -47,7 +60,7 @@ export interface IIngredient {
 }
 export interface INewRecipe {
     name: string;
-    recipeType: string;
+    recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];

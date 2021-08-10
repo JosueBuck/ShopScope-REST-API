@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { NewRecipeDto, UpdatedRecipeDto } from './models/recipe.model';
+import { NewRecipeDto, RecipeTypeDto, UpdatedRecipeDto } from './models/recipe.model';
 import { RecipesService } from './recipes.service';
 
 @Controller('recipes')
@@ -24,6 +24,12 @@ export class RecipesController {
     @Get('getSingleRecipe/:recipeId')
     async getSingleRecipe(@Param('recipeId') recipeId: string) {
         const result = await this.recipesService.getSingleRecipe(recipeId);
+        return result;
+    }
+
+    @Get('getUserRecipesOfRecipeType/:userId')
+    async getUserRecipesOfRecipeType(@Param("userId") userId: string, @Body() recipeType: RecipeTypeDto) {
+        const result = await this.recipesService.getUserRecipesOfRecipeType(recipeType.recipeType, userId);
         return result;
     }
 

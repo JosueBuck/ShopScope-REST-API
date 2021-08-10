@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserService } from 'src/user/user.service';
-import { IRecipe, INewRecipe, IRecipeMongoose } from './models/recipe.model';
+import { IRecipe, INewRecipe, IRecipeMongoose, RecipeType } from './models/recipe.model';
 
 @Injectable()
 export class RecipesService {
@@ -88,6 +88,17 @@ export class RecipesService {
             ingredients: recipe.ingredients,
             instructions: recipe.instructions
         }));
+    }
+
+    async getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string) {
+        const userRecipesIds = await this.userService.getUserRecipesIds(userId);
+        const filteredRecipes = await this.recipeModel.find({
+            $and: [
+                {_id: { $in: userRecipesIds}},
+                {recipeType: { $in: recipeType}}
+            ]
+        }).exec();
+        return filteredRecipes;
     }
 
     async deleteRecipe(userId: string, recipeId: string) {

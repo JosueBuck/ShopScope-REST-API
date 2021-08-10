@@ -260,9 +260,6 @@ let UserService = class UserService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        if (!user) {
-            throw new common_1.NotFoundException('Could not find user');
-        }
         return user;
     }
     async findUserById(userId) {

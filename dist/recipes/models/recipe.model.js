@@ -9,13 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdatedRecipeDto = exports.IngredientDto = exports.NewRecipeDto = exports.RecipeSchema = void 0;
+exports.RecipeTypeDto = exports.UpdatedRecipeDto = exports.IngredientDto = exports.NewRecipeDto = exports.RecipeSchema = exports.RecipeType = void 0;
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+var RecipeType;
+(function (RecipeType) {
+    RecipeType["VEGETARIAN"] = "VEGETARIAN";
+    RecipeType["VEGAN"] = "VEGAN";
+    RecipeType["BREAKFAST"] = "BREAKFAST";
+    RecipeType["FASTFOOD"] = "FASTFOOD";
+    RecipeType["HOMECOOKED"] = "HOMECOOKED";
+    RecipeType["ONEPOT"] = "ONEPOT";
+    RecipeType["DESSERT"] = "DESSERT";
+    RecipeType["DRINKS"] = "DRINKS";
+})(RecipeType = exports.RecipeType || (exports.RecipeType = {}));
 exports.RecipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    recipeType: { type: String, required: true },
+    recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
     ingredients: { type: [{ _id: false, name: String, amount: Number, unit: String }], required: true },
@@ -29,9 +40,12 @@ __decorate([
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "name", void 0);
 __decorate([
-    class_validator_1.IsString(),
+    class_validator_1.IsEnum(RecipeType, { each: true }),
     class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
+    class_validator_1.IsArray(),
+    class_validator_1.ArrayMinSize(1),
+    class_validator_1.ArrayUnique(),
+    __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "recipeType", void 0);
 __decorate([
     class_validator_1.IsNumber(),
@@ -88,9 +102,12 @@ __decorate([
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "name", void 0);
 __decorate([
-    class_validator_1.IsString(),
+    class_validator_1.IsEnum(RecipeType, { each: true }),
     class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
+    class_validator_1.IsArray(),
+    class_validator_1.ArrayMinSize(1),
+    class_validator_1.ArrayUnique(),
+    __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "recipeType", void 0);
 __decorate([
     class_validator_1.IsNumber(),
@@ -118,4 +135,15 @@ __decorate([
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "instructions", void 0);
 exports.UpdatedRecipeDto = UpdatedRecipeDto;
+class RecipeTypeDto {
+}
+__decorate([
+    class_validator_1.IsEnum(RecipeType, { each: true }),
+    class_validator_1.IsNotEmpty(),
+    class_validator_1.IsArray(),
+    class_validator_1.ArrayMinSize(1),
+    class_validator_1.ArrayUnique(),
+    __metadata("design:type", Array)
+], RecipeTypeDto.prototype, "recipeType", void 0);
+exports.RecipeTypeDto = RecipeTypeDto;
 //# sourceMappingURL=recipe.model.js.map

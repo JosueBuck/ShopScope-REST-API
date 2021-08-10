@@ -93,6 +93,16 @@ let RecipesService = class RecipesService {
             instructions: recipe.instructions
         }));
     }
+    async getUserRecipesOfRecipeType(recipeType, userId) {
+        const userRecipesIds = await this.userService.getUserRecipesIds(userId);
+        const filteredRecipes = await this.recipeModel.find({
+            $and: [
+                { _id: { $in: userRecipesIds } },
+                { recipeType: { $in: recipeType } }
+            ]
+        }).exec();
+        return filteredRecipes;
+    }
     async deleteRecipe(userId, recipeId) {
         await this.userService.findUserById(userId);
         await this.findRecipeById(recipeId);
