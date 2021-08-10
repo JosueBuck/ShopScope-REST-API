@@ -55,12 +55,15 @@ export interface IUserDay {
 export interface IUserDayRecipe {
     id?: string;
     recipeName: string;
-    recipeId: string;
 }
-export interface IUserDayRecipeDataDto {
+export declare class UserDayRecipeDto {
+    id: string;
+    recipeName: string;
+}
+export declare class UserDayRecipeDataDto {
     dayId: string;
     type: string;
-    recipe: IUserDayRecipe;
+    recipe: UserDayRecipeDto;
 }
 export interface IUserDayRecipeData {
     dayId: string;

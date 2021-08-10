@@ -1,9 +1,9 @@
 import { ListsService } from './lists.service';
-import { IListItemDto, INewListDto, IUpdatedListItemDto } from './models/list.model';
+import { NewListItemDto, NewListDto, UpdatedListItemDto } from './models/list.model';
 export declare class ListsController {
     private listService;
     constructor(listService: ListsService);
-    createList(newListDto: INewListDto, userId: string): Promise<{
+    createList(newListDto: NewListDto, userId: string): Promise<{
         message: string;
         listId: any;
         userId: string;
@@ -16,7 +16,19 @@ export declare class ListsController {
         listItems: any;
     }>;
     deleteSingleList(userId: string, listId: string): Promise<string>;
-    addListItem(listId: string, newListItem: IListItemDto): Promise<void>;
-    updateListItem(updatedListItemDto: IUpdatedListItemDto): Promise<void>;
-    deleteListItem(listId: string, itemId: string): Promise<void>;
+    addListItem(listId: string, newListItem: NewListItemDto): Promise<{
+        message: string;
+        listItem: import("./models/list.model").INewListItem;
+        statusCode: number;
+    }>;
+    updateListItem(updatedListItemDto: UpdatedListItemDto): Promise<{
+        message: string;
+        updatedListItem: import("./models/list.model").IListItem;
+        statusCode: number;
+    }>;
+    deleteListItem(listId: string, itemId: string): Promise<{
+        message: string;
+        itemId: string;
+        statusCode: number;
+    }>;
 }

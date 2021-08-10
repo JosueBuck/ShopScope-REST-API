@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { INewRecipeDto, IUpdatedRecipeDto } from './models/recipe.model';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { NewRecipeDto, UpdatedRecipeDto } from './models/recipe.model';
 import { RecipesService } from './recipes.service';
 
 @Controller('recipes')
@@ -10,19 +10,19 @@ export class RecipesController {
     ) { }
 
     @Post('createRecipe/:userId')
-    async createRecipe(@Body() recipeDto: INewRecipeDto, @Param('userId') userId: string) {
+    async createRecipe(@Body() recipeDto: NewRecipeDto, @Param('userId') userId: string) {
         const result = await this.recipesService.createRecipe(recipeDto, userId);
         return result;
     }
 
-    @Post('updateRecipe')
-    async updateRecipe(@Body() updateRecipeDto: IUpdatedRecipeDto) {
+    @Put('updateRecipe')
+    async updateRecipe(@Body() updateRecipeDto: UpdatedRecipeDto) {
         const result = await this.recipesService.updateRecipe(updateRecipeDto);
         return result;
     }
 
-    @Get('getSingleRecipe/:id')
-    async getSingleRecipe(@Param('id') recipeId: string) {
+    @Get('getSingleRecipe/:recipeId')
+    async getSingleRecipe(@Param('recipeId') recipeId: string) {
         const result = await this.recipesService.getSingleRecipe(recipeId);
         return result;
     }

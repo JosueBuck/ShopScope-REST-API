@@ -1,4 +1,74 @@
 import * as mongoose from 'mongoose';
+import { IsString, isBoolean, isNumber, IsNotEmpty, isNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
+
+
+export class NewListDto {
+
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsString()
+    description: string;
+
+    @IsArray()
+    @ValidateNested()
+    @Type(() => NewListItemDto)
+    listItems: NewListItemDto[];
+}
+
+export class NewListItemDto {
+
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsNumber()
+    amount: number;
+
+    @IsString()
+    unit: string;
+
+    @IsBoolean()
+    isDone: boolean;
+}
+
+export class ListItemDto {
+
+    @IsString()
+    @IsNotEmpty()
+    id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    amount: number;
+
+    @IsString()
+    @IsNotEmpty()
+    unit: string;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    isDone: boolean;
+}
+
+export class UpdatedListItemDto {
+
+    @IsString()
+    @IsNotEmpty()
+    listId: string;
+
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => ListItemDto)
+    updatedListItem: ListItemDto;
+}
+
 
 export const ListSchema = new mongoose.Schema({
     name: { type: String, required: true},
@@ -12,17 +82,10 @@ export interface IList {
     description: string;
     listItems: IListItem[];
 }
-
-export interface INewListDto {
-    name: string;
-    description: string;
-    listItems: IListItem[];
-}
-
 export interface INewList {
     name: string;
     description: string;
-    listItems: IListItem[];
+    listItems: INewListItem[];
 }
 
 export interface IListItem {
@@ -35,20 +98,8 @@ export interface IListItem {
 
 export interface INewListItem {
     name: string;
-    amoung: number;
+    amount: number;
     unit: string;
     isDone: boolean;
 }
 
-export interface IListItemDto {
-    name: string;
-    amoung: number;
-    unit: string;
-    isDone: boolean;
-}
-
-export interface IUpdatedListItemDto {
-    listId: string;
-    itemId: string;
-    updatedListItem: IListItem;
-}

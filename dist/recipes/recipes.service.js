@@ -16,7 +16,6 @@ exports.RecipesService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const rxjs_1 = require("rxjs");
 const user_service_1 = require("../user/user.service");
 let RecipesService = class RecipesService {
     constructor(userService, recipeModel) {
@@ -35,14 +34,14 @@ let RecipesService = class RecipesService {
         await this.userService.addRecipeIdToUser(newRecipe.id, userId);
         try {
             await newRecipe.save();
-            return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 };
+            return { message: "Created", recipeId: newRecipe.id, userId: userId, statusCode: 201 };
         }
         catch (_a) {
-            throw new rxjs_1.TimeoutError();
+            throw new common_1.RequestTimeoutException();
         }
     }
     async updateRecipe(updatedRecipe) {
-        let recipe = await this.findRecipe(updatedRecipe.id);
+        let recipe = await this.findRecipeById(updatedRecipe.id);
         recipe.name = updatedRecipe.name;
         recipe.recipeType = updatedRecipe.recipeType;
         recipe.cookingTime = updatedRecipe.cookingTime;
@@ -51,15 +50,14 @@ let RecipesService = class RecipesService {
         recipe.instructions = updatedRecipe.instructions;
         try {
             await recipe.save();
-            return { message: "Recipe was updated", updatedRecipe: recipe, status: 200 };
-            ;
+            return { message: "Updated", updatedRecipe: recipe, statusCode: 200 };
         }
         catch (_a) {
-            throw new rxjs_1.TimeoutError();
+            throw new common_1.RequestTimeoutException();
         }
     }
     async getSingleRecipe(recipeId) {
-        const recipe = await this.findRecipe(recipeId);
+        const recipe = await this.findRecipeById(recipeId);
         return {
             id: recipe.id,
             name: recipe.name,
@@ -70,13 +68,13 @@ let RecipesService = class RecipesService {
             instructions: recipe.instructions
         };
     }
-    async findRecipe(id) {
+    async findRecipeById(id) {
         let recipe;
         try {
             recipe = await this.recipeModel.findById(id).exec();
         }
         catch (_a) {
-            throw new common_1.NotFoundException('Could not find recipe');
+            throw new common_1.NotFoundException('Innvalid recipe id');
         }
         if (!recipe) {
             throw new common_1.NotFoundException('Could not find recipe');
@@ -96,9 +94,16 @@ let RecipesService = class RecipesService {
         }));
     }
     async deleteRecipe(userId, recipeId) {
-        await this.recipeModel.deleteOne({ _id: recipeId }).exec();
-        await this.userService.deleteUsersRecipeId(userId, recipeId);
-        return recipeId;
+        await this.userService.findUserById(userId);
+        await this.findRecipeById(recipeId);
+        try {
+            await this.recipeModel.deleteOne({ _id: recipeId }).exec();
+            await this.userService.deleteUsersRecipeId(userId, recipeId);
+        }
+        catch (_a) {
+            throw new common_1.RequestTimeoutException();
+        }
+        return { message: "Deleted", recipeId, statusCode: 200 };
     }
 };
 RecipesService = __decorate([

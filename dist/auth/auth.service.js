@@ -20,19 +20,22 @@ let AuthService = class AuthService {
         this.userService = userService;
     }
     async authenticateUser(loginData) {
-        const user = await this.userService.findUserByName(loginData.username);
-        if (!user) {
-            console.log("No user with this username");
-            return false;
+        let user;
+        try {
+            user = await this.userService.findUserByName(loginData.username);
         }
-        console.log(user);
+        catch (_a) {
+            throw new common_1.RequestTimeoutException();
+        }
+        if (!user) {
+            throw new common_1.NotFoundException('no user was found');
+        }
         const comparePasswordsResult = await this.comparePasswords(loginData.password, user.password);
-        console.log(comparePasswordsResult);
         if (comparePasswordsResult) {
             return this.generateJWT({ user });
         }
         else {
-            return false;
+            throw new common_1.UnauthorizedException('wrong password');
         }
     }
     async generateJWT(payload) {
@@ -47,8 +50,7 @@ let AuthService = class AuthService {
     async registerUser(registerData) {
         const existingUsers = await this.userService.findUserByName(registerData.username);
         if (existingUsers) {
-            console.log("user with this name already exists!");
-            return false;
+            throw new common_1.ConflictException('User with this name already exists');
         }
         const hashedPassword = await this.hashPassword(registerData.password);
         const userRegisterData = {
@@ -57,7 +59,7 @@ let AuthService = class AuthService {
             email: registerData.email
         };
         const newUser = await this.userService.createNewUser(userRegisterData);
-        return { message: "User is now registered.", user: { username: newUser.username, email: newUser.email }, status: 200 };
+        return { message: 'Created', user: { username: newUser.username, email: newUser.email }, statusCode: 201 };
     }
 };
 AuthService = __decorate([

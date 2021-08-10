@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListsController = void 0;
 const common_1 = require("@nestjs/common");
 const lists_service_1 = require("./lists.service");
+const list_model_1 = require("./models/list.model");
 let ListsController = class ListsController {
     constructor(listService) {
         this.listService = listService;
@@ -38,8 +39,7 @@ let ListsController = class ListsController {
     async updateListItem(updatedListItemDto) {
         const listId = updatedListItemDto.listId;
         const updatedListItem = updatedListItemDto.updatedListItem;
-        const itemId = updatedListItem.id;
-        const response = await this.listService.updateListItem(listId, itemId, updatedListItem);
+        const response = await this.listService.updateListItem(listId, updatedListItem);
         return response;
     }
     async deleteListItem(listId, itemId) {
@@ -52,7 +52,7 @@ __decorate([
     __param(0, common_1.Body()),
     __param(1, common_1.Param('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [list_model_1.NewListDto, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
 __decorate([
@@ -71,18 +71,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "deleteSingleList", null);
 __decorate([
-    common_1.Put('addListItem/:listId'),
+    common_1.Post('addListItem/:listId'),
     __param(0, common_1.Param('listId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, list_model_1.NewListItemDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "addListItem", null);
 __decorate([
     common_1.Patch('updateListItem'),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [list_model_1.UpdatedListItemDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "updateListItem", null);
 __decorate([

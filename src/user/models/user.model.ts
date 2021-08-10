@@ -1,30 +1,11 @@
 import * as mongoose from 'mongoose';
+import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     password: { type: String, required: true},
     email: { type: String, required: true},
-    /* week: { type: 
-        [ 
-            { 
-                name: String, 
-                breakfast: { type: [ { _id: false, recipeName: String, recipeId: String } ] } ,
-                lunch: { type: [ { recipeName: String, recipeId: String} ] },
-                dinner: { type: [ { recipeName: String, recipeId: String} ] } 
-            } 
-        ] 
-    }, */
-    /* week: { 
-            monday: { name: { type: String}, recipes: { type: [ { String } ] } }, 
-            tuesday: { name: { type: String}, recipes: { type: [ { String } ] } }, 
-            wednesday: { name: { type: String}, recipes: { type: [ { String } ] } }, 
-            thursday: { name: { type: String}, recipes: { type: [ { String } ] } },
-            friday: { name: { type: String}, recipes: { type: [ { String } ] } },
-            saturday: { name: { type: String}, recipes: { type: [ { String } ] } },
-            sunday: { name: { type: String}, recipes: { type: [ { String } ] } }, 
-    }  */
-
-    
 })
 
 export interface IUser {
@@ -40,20 +21,6 @@ export interface IUserMongoose extends mongoose.Document {
     password: string;
     email: string;
 }
-
-/* export interface IWeek {
-    monday: IDay, 
-    tuesday: IDay, 
-    wednesday: IDay, 
-    thursday: IDay,
-    friday: IDay, 
-    saturday: IDay, 
-    sunday: IDay 
-} */
-
-
-
-
 
 
 
@@ -137,14 +104,35 @@ export interface IUserDay {
 export interface IUserDayRecipe {
     id?: string;
     recipeName: string;
-    recipeId: string;
 }
 
-export interface IUserDayRecipeDataDto {
-    dayId: string;
-    type: string;
-    recipe: IUserDayRecipe
+export class UserDayRecipeDto {
+    @IsString()
+    @IsNotEmpty()
+    id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    recipeName: string;
 }
+
+export class UserDayRecipeDataDto {
+
+    @IsString()
+    @IsNotEmpty()
+    dayId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    type: string;
+
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => UserDayRecipeDto)
+    recipe: UserDayRecipeDto
+}
+
+
 
 export interface IUserDayRecipeData {
     dayId: string;

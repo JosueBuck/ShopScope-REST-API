@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ListsService } from './lists.service';
-import { IListItemDto, INewListDto, IUpdatedListItemDto } from './models/list.model';
+import { NewListItemDto, NewListDto, UpdatedListItemDto } from './models/list.model';
 
 @Controller('lists')
 export class ListsController {
@@ -11,7 +11,7 @@ export class ListsController {
 
 
     @Post('createList/:userId')
-    async createList(@Body() newListDto: INewListDto, @Param('userId') userId: string) {
+    async createList(@Body() newListDto: NewListDto, @Param('userId') userId: string) {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
@@ -28,19 +28,18 @@ export class ListsController {
         return response;
     }
 
-    @Put('addListItem/:listId')
-    async addListItem(@Param('listId') listId: string, @Body() newListItem: IListItemDto) {
+    @Post('addListItem/:listId')
+    async addListItem(@Param('listId') listId: string, @Body() newListItem: NewListItemDto) {
         const response = await this.listService.addListItem(listId, newListItem);
         return response;
     }
 
     @Patch('updateListItem')
-    async updateListItem(@Body() updatedListItemDto: IUpdatedListItemDto) {
+    async updateListItem(@Body() updatedListItemDto: UpdatedListItemDto) {
         const listId = updatedListItemDto.listId;
         const updatedListItem = updatedListItemDto.updatedListItem;
-        const itemId = updatedListItem.id;
         
-        const response = await this.listService.updateListItem(listId, itemId, updatedListItem);
+        const response = await this.listService.updateListItem(listId, updatedListItem);
         return response;
     }
 

@@ -9,12 +9,12 @@ export declare class RecipesService {
         message: string;
         recipeId: any;
         userId: string;
-        status: number;
+        statusCode: number;
     }>;
     updateRecipe(updatedRecipe: IRecipe): Promise<{
         message: string;
         updatedRecipe: IRecipeMongoose;
-        status: number;
+        statusCode: number;
     }>;
     getSingleRecipe(recipeId: string): Promise<{
         id: string;
@@ -25,7 +25,11 @@ export declare class RecipesService {
         ingredients: import("./models/recipe.model").IIngredient[];
         instructions: string[];
     }>;
-    findRecipe(id: string): Promise<IRecipeMongoose>;
+    findRecipeById(id: string): Promise<IRecipeMongoose>;
     getAllRecipes(): Promise<IRecipe[]>;
-    deleteRecipe(userId: string, recipeId: string): Promise<string>;
+    deleteRecipe(userId: string, recipeId: string): Promise<{
+        message: string;
+        recipeId: string;
+        statusCode: number;
+    }>;
 }

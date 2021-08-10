@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TimeoutError } from 'rxjs';
 import { IRegisterData } from 'src/auth/models/registerData.model';
 import { IUser, IUserMongoose, IUserRecipes, IUserRecipesMongoose, IUserLists, IUserListsMongoose, IUserDayRecipeData, IUserWeek, IUserWeekMongoose } from './models/user.model';
 
@@ -88,16 +87,33 @@ export class UserService {
                 await userWeek.save();
                 return newUser;
             } catch {
-                throw new TimeoutError();
+                throw new RequestTimeoutException();
             }
     }
 
-    /* TO-DO: also delete userRecipes & userLists  */
     async deleteUser(userId: string) {
-        await this.userModel.deleteOne({ _id: userId });
-        return userId;
+        let dbResponse: any;
+        await this.findUserById(userId);
+        await this.findUserRecipesIdsByUserId(userId);
+        await this.findUserListsIdsByUserId(userId);
+        await this.findUserWeekById(userId);
+        try {
+            dbResponse = await this.userModel.deleteOne({ _id: userId });
+            console.log(dbResponse);
+            dbResponse = await this.userListsModel.deleteOne({ userId: userId });
+            console.log(dbResponse);
+            dbResponse = await this.userRecipesModel.deleteOne({ userId: userId });
+            console.log(dbResponse);
+            dbResponse = await this.userWeekModel.deleteOne({ userId: userId });
+            console.log(dbResponse);
+        } catch {
+            throw new RequestTimeoutException();
+        }
+        
+        return { message: 'Deleted', userId: userId, statusCode: 200 };
     }
 
+    
     async getUserWeek(userId: string) {
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
         return userWeek;
@@ -106,10 +122,13 @@ export class UserService {
     async addRecipeToDay(userId: string, userDayRecipe: IUserDayRecipeData) {
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
         let days = userWeek.week;
+        let wasAdded: boolean = false;
         days.map((day) => {
             if (day.id != userDayRecipe.dayId) {
                 return;
             }
+
+            wasAdded = true;
 
             switch(userDayRecipe.type) {
                 case "breakfast": {
@@ -127,23 +146,32 @@ export class UserService {
             }
         });
 
-        userWeek.save();
-        return userWeek;
+        if (wasAdded) {
+            userWeek.save();
+            return { message: "Added", userDayRecipe: userDayRecipe, statusCode: 200 };
+        } else {
+            throw new NotFoundException("No day with this id was found!");
+        }
+
+        
     }
 
     async removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData) {
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
         let days = userWeek.week;
+        let wasRemoved: boolean = false;
         days.map((day) => {
             if (day.id != userDayRecipe.dayId) {
                 return;
             }
+            
             
             switch(userDayRecipe.type) {
                 case "breakfast": {
                     const index = day.breakfast.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
                     if (index > -1) {
                         day.breakfast.splice(index, 1);
+                        wasRemoved = true;
                     }
                     break;
                 }
@@ -151,6 +179,7 @@ export class UserService {
                     const index = day.lunch.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
                     if (index > -1) {
                         day.lunch.splice(index, 1);
+                        wasRemoved = true;
                     }
                     break;
                 }
@@ -158,14 +187,21 @@ export class UserService {
                     const index = day.dinner.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
                     if (index > -1) {
                         day.dinner.splice(index, 1);
+                        wasRemoved = true;
                     }
                     break;
                 }
             }
         });
 
-        userWeek.save();
-        return userWeek;
+        if (wasRemoved) {
+            userWeek.save();
+            return { message: "Removed", userDayRecipe: userDayRecipe, statusCode: 200 };
+        } else {
+            throw new NotFoundException();
+        }
+
+        
     }
 
     async removeAllRecipesFromWeek(userId: string) {
@@ -175,11 +211,15 @@ export class UserService {
             day.lunch = [];
             day.dinner = [];
         });
-        userWeek.save();
-        return userWeek;
-    }
 
-    /* TO-DO: add clear the whole week functionallity */
+        try {
+            userWeek.save();
+        } catch {
+            throw new RequestTimeoutException();
+        }
+        
+        return { message: "Removed", userWeek: userWeek, statusCode: 200 };
+    }
 
     async addRecipeIdToUser(recipeId: string, userId: string) {
         const userRecipes: IUserRecipesMongoose = await this.findUserRecipesIdsByUserId(userId)
@@ -187,7 +227,7 @@ export class UserService {
         try {
             await userRecipes.save();
         } catch {
-            throw new TimeoutError();
+            throw new RequestTimeoutException();
         } 
     }
     
@@ -204,6 +244,13 @@ export class UserService {
        ).exec();
     }
 
+    async deleteUserListId(userId: string, listId: string) {
+        this.userListsModel.findOneAndUpdate(
+            { userId: userId },
+            { $pull: { lists: {_id: listId} }}
+        ).exec();
+    }
+
     async getUsersLatestRecipes(userId: string) {
         const userRecipes = await this.findUserRecipesIdsByUserId(userId);
         const recipes = userRecipes.recipes;
@@ -211,18 +258,18 @@ export class UserService {
         return latestRecipes;
     }
 
-    async addListToUser(listId: string, userId: string) {
-        const userLists: IUserListsMongoose = await this.findUserListsById(userId);
+    async addListIdToUser(listId: string, userId: string) {
+        const userLists: IUserListsMongoose = await this.findUserListsIdsByUserId(userId);
         userLists.lists.push(listId);
         try {
             await userLists.save();
         } catch {
-            throw new TimeoutError();
+            throw new RequestTimeoutException();
         } 
     }
 
     async getUserListsIds(userId: string) {
-        const userLists = await this.findUserListsById(userId);
+        const userLists = await this.findUserListsIdsByUserId(userId);
         const userListsIds = userLists.lists;
         return userListsIds;
     }
@@ -231,11 +278,14 @@ export class UserService {
         let user: IUserMongoose;
         try {
             user = await this.userModel.findOne({ username: new RegExp('^' + username + '$', "i") });;
-            return user;
         } catch {
-            throw new TimeoutError();
+            throw new RequestTimeoutException();
         }
-        
+
+        if (!user) {
+            throw new NotFoundException('Could not find user');
+        }
+        return user;
     }
 
     async findUserById(userId: string): Promise<IUserMongoose> {
@@ -266,7 +316,7 @@ export class UserService {
         return userRecipes;
     }
 
-    async findUserListsById(userId: string): Promise<IUserListsMongoose> {
+    async findUserListsIdsByUserId(userId: string): Promise<IUserListsMongoose> {
         let userLists: IUserListsMongoose;
         try {
             userLists = await this.userListsModel.findOne({ userId: userId }).exec();
@@ -275,7 +325,7 @@ export class UserService {
         }
 
         if (!userLists) {
-            throw new NotFoundException('Could not find user recipes');
+            throw new NotFoundException('Could not find user lists');
         }
 
         return userLists;
@@ -283,10 +333,12 @@ export class UserService {
 
     async findUserWeekById(userId: string): Promise<IUserWeekMongoose> {
         let userWeek: IUserWeekMongoose;
+        await this.findUserById(userId);
+
         try {
             userWeek = await this.userWeekModel.findOne({ userId: userId }).exec();
         } catch {
-            throw new NotFoundException('Invalid user id');
+            throw new RequestTimeoutException();
         }
 
         if (!userWeek) {
@@ -296,12 +348,5 @@ export class UserService {
         return userWeek;
     }
 
-    
 
-    async deleteUserList(userId: string, listId: string) {
-        this.userListsModel.findOneAndUpdate(
-            { userId: userId },
-            { $pull: { lists: {_id: listId} }}
-        ).exec();
-    }
 }

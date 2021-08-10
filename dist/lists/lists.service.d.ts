@@ -17,9 +17,21 @@ export declare class ListsService {
         description: any;
         listItems: any;
     }>;
-    findList(listId: string): Promise<any>;
-    addListItem(listId: string, listItem: INewListItem): Promise<void>;
-    updateListItem(listId: string, itemId: string, updatedListItem: IListItem): Promise<void>;
+    findListById(listId: string): Promise<any>;
+    addListItem(listId: string, listItem: INewListItem): Promise<{
+        message: string;
+        listItem: INewListItem;
+        statusCode: number;
+    }>;
+    updateListItem(listId: string, updatedListItem: IListItem): Promise<{
+        message: string;
+        updatedListItem: IListItem;
+        statusCode: number;
+    }>;
     deleteSingleList(userId: string, listId: string): Promise<string>;
-    deleteListItem(listId: string, itemId: string): Promise<void>;
+    deleteListItem(listId: string, itemId: string): Promise<{
+        message: string;
+        itemId: string;
+        statusCode: number;
+    }>;
 }

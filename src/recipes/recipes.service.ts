@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TimeoutError } from 'rxjs';
 import { UserService } from 'src/user/user.service';
 import { IRecipe, INewRecipe, IRecipeMongoose } from './models/recipe.model';
 
@@ -27,15 +26,15 @@ export class RecipesService {
         await this.userService.addRecipeIdToUser(newRecipe.id, userId);
         try {
             await newRecipe.save();
-            return { message: "Recipe was created.", recipeId: newRecipe.id, userId: userId, status: 200 } 
+            return { message: "Created", recipeId: newRecipe.id, userId: userId, statusCode: 201 } 
         } catch {
-            throw new TimeoutError();
+            throw new RequestTimeoutException();
         }
         
     }
 
     async updateRecipe(updatedRecipe: IRecipe) {
-        let recipe = await this.findRecipe(updatedRecipe.id);
+        let recipe = await this.findRecipeById(updatedRecipe.id);
         recipe.name = updatedRecipe.name;
         recipe.recipeType = updatedRecipe.recipeType;
         recipe.cookingTime = updatedRecipe.cookingTime;
@@ -44,14 +43,14 @@ export class RecipesService {
         recipe.instructions = updatedRecipe.instructions;
         try {
             await recipe.save()
-            return { message: "Recipe was updated", updatedRecipe: recipe, status: 200 };;
+            return { message: "Updated", updatedRecipe: recipe, statusCode: 200 };
         } catch {
-            throw new TimeoutError();
+            throw new RequestTimeoutException();
         } 
     }
 
     async getSingleRecipe(recipeId: string) {
-        const recipe = await this.findRecipe(recipeId);
+        const recipe = await this.findRecipeById(recipeId);
         return {
             id: recipe.id,
             name: recipe.name,
@@ -64,12 +63,12 @@ export class RecipesService {
     }
 
 
-    async findRecipe(id: string): Promise<IRecipeMongoose> {
+    async findRecipeById(id: string): Promise<IRecipeMongoose> {
         let recipe;
         try {
             recipe = await this.recipeModel.findById(id).exec();
         } catch {
-            throw new NotFoundException('Could not find recipe');
+            throw new NotFoundException('Innvalid recipe id');
         }
         
         if (!recipe) {
@@ -92,8 +91,17 @@ export class RecipesService {
     }
 
     async deleteRecipe(userId: string, recipeId: string) {
-        await this.recipeModel.deleteOne({_id: recipeId}).exec();
-        await this.userService.deleteUsersRecipeId(userId, recipeId);
-        return recipeId;
+
+        await this.userService.findUserById(userId);
+        await this.findRecipeById(recipeId);
+
+        try {
+            await this.recipeModel.deleteOne({_id: recipeId}).exec();
+            await this.userService.deleteUsersRecipeId(userId, recipeId);
+        } catch {
+            throw new RequestTimeoutException();
+        }
+        
+        return { message: "Deleted", recipeId, statusCode: 200 };
     }
 }

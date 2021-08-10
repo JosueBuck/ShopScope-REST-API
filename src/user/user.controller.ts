@@ -1,6 +1,5 @@
-import { Controller, Delete, Param, Get, Patch, Body, Put } from '@nestjs/common';
-import { response } from 'express';
-import { IUserDayRecipeDataDto } from './models/user.model';
+import { Controller, Delete, Param, Get, Body, Put } from '@nestjs/common';
+import { UserDayRecipeDataDto } from './models/user.model';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -10,9 +9,9 @@ export class UserController {
         private readonly userService: UserService,
     ) { }
 
-    @Delete('deleteUser/:username')
-        async deleteUser(@Param('username') username: string) {
-            const response = await this.userService.deleteUser(username);
+    @Delete('deleteUser/:userId')
+        async deleteUser(@Param('userId') userId: string) {
+            const response = await this.userService.deleteUser(userId);
             return response;
         }
 
@@ -28,8 +27,8 @@ export class UserController {
             return response;
         }
 
-        @Get('getUserLists/:userId')
-        async getUserLists(@Param('userId') userId: string) {
+        @Get('getUserListsIds/:userId')
+        async getUserListsIds(@Param('userId') userId: string) {
             const response = await this.userService.getUserListsIds(userId);
             return response;
         }
@@ -41,13 +40,13 @@ export class UserController {
         }
 
         @Put('addRecipeToDay/:userId')
-        async addRecipeToDay(@Param('userId') userId: string, @Body() userDayRecipe: IUserDayRecipeDataDto) {
+        async addRecipeToDay(@Param('userId') userId: string, @Body() userDayRecipe: UserDayRecipeDataDto) {
             const response = await this.userService.addRecipeToDay(userId, userDayRecipe);
             return response;
         }
 
         @Delete('removeRecipeFromDay/:userId')
-        async removeRecipeFromDay(@Param('userId') userId: string, @Body() userDayRecipe: IUserDayRecipeDataDto) {
+        async removeRecipeFromDay(@Param('userId') userId: string, @Body() userDayRecipe: UserDayRecipeDataDto) {
             const response = await this.userService.removeRecipeFromDay(userId, userDayRecipe);
             return response;
         }

@@ -14,13 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const user_model_1 = require("./models/user.model");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    async deleteUser(username) {
-        const response = await this.userService.deleteUser(username);
+    async deleteUser(userId) {
+        const response = await this.userService.deleteUser(userId);
         return response;
     }
     async getUserRecipesIds(userId) {
@@ -31,7 +32,7 @@ let UserController = class UserController {
         const response = await this.userService.getUsersLatestRecipes(userId);
         return response;
     }
-    async getUserLists(userId) {
+    async getUserListsIds(userId) {
         const response = await this.userService.getUserListsIds(userId);
         return response;
     }
@@ -53,8 +54,8 @@ let UserController = class UserController {
     }
 };
 __decorate([
-    common_1.Delete('deleteUser/:username'),
-    __param(0, common_1.Param('username')),
+    common_1.Delete('deleteUser/:userId'),
+    __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -74,12 +75,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUsersLatestRecipesIds", null);
 __decorate([
-    common_1.Get('getUserLists/:userId'),
+    common_1.Get('getUserListsIds/:userId'),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserLists", null);
+], UserController.prototype, "getUserListsIds", null);
 __decorate([
     common_1.Get('getUserWeek/:userId'),
     __param(0, common_1.Param('userId')),
@@ -92,7 +93,7 @@ __decorate([
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, user_model_1.UserDayRecipeDataDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "addRecipeToDay", null);
 __decorate([
@@ -100,7 +101,7 @@ __decorate([
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, user_model_1.UserDayRecipeDataDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "removeRecipeFromDay", null);
 __decorate([

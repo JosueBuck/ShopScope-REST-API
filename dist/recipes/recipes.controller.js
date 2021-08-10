@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecipesController = void 0;
 const common_1 = require("@nestjs/common");
+const recipe_model_1 = require("./models/recipe.model");
 const recipes_service_1 = require("./recipes.service");
 let RecipesController = class RecipesController {
     constructor(recipesService) {
@@ -41,19 +42,19 @@ __decorate([
     __param(0, common_1.Body()),
     __param(1, common_1.Param('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [recipe_model_1.NewRecipeDto, String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "createRecipe", null);
 __decorate([
-    common_1.Post('updateRecipe'),
+    common_1.Put('updateRecipe'),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [recipe_model_1.UpdatedRecipeDto]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "updateRecipe", null);
 __decorate([
-    common_1.Get('getSingleRecipe/:id'),
-    __param(0, common_1.Param('id')),
+    common_1.Get('getSingleRecipe/:recipeId'),
+    __param(0, common_1.Param('recipeId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

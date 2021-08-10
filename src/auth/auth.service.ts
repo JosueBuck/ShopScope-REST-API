@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, RequestTimeoutException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ILoginData } from './models/loginData.model';
 import { IRegisterData } from './models/registerData.model';
@@ -20,21 +20,24 @@ export class AuthService {
 
 
     async authenticateUser(loginData: ILoginData) {
+        let user: IUser;
 
-        const user = await this.userService.findUserByName(loginData.username);
+        try {
+            user = await this.userService.findUserByName(loginData.username);
+        } catch {
+            throw new RequestTimeoutException();
+        }
+        
 
         if (!user) {
-            console.log("No user with this username")
-            return false;
+            throw new NotFoundException('no user was found');
         }
-        console.log(user);
         const comparePasswordsResult = await this.comparePasswords(loginData.password, user.password);
-        console.log(comparePasswordsResult)
 
         if (comparePasswordsResult) {
             return this.generateJWT({ user });
         } else {
-            return false;
+            throw new UnauthorizedException('wrong password');
         }
     }
 
@@ -50,16 +53,10 @@ export class AuthService {
         return await bcrypt.compare(newPassword, passwordHash);
     }
 
-   /*  async findUser(username: string): Promise<IUser> {
-        const user = await this.userModel.findOne({ username: username }).exec();
-        return user;
-    } */
-
     async registerUser(registerData: IRegisterData) {
         const existingUsers: IUser = await this.userService.findUserByName(registerData.username);
         if (existingUsers) {
-            console.log("user with this name already exists!");
-            return false;
+            throw new ConflictException('User with this name already exists');
         }
 
         const hashedPassword = await this.hashPassword(registerData.password);
@@ -70,7 +67,7 @@ export class AuthService {
         }
         const newUser = await this.userService.createNewUser(userRegisterData)
 
-        return { message: "User is now registered.", user: { username: newUser.username, email: newUser.email }, status: 200 }  
+        return { message: 'Created', user: { username: newUser.username, email: newUser.email }, statusCode: 201 }  
 
     }
 }
