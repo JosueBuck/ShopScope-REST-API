@@ -17,12 +17,14 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const registerData_model_1 = require("../auth/models/registerData.model");
+const lists_service_1 = require("../lists/lists.service");
+const recipes_service_1 = require("../recipes/recipes.service");
 let UserService = class UserService {
-    constructor(userModel, userRecipesModel, userListsModel, userWeekModel) {
+    constructor(userModel, userWeekModel, recipeService, listsService) {
         this.userModel = userModel;
-        this.userRecipesModel = userRecipesModel;
-        this.userListsModel = userListsModel;
         this.userWeekModel = userWeekModel;
+        this.recipeService = recipeService;
+        this.listsService = listsService;
     }
     async createNewUser(userRegisterData) {
         const newUser = new this.userModel({
@@ -30,53 +32,49 @@ let UserService = class UserService {
             password: userRegisterData.password,
             email: userRegisterData.email,
         });
-        const userRecipes = new this.userRecipesModel({
-            userId: newUser.id,
-        });
-        const userLists = new this.userListsModel({
-            userId: newUser.id,
-        });
+        this.recipeService.createNewUserRecipeModel(newUser.id);
+        this.listsService.createNewUserListsModel(newUser.id);
         const userWeek = new this.userWeekModel({
             userId: newUser.id,
             week: [
                 {
-                    name: "monday",
+                    name: 'monday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "tuesday",
+                    name: 'tuesday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "wednesday",
+                    name: 'wednesday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "thursday",
+                    name: 'thursday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "friday",
+                    name: 'friday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "saturday",
+                    name: 'saturday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
                 },
                 {
-                    name: "sunday",
+                    name: 'sunday',
                     breakfast: [],
                     lunch: [],
                     dinner: []
@@ -85,8 +83,6 @@ let UserService = class UserService {
         });
         try {
             await newUser.save();
-            await userRecipes.save();
-            await userLists.save();
             await userWeek.save();
             return newUser;
         }
@@ -95,20 +91,19 @@ let UserService = class UserService {
         }
     }
     async deleteUser(userId) {
-        let dbResponse;
         await this.findUserById(userId);
-        await this.findUserRecipesIdsByUserId(userId);
-        await this.findUserListsIdsByUserId(userId);
         await this.findUserWeekById(userId);
+        const simplifiedUserRecipesObject = await this.recipeService.getSimplifiedUserRecipesByUserId(userId);
+        const simplifiedUserListsObject = await this.listsService.getSimplifiedUserListsByUserId(userId);
+        const simplifiedLists = simplifiedUserListsObject.lists;
+        const simplifiedRecipes = simplifiedUserRecipesObject.recipes;
         try {
-            dbResponse = await this.userModel.deleteOne({ _id: userId });
-            console.log(dbResponse);
-            dbResponse = await this.userListsModel.deleteOne({ userId: userId });
-            console.log(dbResponse);
-            dbResponse = await this.userRecipesModel.deleteOne({ userId: userId });
-            console.log(dbResponse);
-            dbResponse = await this.userWeekModel.deleteOne({ userId: userId });
-            console.log(dbResponse);
+            await this.listsService.deleteManyLists(simplifiedLists);
+            await this.recipeService.deleteManyRecipes(simplifiedRecipes);
+            await this.userModel.deleteOne({ _id: userId });
+            await this.listsService.deleteUserListsModel(userId);
+            await this.recipeService.deleteUserRecipeModel(userId);
+            await this.userWeekModel.deleteOne({ userId: userId });
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
@@ -124,20 +119,20 @@ let UserService = class UserService {
         let days = userWeek.week;
         let wasAdded = false;
         days.map((day) => {
-            if (day.id != userDayRecipe.dayId) {
+            if (day._id != userDayRecipe.dayId) {
                 return;
             }
             wasAdded = true;
             switch (userDayRecipe.type) {
-                case "breakfast": {
+                case 'breakfast': {
                     day.breakfast.push(userDayRecipe.recipe);
                     break;
                 }
-                case "lunch": {
+                case 'lunch': {
                     day.lunch.push(userDayRecipe.recipe);
                     break;
                 }
-                case "dinner": {
+                case 'dinner': {
                     day.dinner.push(userDayRecipe.recipe);
                     break;
                 }
@@ -145,10 +140,10 @@ let UserService = class UserService {
         });
         if (wasAdded) {
             userWeek.save();
-            return { message: "Added", userDayRecipe: userDayRecipe, statusCode: 200 };
+            return { message: 'Added', userDayRecipe: userDayRecipe, statusCode: 200 };
         }
         else {
-            throw new common_1.NotFoundException("No day with this id was found!");
+            throw new common_1.NotFoundException('No day with this id was found!');
         }
     }
     async removeRecipeFromDay(userId, userDayRecipe) {
@@ -156,28 +151,28 @@ let UserService = class UserService {
         let days = userWeek.week;
         let wasRemoved = false;
         days.map((day) => {
-            if (day.id != userDayRecipe.dayId) {
+            if (day._id != userDayRecipe.dayId) {
                 return;
             }
             switch (userDayRecipe.type) {
-                case "breakfast": {
-                    const index = day.breakfast.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                case 'breakfast': {
+                    const index = day.breakfast.findIndex((recipe) => recipe._id == userDayRecipe.recipe._id);
                     if (index > -1) {
                         day.breakfast.splice(index, 1);
                         wasRemoved = true;
                     }
                     break;
                 }
-                case "lunch": {
-                    const index = day.lunch.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                case 'lunch': {
+                    const index = day.lunch.findIndex((recipe) => recipe._id == userDayRecipe.recipe._id);
                     if (index > -1) {
                         day.lunch.splice(index, 1);
                         wasRemoved = true;
                     }
                     break;
                 }
-                case "dinner": {
-                    const index = day.dinner.findIndex((recipe) => recipe.id === userDayRecipe.recipe.id);
+                case 'dinner': {
+                    const index = day.dinner.findIndex((recipe) => recipe._id == userDayRecipe.recipe._id);
                     if (index > -1) {
                         day.dinner.splice(index, 1);
                         wasRemoved = true;
@@ -188,10 +183,10 @@ let UserService = class UserService {
         });
         if (wasRemoved) {
             userWeek.save();
-            return { message: "Removed", userDayRecipe: userDayRecipe, statusCode: 200 };
+            return { message: 'Removed', userDayRecipe: userDayRecipe, statusCode: 200 };
         }
         else {
-            throw new common_1.NotFoundException();
+            throw new common_1.NotFoundException('No day with this id was found!');
         }
     }
     async removeAllRecipesFromWeek(userId) {
@@ -207,49 +202,7 @@ let UserService = class UserService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: "Removed", userWeek: userWeek, statusCode: 200 };
-    }
-    async addRecipeIdToUser(recipeId, userId) {
-        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
-        userRecipes.recipes.push(recipeId);
-        try {
-            await userRecipes.save();
-        }
-        catch (_a) {
-            throw new common_1.RequestTimeoutException();
-        }
-    }
-    async getUserRecipesIds(userId) {
-        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
-        const userRecipeIds = userRecipes.recipes;
-        return userRecipeIds;
-    }
-    async deleteUsersRecipeId(userId, recipeId) {
-        this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
-    }
-    async deleteUserListId(userId, listId) {
-        this.userListsModel.findOneAndUpdate({ userId: userId }, { $pull: { lists: { _id: listId } } }).exec();
-    }
-    async getUsersLatestRecipes(userId) {
-        const userRecipes = await this.findUserRecipesIdsByUserId(userId);
-        const recipes = userRecipes.recipes;
-        const latestRecipes = recipes.slice(-4);
-        return latestRecipes;
-    }
-    async addListIdToUser(listId, userId) {
-        const userLists = await this.findUserListsIdsByUserId(userId);
-        userLists.lists.push(listId);
-        try {
-            await userLists.save();
-        }
-        catch (_a) {
-            throw new common_1.RequestTimeoutException();
-        }
-    }
-    async getUserListsIds(userId) {
-        const userLists = await this.findUserListsIdsByUserId(userId);
-        const userListsIds = userLists.lists;
-        return userListsIds;
+        return { message: 'Removed', userWeek: userWeek, statusCode: 200 };
     }
     async findUserByName(username) {
         let user;
@@ -275,32 +228,6 @@ let UserService = class UserService {
         }
         return user;
     }
-    async findUserRecipesIdsByUserId(userId) {
-        let userRecipes;
-        try {
-            userRecipes = await this.userRecipesModel.findOne({ userId: userId }).exec();
-        }
-        catch (_a) {
-            throw new common_1.NotFoundException('Invalid user id');
-        }
-        if (!userRecipes) {
-            throw new common_1.NotFoundException('Could not find user recipes');
-        }
-        return userRecipes;
-    }
-    async findUserListsIdsByUserId(userId) {
-        let userLists;
-        try {
-            userLists = await this.userListsModel.findOne({ userId: userId }).exec();
-        }
-        catch (_a) {
-            throw new common_1.NotFoundException('Invalid user id');
-        }
-        if (!userLists) {
-            throw new common_1.NotFoundException('Could not find user lists');
-        }
-        return userLists;
-    }
     async findUserWeekById(userId) {
         let userWeek;
         await this.findUserById(userId);
@@ -319,13 +246,11 @@ let UserService = class UserService {
 UserService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_1.InjectModel('User')),
-    __param(1, mongoose_1.InjectModel('UserRecipes')),
-    __param(2, mongoose_1.InjectModel('UserLists')),
-    __param(3, mongoose_1.InjectModel('UserWeek')),
+    __param(1, mongoose_1.InjectModel('UserWeek')),
     __metadata("design:paramtypes", [mongoose_2.Model,
         mongoose_2.Model,
-        mongoose_2.Model,
-        mongoose_2.Model])
+        recipes_service_1.RecipesService,
+        lists_service_1.ListsService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

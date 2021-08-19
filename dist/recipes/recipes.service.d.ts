@@ -1,17 +1,20 @@
 import { Model } from 'mongoose';
-import { UserService } from 'src/user/user.service';
-import { IRecipe, INewRecipe, IRecipeMongoose, RecipeType } from './models/recipe.model';
+import { IRecipe, INewRecipe, IRecipeMongoose, RecipeType, IUserRecipes, IUserRecipesMongoose, ISimplifiedRecipe } from './models/recipe.model';
 export declare class RecipesService {
-    private readonly userService;
     private readonly recipeModel;
-    constructor(userService: UserService, recipeModel: Model<IRecipe>);
+    private readonly userRecipesModel;
+    constructor(recipeModel: Model<IRecipe>, userRecipesModel: Model<IUserRecipes>);
     createRecipe(recipe: INewRecipe, userId: string): Promise<{
         message: string;
-        recipeId: any;
         userId: string;
+        recipe: IRecipe & import("mongoose").Document<any, any>;
         statusCode: number;
     }>;
-    updateRecipe(updatedRecipe: IRecipe): Promise<{
+    addRecipeToUserRecipes(recipe: IRecipeMongoose, userId: string): Promise<void>;
+    getSimplifiedUserRecipesInfo(userId: string): Promise<ISimplifiedRecipe[]>;
+    getUsersLatestRecipesIds(userId: string): Promise<ISimplifiedRecipe[]>;
+    getSimplifiedUserRecipesByUserId(userId: string): Promise<IUserRecipesMongoose>;
+    updateRecipe(userId: string, updatedRecipe: IRecipe): Promise<{
         message: string;
         updatedRecipe: IRecipeMongoose;
         statusCode: number;
@@ -33,4 +36,9 @@ export declare class RecipesService {
         recipeId: string;
         statusCode: number;
     }>;
+    deleteUsersRecipeId(userId: string, recipeId: string): Promise<void>;
+    createNewUserRecipeModel(userId: string): Promise<void>;
+    deleteUserRecipeModel(userId: string): Promise<void>;
+    deleteManyRecipes(recipes: ISimplifiedRecipe[]): Promise<void>;
+    getIdsFromUserRecipes(recipes: ISimplifiedRecipe[]): string[];
 }

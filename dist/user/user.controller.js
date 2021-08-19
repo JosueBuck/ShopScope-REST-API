@@ -24,18 +24,6 @@ let UserController = class UserController {
         const response = await this.userService.deleteUser(userId);
         return response;
     }
-    async getUserRecipesIds(userId) {
-        const result = await this.userService.getUserRecipesIds(userId);
-        return result;
-    }
-    async getUsersLatestRecipesIds(userId) {
-        const response = await this.userService.getUsersLatestRecipes(userId);
-        return response;
-    }
-    async getUserListsIds(userId) {
-        const response = await this.userService.getUserListsIds(userId);
-        return response;
-    }
     async getUserWeek(userId) {
         const response = await this.userService.getUserWeek(userId);
         return response;
@@ -61,27 +49,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
 __decorate([
-    common_1.Get('getUserRecipesIds/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserRecipesIds", null);
-__decorate([
-    common_1.Get('getUsersLatestRecipesIds/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUsersLatestRecipesIds", null);
-__decorate([
-    common_1.Get('getUserListsIds/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserListsIds", null);
-__decorate([
     common_1.Get('getUserWeek/:userId'),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
@@ -93,7 +60,7 @@ __decorate([
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, user_model_1.UserDayRecipeDataDto]),
+    __metadata("design:paramtypes", [String, user_model_1.NewUserDayRecipeDataDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "addRecipeToDay", null);
 __decorate([

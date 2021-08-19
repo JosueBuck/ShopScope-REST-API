@@ -1,19 +1,13 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested, IsArray, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IListItem, INewListItem, ListItemDto, NewListItemDto } from 'src/lists/models/list.model';
 
 export const UserSchema = new mongoose.Schema({
     username: { type: String, required: true},
     password: { type: String, required: true},
     email: { type: String, required: true},
 })
-
-export interface IUser {
-    id: string;
-    username: string;
-    password: string;
-    email: string;
-}
 
 export interface IUserMongoose extends mongoose.Document {
     id: string;
@@ -22,46 +16,15 @@ export interface IUserMongoose extends mongoose.Document {
     email: string;
 }
 
-
-
-
-/* User Recipes */
-
-export const UserRecipesSchema = new mongoose.Schema({
-    userId: { type: String, required: true},
-    recipes: { type: [ { String } ] },
-})
-
-export interface IUserRecipesMongoose extends mongoose.Document {
+export interface IUser {
     id: string;
-    userId: string;
-    recipes: string[],
+    username: string;
+    password: string;
+    email: string;
 }
 
-export interface IUserRecipes {
-    id: string;
-    userId: string;
-    recipes: string[],
-}
-
-
-/* User Lists */
-
-export const UserListsSchema = new mongoose.Schema({
-    userId: { type: String, required: true},
-    lists: { type: [ { String } ] },
-})
-
-export interface IUserListsMongoose extends mongoose.Document {
-    id: string;
-    userId: string;
-    lists: string[]
-}
-
-export interface IUserLists {
-    id: string;
-    userId: string;
-    lists: string[]
+export interface IMongooseIdArray {
+    id: string
 }
 
 
@@ -73,9 +36,9 @@ export const UserWeekSchema = new mongoose.Schema({
         [ 
             { 
                 name: String, 
-                breakfast: { type: [ { recipeName: String, recipeId: String } ] } ,
-                lunch: { type: [ { recipeName: String, recipeId: String} ] },
-                dinner: { type: [ { recipeName: String, recipeId: String} ] } 
+                breakfast: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
+                lunch: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
+                dinner: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
             } 
         ] 
     },
@@ -94,28 +57,95 @@ export interface IUserWeek {
 }
 
 export interface IUserDay {
-    id: string;
+    _id: string;
     name: string;
     breakfast: IUserDayRecipe[];
     lunch: IUserDayRecipe[];
     dinner: IUserDayRecipe[];
 }
 
+export interface INewUserDayRecipeData {
+    dayId: string;
+    type: string;
+    recipe: INewUserDayRecipe
+}
+
+export interface IUserDayRecipeData {
+    dayId: string;
+    type: string;
+    recipe: IUserDayRecipe
+}
+
+export interface INewUserDayRecipe {
+    recipeName: string;
+    ingredients: INewListItem[];
+}
+
 export interface IUserDayRecipe {
-    id?: string;
+    _id?: string;
     recipeName: string;
+    ingredients: IListItem[];
 }
+export class NewUserDayRecipeDto {
 
+    @IsString()
+    @IsNotEmpty()
+    recipeName: string;
+
+    @IsArray()
+    @ValidateNested()
+    @IsNotEmpty()
+    @ArrayMinSize(1)
+    @Type(() => NewListItemDto)
+    ingredients: NewListItemDto[];
+}
 export class UserDayRecipeDto {
+    
     @IsString()
     @IsNotEmpty()
-    id: string;
+    _id: string;
 
     @IsString()
     @IsNotEmpty()
     recipeName: string;
+
+    @IsArray()
+    @ValidateNested()
+    @IsNotEmpty()
+    @ArrayMinSize(1)
+    @Type(() => ListItemDto)
+    ingredients: ListItemDto[];
 }
 
+/* export class NewUserDayRecipeDto {
+    @IsString()
+    @IsNotEmpty()
+    recipeName: string;
+
+    @IsArray()
+    @ValidateNested()
+    @IsNotEmpty()
+    @ArrayMinSize(1)
+    @Type(() => NewListItemDto)
+    ingredients: NewListItemDto[];
+} */
+
+
+export class NewUserDayRecipeDataDto {
+
+    @IsString()
+    @IsNotEmpty()
+    dayId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    type: string;
+
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => NewUserDayRecipeDto)
+    recipe: NewUserDayRecipeDto
+}
 export class UserDayRecipeDataDto {
 
     @IsString()
@@ -134,9 +164,5 @@ export class UserDayRecipeDataDto {
 
 
 
-export interface IUserDayRecipeData {
-    dayId: string;
-    type: string;
-    recipe: IUserDayRecipe
-}
+
 

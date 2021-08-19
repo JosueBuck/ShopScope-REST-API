@@ -24,12 +24,28 @@ let ListsController = class ListsController {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
+    async getSimplifiedUserListsInfo(userId) {
+        const response = await this.listService.getSimplifiedUserListsInfo(userId);
+        return response;
+    }
     async getSingleList(listId) {
         const response = await this.listService.getSingleList(listId);
         return response;
     }
     async deleteSingleList(userId, listId) {
-        const response = await this.listService.deleteSingleList(userId, listId);
+        const response = await this.listService.deleteSingleUserList(userId, listId);
+        return response;
+    }
+    async addWeekRecipesToList(listId, weekRecipes) {
+        const response = await this.listService.addWeekRecipesToList(listId, weekRecipes.recipes);
+        return response;
+    }
+    async removeWeekRecipesFromList(listId, recipesIds) {
+        const response = await this.listService.removeWeekRecipeFromList(listId, recipesIds.ids);
+        return response;
+    }
+    async updateWeekRecipeIngredient(listId, ingredient) {
+        const response = await this.listService.updateWeekRecipeIngredient(listId, ingredient);
         return response;
     }
     async addListItem(listId, newListItem) {
@@ -56,6 +72,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
 __decorate([
+    common_1.Get('getSimplifiedUserListsInfo/:userId'),
+    __param(0, common_1.Param('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "getSimplifiedUserListsInfo", null);
+__decorate([
     common_1.Get('getSingleList/:listId'),
     __param(0, common_1.Param('listId')),
     __metadata("design:type", Function),
@@ -70,6 +93,30 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "deleteSingleList", null);
+__decorate([
+    common_1.Post('addWeekRecipesToList/:listId'),
+    __param(0, common_1.Param('listId')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, list_model_1.UserListRecipesDto]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "addWeekRecipesToList", null);
+__decorate([
+    common_1.Delete('removeWeekRecipesFromList/:listId'),
+    __param(0, common_1.Param('listId')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, list_model_1.WeekRecipesIds]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "removeWeekRecipesFromList", null);
+__decorate([
+    common_1.Patch('updateWeekRecipeIngredient/:listId'),
+    __param(0, common_1.Param('listId')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, list_model_1.UpdatedWeekRecipeIngredient]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "updateWeekRecipeIngredient", null);
 __decorate([
     common_1.Post('addListItem/:listId'),
     __param(0, common_1.Param('listId')),

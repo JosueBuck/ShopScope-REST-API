@@ -9,10 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RecipeTypeDto = exports.UpdatedRecipeDto = exports.IngredientDto = exports.NewRecipeDto = exports.RecipeSchema = exports.RecipeType = void 0;
+exports.UserRecipesSchema = exports.RecipeTypeDto = exports.UpdatedRecipeDto = exports.IngredientDto = exports.NewIngredientDto = exports.NewRecipeDto = exports.RecipeSchema = exports.RecipeType = void 0;
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const list_model_1 = require("../../lists/models/list.model");
 var RecipeType;
 (function (RecipeType) {
     RecipeType["VEGETARIAN"] = "VEGETARIAN";
@@ -29,7 +30,7 @@ exports.RecipeSchema = new mongoose.Schema({
     recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
-    ingredients: { type: [{ _id: false, name: String, amount: Number, unit: String }], required: true },
+    ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String }], required: true },
     instructions: [{ type: String, required: true }]
 });
 class NewRecipeDto {
@@ -62,7 +63,7 @@ __decorate([
     class_validator_1.ValidateNested(),
     class_validator_1.IsNotEmpty(),
     class_validator_1.ArrayMinSize(2),
-    class_transformer_1.Type(() => IngredientDto),
+    class_transformer_1.Type(() => NewIngredientDto),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "ingredients", void 0);
 __decorate([
@@ -73,8 +74,34 @@ __decorate([
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "instructions", void 0);
 exports.NewRecipeDto = NewRecipeDto;
+class NewIngredientDto {
+}
+__decorate([
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewIngredientDto.prototype, "name", void 0);
+__decorate([
+    class_validator_1.IsNumber(),
+    __metadata("design:type", Number)
+], NewIngredientDto.prototype, "amount", void 0);
+__decorate([
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], NewIngredientDto.prototype, "unit", void 0);
+__decorate([
+    class_validator_1.IsEnum(list_model_1.ItemType),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewIngredientDto.prototype, "itemType", void 0);
+exports.NewIngredientDto = NewIngredientDto;
 class IngredientDto {
 }
+__decorate([
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], IngredientDto.prototype, "_id", void 0);
 __decorate([
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
@@ -146,4 +173,8 @@ __decorate([
     __metadata("design:type", Array)
 ], RecipeTypeDto.prototype, "recipeType", void 0);
 exports.RecipeTypeDto = RecipeTypeDto;
+exports.UserRecipesSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
+    recipes: { type: [{ _id: String, recipeName: String, recipeType: [String] }] }
+});
 //# sourceMappingURL=recipe.model.js.map

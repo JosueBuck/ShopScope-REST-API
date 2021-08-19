@@ -67,7 +67,7 @@ export class AuthService {
         }
         const newUser = await this.userService.createNewUser(userRegisterData)
 
-        return { message: 'Created', user: { username: newUser.username, email: newUser.email }, statusCode: 201 }  
+        return { message: 'Created', user: { username: newUser.username, email: newUser.email, id: newUser.id }, statusCode: 201 }  
 
     }
 }

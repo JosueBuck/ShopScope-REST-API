@@ -15,10 +15,22 @@ export class RecipesController {
         return result;
     }
 
-    @Put('updateRecipe')
-    async updateRecipe(@Body() updateRecipeDto: UpdatedRecipeDto) {
-        const result = await this.recipesService.updateRecipe(updateRecipeDto);
+    @Put('updateRecipe/:userId')
+    async updateRecipe(@Param('userId') userId: string, @Body() updateRecipeDto: UpdatedRecipeDto) {
+        const result = await this.recipesService.updateRecipe(userId, updateRecipeDto);
         return result;
+    }
+
+    @Get('getSimplifiedUserRecipesInfo/:userId')
+        async getSimplifiedUserRecipesInfo(@Param('userId') userId: string) {
+        const result = await this.recipesService.getSimplifiedUserRecipesInfo(userId);
+        return result;
+    }
+
+    @Get('getUsersLatestRecipesIds/:userId')
+    async getUsersLatestRecipesIds(@Param('userId') userId: string) {
+        const response = await this.recipesService.getUsersLatestRecipesIds(userId);
+        return response;
     }
 
     @Get('getSingleRecipe/:recipeId')

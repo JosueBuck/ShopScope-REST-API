@@ -1,12 +1,14 @@
 import { Model } from 'mongoose';
 import { IRegisterData } from 'src/auth/models/registerData.model';
-import { IUser, IUserMongoose, IUserRecipes, IUserRecipesMongoose, IUserLists, IUserListsMongoose, IUserDayRecipeData, IUserWeek, IUserWeekMongoose } from './models/user.model';
+import { ListsService } from 'src/lists/lists.service';
+import { RecipesService } from 'src/recipes/recipes.service';
+import { IUser, IUserMongoose, IUserDayRecipeData, IUserWeek, IUserWeekMongoose, INewUserDayRecipeData } from './models/user.model';
 export declare class UserService {
     private readonly userModel;
-    private readonly userRecipesModel;
-    private readonly userListsModel;
     private readonly userWeekModel;
-    constructor(userModel: Model<IUser>, userRecipesModel: Model<IUserRecipes>, userListsModel: Model<IUserLists>, userWeekModel: Model<IUserWeek>);
+    private readonly recipeService;
+    private readonly listsService;
+    constructor(userModel: Model<IUser>, userWeekModel: Model<IUserWeek>, recipeService: RecipesService, listsService: ListsService);
     createNewUser(userRegisterData: IRegisterData): Promise<IUser & import("mongoose").Document<any, any>>;
     deleteUser(userId: string): Promise<{
         message: string;
@@ -14,9 +16,9 @@ export declare class UserService {
         statusCode: number;
     }>;
     getUserWeek(userId: string): Promise<IUserWeekMongoose>;
-    addRecipeToDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<{
+    addRecipeToDay(userId: string, userDayRecipe: INewUserDayRecipeData): Promise<{
         message: string;
-        userDayRecipe: IUserDayRecipeData;
+        userDayRecipe: INewUserDayRecipeData;
         statusCode: number;
     }>;
     removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<{
@@ -29,16 +31,7 @@ export declare class UserService {
         userWeek: IUserWeekMongoose;
         statusCode: number;
     }>;
-    addRecipeIdToUser(recipeId: string, userId: string): Promise<void>;
-    getUserRecipesIds(userId: string): Promise<string[]>;
-    deleteUsersRecipeId(userId: string, recipeId: string): Promise<void>;
-    deleteUserListId(userId: string, listId: string): Promise<void>;
-    getUsersLatestRecipes(userId: string): Promise<string[]>;
-    addListIdToUser(listId: string, userId: string): Promise<void>;
-    getUserListsIds(userId: string): Promise<string[]>;
     findUserByName(username: string): Promise<IUser>;
     findUserById(userId: string): Promise<IUserMongoose>;
-    findUserRecipesIdsByUserId(userId: string): Promise<IUserRecipesMongoose>;
-    findUserListsIdsByUserId(userId: string): Promise<IUserListsMongoose>;
     findUserWeekById(userId: string): Promise<IUserWeekMongoose>;
 }

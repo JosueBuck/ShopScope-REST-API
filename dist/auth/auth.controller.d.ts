@@ -10,6 +10,7 @@ export declare class AuthController {
         user: {
             username: string;
             email: string;
+            id: any;
         };
         statusCode: number;
     }>;

@@ -19,10 +19,11 @@ ListsModule = __decorate([
     common_1.Module({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: 'List', schema: list_model_1.ListSchema }]),
-            user_module_1.UserModule
+            mongoose_1.MongooseModule.forFeature([{ name: 'UserLists', schema: list_model_1.UserListsSchema }]),
         ],
         controllers: [lists_controller_1.ListsController],
         providers: [lists_service_1.ListsService],
+        exports: [lists_service_1.ListsService]
     })
 ], ListsModule);
 exports.ListsModule = ListsModule;

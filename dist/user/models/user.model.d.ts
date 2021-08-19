@@ -1,38 +1,20 @@
 import * as mongoose from 'mongoose';
+import { IListItem, INewListItem, ListItemDto, NewListItemDto } from 'src/lists/models/list.model';
 export declare const UserSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
-export interface IUser {
-    id: string;
-    username: string;
-    password: string;
-    email: string;
-}
 export interface IUserMongoose extends mongoose.Document {
     id: string;
     username: string;
     password: string;
     email: string;
 }
-export declare const UserRecipesSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
-export interface IUserRecipesMongoose extends mongoose.Document {
+export interface IUser {
     id: string;
-    userId: string;
-    recipes: string[];
+    username: string;
+    password: string;
+    email: string;
 }
-export interface IUserRecipes {
+export interface IMongooseIdArray {
     id: string;
-    userId: string;
-    recipes: string[];
-}
-export declare const UserListsSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
-export interface IUserListsMongoose extends mongoose.Document {
-    id: string;
-    userId: string;
-    lists: string[];
-}
-export interface IUserLists {
-    id: string;
-    userId: string;
-    lists: string[];
 }
 export declare const UserWeekSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IUserWeekMongoose extends mongoose.Document {
@@ -46,27 +28,47 @@ export interface IUserWeek {
     week: IUserDay[];
 }
 export interface IUserDay {
-    id: string;
+    _id: string;
     name: string;
     breakfast: IUserDayRecipe[];
     lunch: IUserDayRecipe[];
     dinner: IUserDayRecipe[];
 }
-export interface IUserDayRecipe {
-    id?: string;
-    recipeName: string;
-}
-export declare class UserDayRecipeDto {
-    id: string;
-    recipeName: string;
-}
-export declare class UserDayRecipeDataDto {
+export interface INewUserDayRecipeData {
     dayId: string;
     type: string;
-    recipe: UserDayRecipeDto;
+    recipe: INewUserDayRecipe;
 }
 export interface IUserDayRecipeData {
     dayId: string;
     type: string;
     recipe: IUserDayRecipe;
+}
+export interface INewUserDayRecipe {
+    recipeName: string;
+    ingredients: INewListItem[];
+}
+export interface IUserDayRecipe {
+    _id?: string;
+    recipeName: string;
+    ingredients: IListItem[];
+}
+export declare class NewUserDayRecipeDto {
+    recipeName: string;
+    ingredients: NewListItemDto[];
+}
+export declare class UserDayRecipeDto {
+    _id: string;
+    recipeName: string;
+    ingredients: ListItemDto[];
+}
+export declare class NewUserDayRecipeDataDto {
+    dayId: string;
+    type: string;
+    recipe: NewUserDayRecipeDto;
+}
+export declare class UserDayRecipeDataDto {
+    dayId: string;
+    type: string;
+    recipe: UserDayRecipeDto;
 }

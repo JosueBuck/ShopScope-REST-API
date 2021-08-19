@@ -6,15 +6,17 @@ export declare class RecipesController {
     constructor(recipesService: RecipesService);
     createRecipe(recipeDto: NewRecipeDto, userId: string): Promise<{
         message: string;
-        recipeId: any;
         userId: string;
+        recipe: import("./models/recipe.model").IRecipe & import("mongoose").Document<any, any>;
         statusCode: number;
     }>;
-    updateRecipe(updateRecipeDto: UpdatedRecipeDto): Promise<{
+    updateRecipe(userId: string, updateRecipeDto: UpdatedRecipeDto): Promise<{
         message: string;
         updatedRecipe: import("./models/recipe.model").IRecipeMongoose;
         statusCode: number;
     }>;
+    getSimplifiedUserRecipesInfo(userId: string): Promise<import("./models/recipe.model").ISimplifiedRecipe[]>;
+    getUsersLatestRecipesIds(userId: string): Promise<import("./models/recipe.model").ISimplifiedRecipe[]>;
     getSingleRecipe(recipeId: string): Promise<{
         id: string;
         name: string;

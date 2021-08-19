@@ -1,4 +1,4 @@
-import { UserDayRecipeDataDto } from './models/user.model';
+import { NewUserDayRecipeDataDto, UserDayRecipeDataDto } from './models/user.model';
 import { UserService } from './user.service';
 export declare class UserController {
     private readonly userService;
@@ -8,13 +8,10 @@ export declare class UserController {
         userId: string;
         statusCode: number;
     }>;
-    getUserRecipesIds(userId: string): Promise<string[]>;
-    getUsersLatestRecipesIds(userId: string): Promise<string[]>;
-    getUserListsIds(userId: string): Promise<string[]>;
     getUserWeek(userId: string): Promise<import("./models/user.model").IUserWeekMongoose>;
-    addRecipeToDay(userId: string, userDayRecipe: UserDayRecipeDataDto): Promise<{
+    addRecipeToDay(userId: string, userDayRecipe: NewUserDayRecipeDataDto): Promise<{
         message: string;
-        userDayRecipe: import("./models/user.model").IUserDayRecipeData;
+        userDayRecipe: import("./models/user.model").INewUserDayRecipeData;
         statusCode: number;
     }>;
     removeRecipeFromDay(userId: string, userDayRecipe: UserDayRecipeDataDto): Promise<{

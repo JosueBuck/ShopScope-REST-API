@@ -1,26 +1,39 @@
 import { Model } from 'mongoose';
-import { UserService } from 'src/user/user.service';
-import { IList, IListItem, INewList, INewListItem } from './models/list.model';
+import { IList, IListItem, IListMongoose, INewList, INewListItem, ISimplifiedList, IUserListRecipe, IUserLists, IUserListsMongoose, UpdatedWeekRecipeIngredient } from './models/list.model';
 export declare class ListsService {
-    private readonly userService;
     private readonly listModel;
-    constructor(userService: UserService, listModel: Model<IList>);
+    private readonly userListsModel;
+    constructor(listModel: Model<IList>, userListsModel: Model<IUserLists>);
     createList(list: INewList, userId: string): Promise<{
         message: string;
         listId: any;
         userId: string;
         status: number;
     }>;
+    addListToUserLists(list: IListMongoose, userId: string): Promise<void>;
+    getSimplifiedUserListsInfo(userId: string): Promise<ISimplifiedList[]>;
+    getSimplifiedUserListsByUserId(userId: string): Promise<IUserListsMongoose>;
     getSingleList(listId: string): Promise<{
-        id: any;
-        name: any;
-        description: any;
-        listItems: any;
+        message: string;
+        list: IListMongoose;
+        status: number;
     }>;
-    findListById(listId: string): Promise<any>;
+    findListById(listId: string): Promise<IListMongoose>;
+    addWeekRecipesToList(listId: string, weekRecipes: IUserListRecipe[]): Promise<{
+        message: string;
+        listId: string;
+        weekRecipes: IUserListRecipe[];
+        statusCode: number;
+    }>;
+    removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IListMongoose>;
+    updateWeekRecipeIngredient(listId: string, ingredient: UpdatedWeekRecipeIngredient): Promise<{
+        message: string;
+        list: IListMongoose;
+        statusCode: number;
+    }>;
     addListItem(listId: string, listItem: INewListItem): Promise<{
         message: string;
-        listItem: INewListItem;
+        list: IListMongoose;
         statusCode: number;
     }>;
     updateListItem(listId: string, updatedListItem: IListItem): Promise<{
@@ -28,10 +41,20 @@ export declare class ListsService {
         updatedListItem: IListItem;
         statusCode: number;
     }>;
-    deleteSingleList(userId: string, listId: string): Promise<string>;
+    deleteSingleUserList(userId: string, listId: string): Promise<{
+        message: string;
+        listId: string;
+        statusCode: number;
+    }>;
+    deleteList(listId: string): Promise<void>;
+    deleteUserListId(userId: string, listId: string): Promise<void>;
+    deleteManyLists(lists: ISimplifiedList[]): Promise<void>;
+    getIdsFromSimplifiedLists(lists: ISimplifiedList[]): string[];
     deleteListItem(listId: string, itemId: string): Promise<{
         message: string;
         itemId: string;
         statusCode: number;
     }>;
+    createNewUserListsModel(userId: string): Promise<void>;
+    deleteUserListsModel(userId: string): Promise<void>;
 }

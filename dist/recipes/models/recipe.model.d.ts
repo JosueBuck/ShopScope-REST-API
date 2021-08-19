@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { ItemType } from 'src/lists/models/list.model';
 export declare enum RecipeType {
     VEGETARIAN = "VEGETARIAN",
     VEGAN = "VEGAN",
@@ -24,13 +25,21 @@ export declare class NewRecipeDto {
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
-    ingredients: IngredientDto[];
+    ingredients: NewIngredientDto[];
     instructions: string[];
 }
-export declare class IngredientDto {
+export declare class NewIngredientDto {
     name: string;
     amount: number;
     unit: string;
+    itemType: ItemType;
+}
+export declare class IngredientDto {
+    _id: string;
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: ItemType;
 }
 export declare class UpdatedRecipeDto {
     id: string;
@@ -53,11 +62,6 @@ export interface IRecipe {
     ingredients: IIngredient[];
     instructions: string[];
 }
-export interface IIngredient {
-    name: string;
-    amount: number;
-    unit: string;
-}
 export interface INewRecipe {
     name: string;
     recipeType: RecipeType[];
@@ -65,4 +69,26 @@ export interface INewRecipe {
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+}
+export interface IIngredient {
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: ItemType;
+}
+export declare const UserRecipesSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export interface IUserRecipesMongoose extends mongoose.Document {
+    id: string;
+    userId: string;
+    recipes: ISimplifiedRecipe[];
+}
+export interface IUserRecipes {
+    id: string;
+    userId: string;
+    recipes: ISimplifiedRecipe[];
+}
+export interface ISimplifiedRecipe {
+    _id: string;
+    recipeName: string;
+    recipeType: RecipeType[];
 }
