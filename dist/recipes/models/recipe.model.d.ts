@@ -20,6 +20,29 @@ export interface IRecipeMongoose extends mongoose.Document {
     ingredients: IIngredient[];
     instructions: string[];
 }
+export interface IRecipe {
+    id: string;
+    name: string;
+    recipeType: RecipeType[];
+    cookingTime: number;
+    description: string;
+    ingredients: IIngredient[];
+    instructions: string[];
+}
+export interface INewRecipe {
+    name: string;
+    recipeType: RecipeType[];
+    cookingTime: number;
+    description: string;
+    ingredients: IIngredient[];
+    instructions: string[];
+}
+export interface IIngredient {
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: ItemType;
+}
 export declare class NewRecipeDto {
     name: string;
     recipeType: RecipeType[];
@@ -52,29 +75,6 @@ export declare class UpdatedRecipeDto {
 }
 export declare class RecipeTypeDto {
     recipeType: RecipeType[];
-}
-export interface IRecipe {
-    id: string;
-    name: string;
-    recipeType: RecipeType[];
-    cookingTime: number;
-    description: string;
-    ingredients: IIngredient[];
-    instructions: string[];
-}
-export interface INewRecipe {
-    name: string;
-    recipeType: RecipeType[];
-    cookingTime: number;
-    description: string;
-    ingredients: IIngredient[];
-    instructions: string[];
-}
-export interface IIngredient {
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: ItemType;
 }
 export declare const UserRecipesSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IUserRecipesMongoose extends mongoose.Document {

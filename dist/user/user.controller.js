@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const user_model_1 = require("./models/user.model");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService) {
@@ -22,22 +21,6 @@ let UserController = class UserController {
     }
     async deleteUser(userId) {
         const response = await this.userService.deleteUser(userId);
-        return response;
-    }
-    async getUserWeek(userId) {
-        const response = await this.userService.getUserWeek(userId);
-        return response;
-    }
-    async addRecipeToDay(userId, userDayRecipe) {
-        const response = await this.userService.addRecipeToDay(userId, userDayRecipe);
-        return response;
-    }
-    async removeRecipeFromDay(userId, userDayRecipe) {
-        const response = await this.userService.removeRecipeFromDay(userId, userDayRecipe);
-        return response;
-    }
-    async removeAllRecipesFromWeek(userId) {
-        const response = await this.userService.removeAllRecipesFromWeek(userId);
         return response;
     }
 };
@@ -48,36 +31,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
-__decorate([
-    common_1.Get('getUserWeek/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserWeek", null);
-__decorate([
-    common_1.Put('addRecipeToDay/:userId'),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, user_model_1.NewUserDayRecipeDataDto]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "addRecipeToDay", null);
-__decorate([
-    common_1.Delete('removeRecipeFromDay/:userId'),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, user_model_1.UserDayRecipeDataDto]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "removeRecipeFromDay", null);
-__decorate([
-    common_1.Delete('removeAllRecipesFromWeek/:userId'),
-    __param(0, common_1.Param('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "removeAllRecipesFromWeek", null);
 UserController = __decorate([
     common_1.Controller('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

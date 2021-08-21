@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const lists_module_1 = require("../lists/lists.module");
 const recipes_module_1 = require("../recipes/recipes.module");
+const weeks_module_1 = require("../weeks/weeks.module");
 const user_model_1 = require("./models/user.model");
 const user_controller_1 = require("./user.controller");
 const user_service_1 = require("./user.service");
@@ -21,8 +22,8 @@ UserModule = __decorate([
         imports: [
             recipes_module_1.RecipesModule,
             lists_module_1.ListsModule,
+            weeks_module_1.WeeksModule,
             mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_model_1.UserSchema }]),
-            mongoose_1.MongooseModule.forFeature([{ name: 'UserWeek', schema: user_model_1.UserWeekSchema }]),
         ],
         controllers: [user_controller_1.UserController],
         providers: [user_service_1.UserService],

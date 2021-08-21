@@ -17,15 +17,18 @@ export enum RecipeType {
 }
 
 export const RecipeSchema = new mongoose.Schema({
+
     name: { type: String, required: true },
     recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
     ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String}], required: true },
     instructions: [{ type: String, required: true }]
-})
+
+});
 
 export interface IRecipeMongoose extends mongoose.Document {
+
     id: string;
     name: string;
     recipeType: RecipeType[];
@@ -33,6 +36,39 @@ export interface IRecipeMongoose extends mongoose.Document {
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+
+}
+
+export interface IRecipe {
+
+    id: string;
+    name: string;
+    recipeType: RecipeType[];
+    cookingTime: number;
+    description: string;
+    ingredients: IIngredient[];
+    instructions: string[];
+
+}
+
+export interface INewRecipe {
+
+    name: string;
+    recipeType: RecipeType[];
+    cookingTime: number;
+    description: string;
+    ingredients: IIngredient[];
+    instructions: string[];
+
+}
+
+export interface IIngredient {
+
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: ItemType;
+
 }
 
 export class NewRecipeDto {
@@ -68,6 +104,7 @@ export class NewRecipeDto {
     @IsNotEmpty()
     @ArrayMinSize(1)
     instructions: string[];
+
 }
 
 export class NewIngredientDto {
@@ -85,6 +122,7 @@ export class NewIngredientDto {
     @IsEnum(ItemType)
     @IsNotEmpty()
     itemType: ItemType;
+
 }
 
 export class IngredientDto {
@@ -104,6 +142,7 @@ export class IngredientDto {
     unit: string;
 
     itemType: ItemType;
+
 }
 
 
@@ -144,6 +183,7 @@ export class UpdatedRecipeDto {
     @IsNotEmpty()
     @ArrayMinSize(1)
     instructions: string[];
+
 }
 
 export class RecipeTypeDto {
@@ -157,67 +197,35 @@ export class RecipeTypeDto {
 
 }
 
-
-export interface IRecipe {
-    id: string;
-    name: string;
-    recipeType: RecipeType[];
-    cookingTime: number;
-    description: string;
-    ingredients: IIngredient[];
-    instructions: string[];
-}
-
-export interface INewRecipe {
-    name: string;
-    recipeType: RecipeType[];
-    cookingTime: number;
-    description: string;
-    ingredients: IIngredient[];
-    instructions: string[];
-}
-
-export interface IIngredient {
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: ItemType;
-}
-
-
-
-
 /* User Recipe */
 
 export const UserRecipesSchema = new mongoose.Schema({
+
     userId: { type: String, required: true},
     recipes: { type: [{ _id: String, recipeName: String, recipeType: [String] }] }
-    //recipes: [{ type: String }],
-})
+
+});
 
 export interface IUserRecipesMongoose extends mongoose.Document {
+
     id: string;
     userId: string;
-    recipes: ISimplifiedRecipe[],
+    recipes: ISimplifiedRecipe[];
+
 }
 
 export interface IUserRecipes {
+
     id: string;
     userId: string;
-    recipes: ISimplifiedRecipe[],
+    recipes: ISimplifiedRecipe[];
+
 }
 
 export interface ISimplifiedRecipe {
+
     _id: string;
     recipeName: string;
     recipeType: RecipeType[];
+    
 }
-
-/* export interface IMongooseIdArray {
-    id: string
-} */
-
-
-
-
-

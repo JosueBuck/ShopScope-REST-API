@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UserDayRecipeDto } from 'src/user/models/user.model';
+import { UserDayRecipeDto } from 'src/weeks/models/week.model';
 
 
 export enum ItemType {
@@ -22,21 +22,74 @@ export enum ItemType {
 }
 
 export const ListSchema = new mongoose.Schema({
+
     name: { type: String, required: true},
     description: { type: String, required: true},
     itemTypes: [{ type: String, required: true }],
     weekRecipes: { type: [ { recipeName: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] },
     listItems: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true},
+
 });
 
 export interface IListMongoose extends mongoose.Document{
+
     id: string;
     name: string;
     description: string;
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+
 };
+
+export interface IList {
+
+    id: string;
+    name: string;
+    description: string;
+    itemTypes: ItemType[];
+    weekRecipes: UserDayRecipeDto[];
+    listItems: IListItem[];
+
+}
+export interface INewList {
+
+    name: string;
+    description: string;
+    weekRecipes: UserDayRecipeDto[];
+    listItems: INewListItem[];
+
+}
+
+export interface IListItem {
+
+    _id?: string;
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: string,
+    isDone: boolean;
+
+}
+
+export interface INewListItem {
+
+    _id?: string;
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: string,
+    isDone: boolean;
+
+}
+
+export interface IUserListRecipe {
+
+    _id: string;
+    recipeName: string;
+    ingredients: ListItemDto[];
+
+}
 
 export class NewListDto {
 
@@ -56,6 +109,7 @@ export class NewListDto {
     @ValidateNested()
     @Type(() => NewListItemDto)
     listItems: NewListItemDto[];
+
 }
 
 export class NewListItemDto {
@@ -76,6 +130,7 @@ export class NewListItemDto {
 
     @IsBoolean()
     isDone: boolean;
+
 }
 
 export class ListItemDto {
@@ -103,6 +158,7 @@ export class ListItemDto {
     @IsBoolean()
     @IsNotEmpty()
     isDone: boolean;
+
 }
 
 export class UpdatedListItemDto {
@@ -115,6 +171,7 @@ export class UpdatedListItemDto {
     @ValidateNested()
     @Type(() => ListItemDto)
     updatedListItem: ListItemDto;
+
 }
 
 export class UserListRecipesDto {
@@ -125,15 +182,19 @@ export class UserListRecipesDto {
     @ArrayMinSize(1)
     @Type(() => UserDayRecipeDto)
     recipes: UserDayRecipeDto[];
+
 }
 
 export class WeekRecipesIds {
+
     @IsString({each: true})
     @IsNotEmpty({each: true})
     ids: string[]
+
 }
 
 export class UpdatedWeekRecipeIngredient {
+
     @IsNotEmpty()
     @IsString()
     recipeId: string;
@@ -145,72 +206,43 @@ export class UpdatedWeekRecipeIngredient {
     @IsNotEmpty()
     @IsBoolean()
     isDone: boolean;
-}
 
-export interface IList {
-    id: string;
-    name: string;
-    description: string;
-    itemTypes: ItemType[];
-    weekRecipes: UserDayRecipeDto[];
-    listItems: IListItem[];
 }
-export interface INewList {
-    name: string;
-    description: string;
-    weekRecipes: UserDayRecipeDto[];
-    listItems: INewListItem[];
-}
-
-export interface IListItem {
-    _id?: string;
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: string,
-    isDone: boolean;
-}
-
-export interface INewListItem {
-    _id?: string;
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: string,
-    isDone: boolean;
-}
-
-export interface IUserListRecipe {
-    _id: string;
-    recipeName: string;
-    ingredients: ListItemDto[];
-}
-
 
 /* User Lists */
 
 export const UserListsSchema = new mongoose.Schema({
+
     userId: { type: String, required: true},
     lists: { type: [{ _id: String, listName: String }]}
+
 })
 
 export interface IUserListsMongoose extends mongoose.Document {
+
     id: string;
     userId: string;
-    lists: ISimplifiedList[]
+    lists: ISimplifiedList[];
+
 }
 
 export interface IUserLists {
+
     id: string;
     userId: string;
-    lists: ISimplifiedList[]
+    lists: ISimplifiedList[];
+
 }
 
 export interface ISimplifiedList {
+
     _id: string;
     listName: string;
+
 }
 
 export interface IMongooseIdArray {
-    id: string
+
+    id: string;
+    
 }

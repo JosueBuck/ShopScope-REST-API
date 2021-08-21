@@ -16,6 +16,7 @@ exports.ListsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const response_model_1 = require("../models/response.model");
 const list_model_1 = require("./models/list.model");
 let ListsService = class ListsService {
     constructor(listModel, userListsModel) {
@@ -37,7 +38,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Created', listId: newList.id, userId: userId, status: 201 };
+        return { message: 'Created', updatedData: newList, statusCode: 201 };
     }
     async addListToUserLists(list, userId) {
         const simplifiedList = {
@@ -73,7 +74,7 @@ let ListsService = class ListsService {
     }
     async getSingleList(listId) {
         const list = await this.findListById(listId);
-        return { message: '', list: list, status: 200 };
+        return { message: '', updatedData: list, statusCode: 200 };
     }
     async findListById(listId) {
         let list;
@@ -97,7 +98,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Created', listId: listId, weekRecipes: weekRecipes, statusCode: 201 };
+        return { message: 'Created', updatedData: weekRecipes, statusCode: 201 };
     }
     async removeWeekRecipeFromList(listId, recipesIds) {
         const list = await this.findListById(listId);
@@ -126,7 +127,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Changed', list: list, statusCode: 200 };
+        return { message: 'Changed', updatedData: list, statusCode: 200 };
     }
     async addListItem(listId, listItem) {
         let list = await this.findListById(listId);
@@ -137,7 +138,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Created', list: list, statusCode: 201 };
+        return { message: 'Created', updatedData: list, statusCode: 201 };
     }
     async updateListItem(listId, updatedListItem) {
         let list = await this.findListById(listId);
@@ -156,14 +157,14 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Updated', updatedListItem: updatedListItem, statusCode: 200 };
+        return { message: 'Updated', updatedData: updatedListItem, statusCode: 200 };
     }
     async deleteSingleUserList(userId, listId) {
         await this.getSimplifiedUserListsByUserId(userId);
         await this.findListById(listId);
         await this.deleteList(listId);
         await this.deleteUserListId(userId, listId);
-        return { message: 'Deleted', listId: listId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: listId, statusCode: 200 };
     }
     async deleteList(listId) {
         try {
@@ -175,7 +176,7 @@ let ListsService = class ListsService {
     }
     async deleteUserListId(userId, listId) {
         try {
-            this.userListsModel.findOneAndUpdate({ userId: userId }, { $pull: { lists: { _id: listId } } }).exec();
+            await this.userListsModel.findOneAndUpdate({ userId: userId }, { $pull: { lists: { _id: listId } } }).exec();
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
@@ -204,7 +205,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Deleted', itemId: itemId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: itemId, statusCode: 200 };
     }
     async createNewUserListsModel(userId) {
         const userLists = new this.userListsModel({

@@ -16,6 +16,7 @@ exports.RecipesService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const response_model_1 = require("../models/response.model");
 let RecipesService = class RecipesService {
     constructor(recipeModel, userRecipesModel) {
         this.recipeModel = recipeModel;
@@ -33,7 +34,7 @@ let RecipesService = class RecipesService {
         await this.addRecipeToUserRecipes(newRecipe, userId);
         try {
             await newRecipe.save();
-            return { message: 'Created', userId: userId, recipe: newRecipe, statusCode: 201 };
+            return { message: 'Created', updatedData: newRecipe, statusCode: 201 };
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
@@ -49,6 +50,7 @@ let RecipesService = class RecipesService {
         userRecipes.recipes.push(recipeInfo);
         try {
             await userRecipes.save();
+            return userRecipes.recipes;
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
@@ -100,19 +102,11 @@ let RecipesService = class RecipesService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Updated', updatedRecipe: recipe, statusCode: 200 };
+        return { message: 'Updated', updatedData: recipe, statusCode: 200 };
     }
     async getSingleRecipe(recipeId) {
         const recipe = await this.findRecipeById(recipeId);
-        return {
-            id: recipe.id,
-            name: recipe.name,
-            recipeType: recipe.recipeType,
-            cookingTime: recipe.cookingTime,
-            description: recipe.description,
-            ingredients: recipe.ingredients,
-            instructions: recipe.instructions
-        };
+        return recipe;
     }
     async findRecipeById(id) {
         let recipe;
@@ -128,16 +122,9 @@ let RecipesService = class RecipesService {
         return recipe;
     }
     async getAllRecipes() {
-        const recipes = await this.recipeModel.find().exec();
-        return recipes.map((recipe) => ({
-            id: recipe.id,
-            name: recipe.name,
-            recipeType: recipe.recipeType,
-            cookingTime: recipe.cookingTime,
-            description: recipe.description,
-            ingredients: recipe.ingredients,
-            instructions: recipe.instructions
-        }));
+        let recipes = await this.recipeModel.find().exec();
+        ;
+        return recipes;
     }
     async getUserRecipesOfRecipeType(recipeType, userId) {
         const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
@@ -154,16 +141,27 @@ let RecipesService = class RecipesService {
         await this.findRecipeById(recipeId);
         try {
             await this.recipeModel.deleteOne({ _id: recipeId }).exec();
-            await this.deleteUsersRecipeId(userId, recipeId);
+            await this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Deleted', recipeId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: recipeId, statusCode: 200 };
     }
-    async deleteUsersRecipeId(userId, recipeId) {
-        const response = await this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
-        console.log(response);
+    async deleteManyRecipes(recipes) {
+        const recipeIdArray = this.getIdsFromUserRecipes(recipes);
+        try {
+            await this.recipeModel.deleteMany({ _id: { $in: recipeIdArray } }).exec();
+        }
+        catch (_a) {
+            throw new common_1.RequestTimeoutException();
+        }
+    }
+    getIdsFromUserRecipes(recipes) {
+        const recipeIdArray = recipes.map((recipe) => {
+            return recipe._id;
+        });
+        return recipeIdArray;
     }
     async createNewUserRecipeModel(userId) {
         const userRecipes = new this.userRecipesModel({
@@ -177,22 +175,12 @@ let RecipesService = class RecipesService {
         }
     }
     async deleteUserRecipeModel(userId) {
-        const dbResponse = await this.userRecipesModel.deleteOne({ userId: userId });
-    }
-    async deleteManyRecipes(recipes) {
-        const recipeIdArray = this.getIdsFromUserRecipes(recipes);
         try {
-            const dbResponse = await this.recipeModel.deleteMany({ _id: { $in: recipeIdArray } }).exec();
+            await this.userRecipesModel.deleteOne({ userId: userId });
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-    }
-    getIdsFromUserRecipes(recipes) {
-        const recipeIdArray = recipes.map((recipe) => {
-            return recipe._id;
-        });
-        return recipeIdArray;
     }
 };
 RecipesService = __decorate([

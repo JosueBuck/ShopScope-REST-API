@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { UserDayRecipeDto } from 'src/user/models/user.model';
+import { UserDayRecipeDto } from 'src/weeks/models/week.model';
 export declare enum ItemType {
     FRUITS = "FRUITS",
     VEGETABLE = "VEGETABLE",
@@ -22,6 +22,41 @@ export interface IListMongoose extends mongoose.Document {
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+}
+export interface IList {
+    id: string;
+    name: string;
+    description: string;
+    itemTypes: ItemType[];
+    weekRecipes: UserDayRecipeDto[];
+    listItems: IListItem[];
+}
+export interface INewList {
+    name: string;
+    description: string;
+    weekRecipes: UserDayRecipeDto[];
+    listItems: INewListItem[];
+}
+export interface IListItem {
+    _id?: string;
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: string;
+    isDone: boolean;
+}
+export interface INewListItem {
+    _id?: string;
+    name: string;
+    amount: number;
+    unit: string;
+    itemType: string;
+    isDone: boolean;
+}
+export interface IUserListRecipe {
+    _id: string;
+    recipeName: string;
+    ingredients: ListItemDto[];
 }
 export declare class NewListDto {
     name: string;
@@ -58,41 +93,6 @@ export declare class UpdatedWeekRecipeIngredient {
     recipeId: string;
     ingredientId: string;
     isDone: boolean;
-}
-export interface IList {
-    id: string;
-    name: string;
-    description: string;
-    itemTypes: ItemType[];
-    weekRecipes: UserDayRecipeDto[];
-    listItems: IListItem[];
-}
-export interface INewList {
-    name: string;
-    description: string;
-    weekRecipes: UserDayRecipeDto[];
-    listItems: INewListItem[];
-}
-export interface IListItem {
-    _id?: string;
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: string;
-    isDone: boolean;
-}
-export interface INewListItem {
-    _id?: string;
-    name: string;
-    amount: number;
-    unit: string;
-    itemType: string;
-    isDone: boolean;
-}
-export interface IUserListRecipe {
-    _id: string;
-    recipeName: string;
-    ingredients: ListItemDto[];
 }
 export declare const UserListsSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IUserListsMongoose extends mongoose.Document {

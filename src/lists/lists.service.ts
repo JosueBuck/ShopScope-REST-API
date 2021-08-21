@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { IResponse } from 'src/models/response.model';
 import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, UpdatedWeekRecipeIngredient } from './models/list.model';
 
 @Injectable()
@@ -11,8 +12,9 @@ export class ListsService {
         @InjectModel('UserLists') private readonly userListsModel: Model<IUserLists>,
     ) { }
 
-    async createList(list: INewList, userId: string) {
-        let newList = new this.listModel(
+    async createList(list: INewList, userId: string): Promise<IResponse> {
+
+        let newList: IListMongoose = new this.listModel(
             {
                 name: list.name,
                 description: list.description,
@@ -30,16 +32,17 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
         
-        return { message: 'Created', listId: newList.id, userId: userId, status: 201 };
+        return { message: 'Created', updatedData: newList, statusCode: 201 };
 
     }
 
-    async addListToUserLists(list: IListMongoose, userId: string) {
+    async addListToUserLists(list: IListMongoose, userId: string): Promise<void> {
 
         const simplifiedList: ISimplifiedList = {
             _id: list.id,
             listName: list.name
         }
+
         const userLists: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
         userLists.lists.push(simplifiedList);
 
@@ -50,10 +53,11 @@ export class ListsService {
         } 
     }
 
-    async getSimplifiedUserListsInfo(userId: string) {
+    async getSimplifiedUserListsInfo(userId: string): Promise<ISimplifiedList[]> {
 
-        const userLists = await this.getSimplifiedUserListsByUserId(userId);
-        const userListsIds = userLists.lists;
+        const userLists: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
+
+        const userListsIds: ISimplifiedList[] = userLists.lists;
         return userListsIds;
 
     }
@@ -76,11 +80,11 @@ export class ListsService {
 
     }
 
-    async getSingleList(listId: string) {
+    async getSingleList(listId: string): Promise<IResponse> {
 
-        const list = await this.findListById(listId);
+        const list: IListMongoose = await this.findListById(listId);
 
-        return { message: '', list: list, status: 200 };
+        return { message: '', updatedData: list, statusCode: 200 };
 
     }
 
@@ -97,13 +101,14 @@ export class ListsService {
         if (!list) {
             throw new NotFoundException('No list with this id was found!');
         }
+
         return list;
 
     }
 
-    async addWeekRecipesToList(listId: string, weekRecipes: IUserListRecipe[]) {
+    async addWeekRecipesToList(listId: string, weekRecipes: IUserListRecipe[]): Promise<IResponse> {
 
-        const list = await this.findListById(listId);
+        const list: IListMongoose = await this.findListById(listId);
         list.weekRecipes = weekRecipes;
 
         try {
@@ -112,13 +117,13 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
 
-        return { message: 'Created', listId: listId, weekRecipes: weekRecipes, statusCode: 201 }
+        return { message: 'Created', updatedData: weekRecipes, statusCode: 201 }
 
     }
 
-    async removeWeekRecipeFromList(listId: string, recipesIds: string[]) {
+    async removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IListMongoose> {
 
-        const list = await this.findListById(listId);
+        const list: IListMongoose = await this.findListById(listId);
 
         try {
             list.update(
@@ -133,9 +138,9 @@ export class ListsService {
 
     }
 
-    async updateWeekRecipeIngredient(listId: string, ingredient: UpdatedWeekRecipeIngredient) {
+    async updateWeekRecipeIngredient(listId: string, ingredient: UpdatedWeekRecipeIngredient): Promise<IResponse> {
 
-        const list = await this.findListById(listId);
+        const list: IListMongoose = await this.findListById(listId);
         list.weekRecipes.map((recipe) => {
             if (recipe._id == ingredient.recipeId) {
                 recipe.ingredients.map((recipeIngredient) => {
@@ -152,13 +157,13 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
 
-        return { message: 'Changed', list: list, statusCode: 200 }
+        return { message: 'Changed', updatedData: list, statusCode: 200 }
 
     }
 
-    async addListItem(listId: string, listItem: INewListItem) {
+    async addListItem(listId: string, listItem: INewListItem): Promise<IResponse> {
 
-        let list = await this.findListById(listId);
+        let list: IListMongoose = await this.findListById(listId);
         list.listItems.push(listItem);
 
         try {
@@ -167,18 +172,20 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
 
-        return { message: 'Created', list: list, statusCode: 201 }
+        return { message: 'Created', updatedData: list, statusCode: 201 }
         
     }
 
-    async updateListItem(listId: string, updatedListItem: IListItem) {
+    async updateListItem(listId: string, updatedListItem: IListItem): Promise<IResponse> {
 
-        let list = await this.findListById(listId);
-        const index = list.listItems.findIndex((listItem: IListItem) => listItem._id == updatedListItem._id);
+        let list: IListMongoose = await this.findListById(listId);
+
+        const index: number = list.listItems.findIndex((listItem: IListItem) => listItem._id == updatedListItem._id);
 
         if (index == -1) {
             throw new NotFoundException('No list item with this id was found!');
         }
+
         list.listItems[index].name = updatedListItem.name;
         list.listItems[index].amount = updatedListItem.amount;
         list.listItems[index].unit = updatedListItem.unit;
@@ -191,11 +198,11 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
         
-        return { message: 'Updated', updatedListItem: updatedListItem, statusCode: 200 }
+        return { message: 'Updated', updatedData: updatedListItem, statusCode: 200 }
 
     }
 
-    async deleteSingleUserList(userId: string, listId: string) {
+    async deleteSingleUserList(userId: string, listId: string): Promise<IResponse> {
 
         await this.getSimplifiedUserListsByUserId(userId);
         await this.findListById(listId);
@@ -203,11 +210,11 @@ export class ListsService {
         await this.deleteList(listId);
         await this.deleteUserListId(userId, listId);
 
-        return { message: 'Deleted', listId: listId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: listId, statusCode: 200 };
 
     }
 
-    async deleteList(listId: string) {
+    async deleteList(listId: string): Promise<void> {
 
         try {
             await this.listModel.deleteOne({_id: listId}).exec();
@@ -217,10 +224,10 @@ export class ListsService {
 
     }
 
-    async deleteUserListId(userId: string, listId: string) {
+    async deleteUserListId(userId: string, listId: string): Promise<void> {
 
         try {
-            this.userListsModel.findOneAndUpdate(
+            await this.userListsModel.findOneAndUpdate(
                 { userId: userId },
                 { $pull: { lists: { _id: listId} }}
             ).exec();
@@ -230,9 +237,9 @@ export class ListsService {
         
     }
 
-    async deleteManyLists(lists: ISimplifiedList[] ) {
+    async deleteManyLists(lists: ISimplifiedList[]): Promise<void> {
 
-        const listIdArray = this.getIdsFromSimplifiedLists(lists);
+        const listIdArray: string[] = this.getIdsFromSimplifiedLists(lists);
 
         try {
             await this.listModel.deleteMany({ _id: { $in: listIdArray }}).exec();
@@ -242,19 +249,18 @@ export class ListsService {
 
     }
 
-    getIdsFromSimplifiedLists(lists: ISimplifiedList[]) {
+    getIdsFromSimplifiedLists(lists: ISimplifiedList[]): string[] {
 
         const recipeIdArray: string[] = lists.map((list) => {
             return list._id
         });
-
         return recipeIdArray;
 
     }
 
-    async deleteListItem(listId: string, itemId: string) {
+    async deleteListItem(listId: string, itemId: string): Promise<IResponse> {
 
-        let list = await this.findListById(listId);
+        let list: IListMongoose = await this.findListById(listId);
 
         try {
             await list.update(
@@ -265,14 +271,14 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
 
-        return { message: 'Deleted', itemId: itemId, statusCode: 200 }
+        return { message: 'Deleted', updatedData: itemId, statusCode: 200 }
         
     }
 
 
-    async createNewUserListsModel(userId: string) {
+    async createNewUserListsModel(userId: string): Promise<void> {
 
-        const userLists = new this.userListsModel(
+        const userLists: IUserListsMongoose = new this.userListsModel(
             {
                 userId: userId,
             }
@@ -286,7 +292,7 @@ export class ListsService {
 
     }
 
-    async deleteUserListsModel(userId: string) {
+    async deleteUserListsModel(userId: string): Promise<void> {
 
         try {
             await this.userListsModel.deleteOne({ userId: userId });
@@ -295,4 +301,5 @@ export class ListsService {
         }
 
     }
+
 }

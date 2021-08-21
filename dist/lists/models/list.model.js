@@ -13,7 +13,7 @@ exports.UserListsSchema = exports.UpdatedWeekRecipeIngredient = exports.WeekReci
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-const user_model_1 = require("../../user/models/user.model");
+const week_model_1 = require("../../weeks/models/week.model");
 var ItemType;
 (function (ItemType) {
     ItemType["FRUITS"] = "FRUITS";
@@ -51,7 +51,7 @@ __decorate([
 __decorate([
     class_validator_1.IsArray(),
     class_validator_1.ValidateNested(),
-    class_transformer_1.Type(() => user_model_1.UserDayRecipeDto),
+    class_transformer_1.Type(() => week_model_1.UserDayRecipeDto),
     __metadata("design:type", Array)
 ], NewListDto.prototype, "weekRecipes", void 0);
 __decorate([
@@ -140,7 +140,7 @@ __decorate([
     class_validator_1.ValidateNested(),
     class_validator_1.IsNotEmpty(),
     class_validator_1.ArrayMinSize(1),
-    class_transformer_1.Type(() => user_model_1.UserDayRecipeDto),
+    class_transformer_1.Type(() => week_model_1.UserDayRecipeDto),
     __metadata("design:type", Array)
 ], UserListRecipesDto.prototype, "recipes", void 0);
 exports.UserListRecipesDto = UserListRecipesDto;
