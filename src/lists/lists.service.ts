@@ -53,7 +53,7 @@ export class ListsService {
         } 
     }
 
-    async getSimplifiedUserListsInfo(userId: string): Promise<IResponse> {
+    async getSimplifiedUserLists(userId: string): Promise<IResponse> {
 
         const userLists: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
 
@@ -81,7 +81,7 @@ export class ListsService {
 
     }
 
-    async getSingleList(listId: string): Promise<IResponse> {
+    async getList(listId: string): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
 
@@ -203,7 +203,7 @@ export class ListsService {
 
     }
 
-    async deleteSingleUserList(userId: string, listId: string): Promise<IResponse> {
+    async deleteUserList(userId: string, listId: string): Promise<IResponse> {
 
         await this.getSimplifiedUserListsByUserId(userId);
         await this.findListById(listId);
