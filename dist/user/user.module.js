@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const auth_module_1 = require("../auth/auth.module");
 const lists_module_1 = require("../lists/lists.module");
 const recipes_module_1 = require("../recipes/recipes.module");
 const weeks_module_1 = require("../weeks/weeks.module");
@@ -23,6 +24,7 @@ UserModule = __decorate([
             recipes_module_1.RecipesModule,
             lists_module_1.ListsModule,
             weeks_module_1.WeeksModule,
+            auth_module_1.AuthModule,
             mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_model_1.UserSchema }]),
         ],
         controllers: [user_controller_1.UserController],

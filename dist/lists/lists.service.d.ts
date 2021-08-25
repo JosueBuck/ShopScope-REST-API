@@ -7,12 +7,12 @@ export declare class ListsService {
     constructor(listModel: Model<IList>, userListsModel: Model<IUserLists>);
     createList(list: INewList, userId: string): Promise<IResponse>;
     addListToUserLists(list: IListMongoose, userId: string): Promise<void>;
-    getSimplifiedUserListsInfo(userId: string): Promise<ISimplifiedList[]>;
+    getSimplifiedUserListsInfo(userId: string): Promise<IResponse>;
     getSimplifiedUserListsByUserId(userId: string): Promise<IUserListsMongoose>;
     getSingleList(listId: string): Promise<IResponse>;
     findListById(listId: string): Promise<IListMongoose>;
     addWeekRecipesToList(listId: string, weekRecipes: IUserListRecipe[]): Promise<IResponse>;
-    removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IListMongoose>;
+    removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IResponse>;
     updateWeekRecipeIngredient(listId: string, ingredient: UpdatedWeekRecipeIngredient): Promise<IResponse>;
     addListItem(listId: string, listItem: INewListItem): Promise<IResponse>;
     updateListItem(listId: string, updatedListItem: IListItem): Promise<IResponse>;

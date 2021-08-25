@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserListsSchema = exports.UpdatedWeekRecipeIngredient = exports.WeekRecipesIds = exports.UserListRecipesDto = exports.UpdatedListItemDto = exports.ListItemDto = exports.NewListItemDto = exports.NewListDto = exports.ListSchema = exports.ItemType = void 0;
+const openapi = require("@nestjs/swagger");
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -38,6 +39,9 @@ exports.ListSchema = new mongoose.Schema({
 });
 ;
 class NewListDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, weekRecipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] }, listItems: { required: true, type: () => [require("./list.model").NewListItemDto] } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -62,6 +66,9 @@ __decorate([
 ], NewListDto.prototype, "listItems", void 0);
 exports.NewListDto = NewListDto;
 class NewListItemDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { name: { required: true, type: () => String }, amount: { required: true, type: () => Number }, unit: { required: true, type: () => String }, itemType: { required: true, enum: require("./list.model").ItemType }, isDone: { required: true, type: () => Boolean } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -87,6 +94,9 @@ __decorate([
 ], NewListItemDto.prototype, "isDone", void 0);
 exports.NewListItemDto = NewListItemDto;
 class ListItemDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { _id: { required: true, type: () => String }, name: { required: true, type: () => String }, amount: { required: true, type: () => Number }, unit: { required: true, type: () => String }, itemType: { required: true, enum: require("./list.model").ItemType }, isDone: { required: true, type: () => Boolean } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -120,12 +130,10 @@ __decorate([
 ], ListItemDto.prototype, "isDone", void 0);
 exports.ListItemDto = ListItemDto;
 class UpdatedListItemDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { updatedListItem: { required: true, type: () => require("./list.model").ListItemDto } };
+    }
 }
-__decorate([
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
-], UpdatedListItemDto.prototype, "listId", void 0);
 __decorate([
     class_validator_1.IsNotEmpty(),
     class_validator_1.ValidateNested(),
@@ -134,6 +142,9 @@ __decorate([
 ], UpdatedListItemDto.prototype, "updatedListItem", void 0);
 exports.UpdatedListItemDto = UpdatedListItemDto;
 class UserListRecipesDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { recipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] } };
+    }
 }
 __decorate([
     class_validator_1.IsArray(),
@@ -145,6 +156,9 @@ __decorate([
 ], UserListRecipesDto.prototype, "recipes", void 0);
 exports.UserListRecipesDto = UserListRecipesDto;
 class WeekRecipesIds {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { ids: { required: true, type: () => [String] } };
+    }
 }
 __decorate([
     class_validator_1.IsString({ each: true }),
@@ -153,6 +167,9 @@ __decorate([
 ], WeekRecipesIds.prototype, "ids", void 0);
 exports.WeekRecipesIds = WeekRecipesIds;
 class UpdatedWeekRecipeIngredient {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { recipeId: { required: true, type: () => String }, ingredientId: { required: true, type: () => String }, isDone: { required: true, type: () => Boolean } };
+    }
 }
 __decorate([
     class_validator_1.IsNotEmpty(),

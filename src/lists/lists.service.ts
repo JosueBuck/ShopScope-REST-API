@@ -53,12 +53,13 @@ export class ListsService {
         } 
     }
 
-    async getSimplifiedUserListsInfo(userId: string): Promise<ISimplifiedList[]> {
+    async getSimplifiedUserListsInfo(userId: string): Promise<IResponse> {
 
         const userLists: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
 
         const userListsIds: ISimplifiedList[] = userLists.lists;
-        return userListsIds;
+
+        return { message: 'OK', updatedData: userListsIds, statusCode: 200 };
 
     }
 
@@ -84,7 +85,7 @@ export class ListsService {
 
         const list: IListMongoose = await this.findListById(listId);
 
-        return { message: '', updatedData: list, statusCode: 200 };
+        return { message: 'OK', updatedData: list, statusCode: 200 };
 
     }
 
@@ -121,7 +122,7 @@ export class ListsService {
 
     }
 
-    async removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IListMongoose> {
+    async removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
 
@@ -134,7 +135,7 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
 
-        return list;
+        return { message: "Removed", updatedData: list, statusCode: 200 };
 
     }
 
@@ -198,7 +199,7 @@ export class ListsService {
             throw new RequestTimeoutException();
         }
         
-        return { message: 'Updated', updatedData: updatedListItem, statusCode: 200 }
+        return { message: 'Updated', updatedData: list, statusCode: 200 }
 
     }
 
@@ -265,13 +266,13 @@ export class ListsService {
         try {
             await list.update(
                 { $pull: { listItems: { _id: itemId }}},
-                { multi: true }
+                { multi: true, new: true }
             ).exec();
         } catch {
             throw new RequestTimeoutException();
         }
 
-        return { message: 'Deleted', updatedData: itemId, statusCode: 200 }
+        return { message: 'Deleted', updatedData: list, statusCode: 200 }
         
     }
 

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserDayRecipeDataDto = exports.NewUserDayRecipeDataDto = exports.UserDayRecipeDto = exports.NewUserDayRecipeDto = exports.UserWeekSchema = void 0;
+const openapi = require("@nestjs/swagger");
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -27,6 +28,9 @@ exports.UserWeekSchema = new mongoose.Schema({
     }
 });
 class NewUserDayRecipeDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { recipeName: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").NewListItemDto] } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -43,6 +47,9 @@ __decorate([
 ], NewUserDayRecipeDto.prototype, "ingredients", void 0);
 exports.NewUserDayRecipeDto = NewUserDayRecipeDto;
 class UserDayRecipeDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { _id: { required: true, type: () => String }, recipeName: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").ListItemDto] } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -64,6 +71,9 @@ __decorate([
 ], UserDayRecipeDto.prototype, "ingredients", void 0);
 exports.UserDayRecipeDto = UserDayRecipeDto;
 class NewUserDayRecipeDataDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { dayId: { required: true, type: () => String }, type: { required: true, type: () => String }, recipe: { required: true, type: () => require("./week.model").NewUserDayRecipeDto } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -83,6 +93,9 @@ __decorate([
 ], NewUserDayRecipeDataDto.prototype, "recipe", void 0);
 exports.NewUserDayRecipeDataDto = NewUserDayRecipeDataDto;
 class UserDayRecipeDataDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { dayId: { required: true, type: () => String }, type: { required: true, type: () => String }, recipe: { required: true, type: () => require("./week.model").UserDayRecipeDto } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),

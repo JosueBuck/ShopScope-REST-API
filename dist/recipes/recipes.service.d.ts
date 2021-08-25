@@ -7,14 +7,15 @@ export declare class RecipesService {
     constructor(recipeModel: Model<IRecipe>, userRecipesModel: Model<IUserRecipes>);
     createRecipe(recipe: INewRecipe, userId: string): Promise<IResponse>;
     addRecipeToUserRecipes(recipe: IRecipeMongoose, userId: string): Promise<ISimplifiedRecipe[]>;
+    getSimplifiedUserRecipesInfoRequest(userId: string): Promise<IResponse>;
     getSimplifiedUserRecipesInfo(userId: string): Promise<ISimplifiedRecipe[]>;
-    getUsersLatestRecipesIds(userId: string): Promise<ISimplifiedRecipe[]>;
+    getUsersLatestRecipesIds(userId: string): Promise<IResponse>;
     getSimplifiedUserRecipesByUserId(userId: string): Promise<IUserRecipesMongoose>;
     updateRecipe(userId: string, updatedRecipe: IRecipe): Promise<IResponse>;
-    getSingleRecipe(recipeId: string): Promise<IRecipeMongoose>;
+    getSingleRecipe(recipeId: string): Promise<IResponse>;
     findRecipeById(id: string): Promise<IRecipeMongoose>;
     getAllRecipes(): Promise<IRecipeMongoose[]>;
-    getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IRecipeMongoose[]>;
+    getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IResponse>;
     deleteRecipe(userId: string, recipeId: string): Promise<IResponse>;
     deleteManyRecipes(recipes: ISimplifiedRecipe[]): Promise<void>;
     getIdsFromUserRecipes(recipes: ISimplifiedRecipe[]): string[];

@@ -17,7 +17,7 @@ let WeeksModule = class WeeksModule {
 WeeksModule = __decorate([
     common_1.Module({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: 'UserWeek', schema: week_model_1.UserWeekSchema }]),
+            mongoose_1.MongooseModule.forFeature([{ name: 'UserWeek', schema: week_model_1.UserWeekSchema }])
         ],
         controllers: [weeks_controller_1.WeeksController],
         providers: [weeks_service_1.WeeksService],

@@ -57,7 +57,7 @@ let ListsService = class ListsService {
     async getSimplifiedUserListsInfo(userId) {
         const userLists = await this.getSimplifiedUserListsByUserId(userId);
         const userListsIds = userLists.lists;
-        return userListsIds;
+        return { message: 'OK', updatedData: userListsIds, statusCode: 200 };
     }
     async getSimplifiedUserListsByUserId(userId) {
         let userLists;
@@ -74,7 +74,7 @@ let ListsService = class ListsService {
     }
     async getSingleList(listId) {
         const list = await this.findListById(listId);
-        return { message: '', updatedData: list, statusCode: 200 };
+        return { message: 'OK', updatedData: list, statusCode: 200 };
     }
     async findListById(listId) {
         let list;
@@ -108,7 +108,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return list;
+        return { message: "Removed", updatedData: list, statusCode: 200 };
     }
     async updateWeekRecipeIngredient(listId, ingredient) {
         const list = await this.findListById(listId);
@@ -157,7 +157,7 @@ let ListsService = class ListsService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Updated', updatedData: updatedListItem, statusCode: 200 };
+        return { message: 'Updated', updatedData: list, statusCode: 200 };
     }
     async deleteSingleUserList(userId, listId) {
         await this.getSimplifiedUserListsByUserId(userId);
@@ -200,12 +200,12 @@ let ListsService = class ListsService {
     async deleteListItem(listId, itemId) {
         let list = await this.findListById(listId);
         try {
-            await list.update({ $pull: { listItems: { _id: itemId } } }, { multi: true }).exec();
+            await list.update({ $pull: { listItems: { _id: itemId } } }, { multi: true, new: true }).exec();
         }
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Deleted', updatedData: itemId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: list, statusCode: 200 };
     }
     async createNewUserListsModel(userId) {
         const userLists = new this.userListsModel({

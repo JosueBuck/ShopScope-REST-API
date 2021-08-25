@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRecipesSchema = exports.RecipeTypeDto = exports.UpdatedRecipeDto = exports.IngredientDto = exports.NewIngredientDto = exports.NewRecipeDto = exports.RecipeSchema = exports.RecipeType = void 0;
+const openapi = require("@nestjs/swagger");
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -34,6 +35,9 @@ exports.RecipeSchema = new mongoose.Schema({
     instructions: [{ type: String, required: true }]
 });
 class NewRecipeDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { name: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").NewIngredientDto] }, instructions: { required: true, type: () => [String] } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -75,6 +79,9 @@ __decorate([
 ], NewRecipeDto.prototype, "instructions", void 0);
 exports.NewRecipeDto = NewRecipeDto;
 class NewIngredientDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { name: { required: true, type: () => String }, amount: { required: true, type: () => Number }, unit: { required: true, type: () => String }, itemType: { required: true, enum: require("../../lists/models/list.model").ItemType } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -96,6 +103,9 @@ __decorate([
 ], NewIngredientDto.prototype, "itemType", void 0);
 exports.NewIngredientDto = NewIngredientDto;
 class IngredientDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { _id: { required: true, type: () => String }, name: { required: true, type: () => String }, amount: { required: true, type: () => Number }, unit: { required: true, type: () => String }, itemType: { required: true, enum: require("../../lists/models/list.model").ItemType } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -117,6 +127,9 @@ __decorate([
 ], IngredientDto.prototype, "unit", void 0);
 exports.IngredientDto = IngredientDto;
 class UpdatedRecipeDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, name: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").IngredientDto] }, instructions: { required: true, type: () => [String] } };
+    }
 }
 __decorate([
     class_validator_1.IsString(),
@@ -163,6 +176,9 @@ __decorate([
 ], UpdatedRecipeDto.prototype, "instructions", void 0);
 exports.UpdatedRecipeDto = UpdatedRecipeDto;
 class RecipeTypeDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true } };
+    }
 }
 __decorate([
     class_validator_1.IsEnum(RecipeType, { each: true }),

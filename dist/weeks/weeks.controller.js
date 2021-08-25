@@ -13,7 +13,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WeeksController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
+const jwt_auth_guard_1 = require("../auth/guards/jwt.auth.guard");
+const user_auth_guard_1 = require("../auth/guards/user.auth.guard");
+const list_model_1 = require("../lists/models/list.model");
+const response_model_1 = require("../models/response.model");
 const week_model_1 = require("./models/week.model");
 const weeks_service_1 = require("./weeks.service");
 let WeeksController = class WeeksController {
@@ -38,14 +44,18 @@ let WeeksController = class WeeksController {
     }
 };
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Get('getUserWeek/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "getUserWeek", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Put('addRecipeToDay/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
@@ -53,7 +63,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "addRecipeToDay", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('removeRecipeFromDay/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
     __metadata("design:type", Function),
@@ -61,13 +73,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "removeRecipeFromDay", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('removeAllRecipesFromWeek/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "removeAllRecipesFromWeek", null);
 WeeksController = __decorate([
+    swagger_1.ApiTags('weeks'),
     common_1.Controller('weeks'),
     __metadata("design:paramtypes", [weeks_service_1.WeeksService])
 ], WeeksController);

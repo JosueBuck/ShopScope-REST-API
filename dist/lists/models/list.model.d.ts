@@ -80,7 +80,6 @@ export declare class ListItemDto {
     isDone: boolean;
 }
 export declare class UpdatedListItemDto {
-    listId: string;
     updatedListItem: ListItemDto;
 }
 export declare class UserListRecipesDto {

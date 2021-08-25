@@ -23,7 +23,7 @@ let WeeksService = class WeeksService {
     }
     async getUserWeek(userId) {
         let userWeek = await this.findUserWeekById(userId);
-        return userWeek;
+        return { message: 'OK', updatedData: userWeek, statusCode: 200 };
     }
     async addRecipeToDay(userId, userDayRecipe) {
         let userWeek = await this.findUserWeekById(userId);
@@ -75,6 +75,7 @@ let WeeksService = class WeeksService {
                     break;
                 }
                 case 'lunch': {
+                    console.log(userDayRecipe.recipe._id);
                     const index = day.lunch.findIndex((recipe) => recipe._id == userDayRecipe.recipe._id);
                     if (index > -1) {
                         day.lunch.splice(index, 1);
@@ -97,7 +98,7 @@ let WeeksService = class WeeksService {
             return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
         }
         else {
-            throw new common_1.NotFoundException('No day with this id was found!');
+            throw new common_1.NotFoundException('Could not delete recipe!');
         }
     }
     async removeAllRecipesFromWeek(userId) {

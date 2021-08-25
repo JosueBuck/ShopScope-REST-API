@@ -163,10 +163,6 @@ export class ListItemDto {
 
 export class UpdatedListItemDto {
 
-    @IsString()
-    @IsNotEmpty()
-    listId: string;
-
     @IsNotEmpty()
     @ValidateNested()
     @Type(() => ListItemDto)

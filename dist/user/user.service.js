@@ -16,18 +16,20 @@ exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const registerData_model_1 = require("../auth/models/registerData.model");
+const auth_service_1 = require("../auth/auth.service");
 const lists_service_1 = require("../lists/lists.service");
 const list_model_1 = require("../lists/models/list.model");
+const response_model_1 = require("../models/response.model");
 const recipe_model_1 = require("../recipes/models/recipe.model");
 const recipes_service_1 = require("../recipes/recipes.service");
 const weeks_service_1 = require("../weeks/weeks.service");
 let UserService = class UserService {
-    constructor(userModel, recipeService, listsService, weeksService) {
+    constructor(userModel, recipeService, listsService, weeksService, authService) {
         this.userModel = userModel;
         this.recipeService = recipeService;
         this.listsService = listsService;
         this.weeksService = weeksService;
+        this.authService = authService;
     }
     async createNewUser(userRegisterData) {
         const newUser = new this.userModel({
@@ -64,7 +66,7 @@ let UserService = class UserService {
         catch (_a) {
             throw new common_1.RequestTimeoutException();
         }
-        return { message: 'Deleted', userId: userId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: userId, statusCode: 200 };
     }
     async findUserByName(username) {
         let user;
@@ -90,6 +92,25 @@ let UserService = class UserService {
         }
         return user;
     }
+    async loginUser(loginData) {
+        const user = await this.findUserByName(loginData.username);
+        const authenticationResponse = await this.authService.authenticateUser(loginData, user);
+        return { message: 'Created', updatedData: authenticationResponse, statusCode: 201 };
+    }
+    async registerUser(registerData) {
+        const existingUsers = await this.findUserByName(registerData.username);
+        if (existingUsers) {
+            throw new common_1.ConflictException('User with this name already exists');
+        }
+        const hashedPassword = await this.authService.hashPassword(registerData.password);
+        const userRegisterData = {
+            username: registerData.username,
+            password: hashedPassword,
+            email: registerData.email
+        };
+        const newUser = await this.createNewUser(userRegisterData);
+        return { message: 'Created', updatedData: { username: newUser.username, email: newUser.email, id: newUser.id }, statusCode: 201 };
+    }
 };
 UserService = __decorate([
     common_1.Injectable(),
@@ -97,7 +118,8 @@ UserService = __decorate([
     __metadata("design:paramtypes", [mongoose_2.Model,
         recipes_service_1.RecipesService,
         lists_service_1.ListsService,
-        weeks_service_1.WeeksService])
+        weeks_service_1.WeeksService,
+        auth_service_1.AuthService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

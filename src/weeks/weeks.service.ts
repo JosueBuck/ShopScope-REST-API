@@ -11,10 +11,11 @@ export class WeeksService {
         @InjectModel('UserWeek') private readonly userWeekModel: Model<IUserWeek>,
     ) { }
 
-    async getUserWeek(userId: string): Promise<IUserWeekMongoose> {
+    async getUserWeek(userId: string): Promise<IResponse> {
 
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
-        return userWeek;
+
+        return { message: 'OK', updatedData: userWeek, statusCode: 200 };
 
     }
 
@@ -82,6 +83,7 @@ export class WeeksService {
                     break;
                 }
                 case 'lunch': {
+                    console.log(userDayRecipe.recipe._id);
                     const index = day.lunch.findIndex((recipe) => recipe._id == userDayRecipe.recipe._id);
                     if (index > -1) {
                         day.lunch.splice(index, 1);
@@ -105,7 +107,7 @@ export class WeeksService {
             userWeek.save();
             return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
         } else {
-            throw new NotFoundException('No day with this id was found!');
+            throw new NotFoundException('Could not delete recipe!');
         }
 
     }

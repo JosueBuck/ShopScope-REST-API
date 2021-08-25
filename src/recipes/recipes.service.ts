@@ -55,6 +55,14 @@ export class RecipesService {
 
     }
 
+    async getSimplifiedUserRecipesInfoRequest(userId: string): Promise<IResponse> {
+
+        const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
+
+        return { message: 'OK', updatedData: userRecipesIds, statusCode: 200 }
+
+    }
+
     async getSimplifiedUserRecipesInfo(userId: string): Promise<ISimplifiedRecipe[]> {
 
         const userRecipes: IUserRecipesMongoose = await this.getSimplifiedUserRecipesByUserId(userId);
@@ -64,14 +72,15 @@ export class RecipesService {
 
     }
 
-    async getUsersLatestRecipesIds(userId: string): Promise<ISimplifiedRecipe[]> {
+    async getUsersLatestRecipesIds(userId: string): Promise<IResponse> {
 
         const userRecipes: IUserRecipesMongoose = await this.getSimplifiedUserRecipesByUserId(userId);
 
         const recipes: ISimplifiedRecipe[] = userRecipes.recipes;
 
         const latestRecipes: ISimplifiedRecipe[] = recipes.slice(-4);
-        return latestRecipes;
+
+        return { message: 'OK', updatedData: latestRecipes, statusCode: 200 };
 
     }
 
@@ -122,10 +131,11 @@ export class RecipesService {
 
     }
 
-    async getSingleRecipe(recipeId: string): Promise<IRecipeMongoose> {
+    async getSingleRecipe(recipeId: string): Promise<IResponse> {
 
         const recipe: IRecipeMongoose = await this.findRecipeById(recipeId);
-        return recipe;
+
+        return  { message: 'OK', updatedData: recipe, statusCode: 200 };
 
     }
 
@@ -155,7 +165,7 @@ export class RecipesService {
 
     }
 
-    async getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IRecipeMongoose[]> {
+    async getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IResponse> {
 
         const userRecipesIds: ISimplifiedRecipe[] = await this.getSimplifiedUserRecipesInfo(userId);
 
@@ -166,7 +176,7 @@ export class RecipesService {
             ]
         }).exec();
 
-        return filteredRecipes;
+        return { message: 'OK', updatedData: filteredRecipes, statusCode: 200 };
 
     }
 

@@ -56,6 +56,10 @@ let RecipesService = class RecipesService {
             throw new common_1.RequestTimeoutException();
         }
     }
+    async getSimplifiedUserRecipesInfoRequest(userId) {
+        const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
+        return { message: 'OK', updatedData: userRecipesIds, statusCode: 200 };
+    }
     async getSimplifiedUserRecipesInfo(userId) {
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         const userRecipeIds = userRecipes.recipes;
@@ -65,7 +69,7 @@ let RecipesService = class RecipesService {
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         const recipes = userRecipes.recipes;
         const latestRecipes = recipes.slice(-4);
-        return latestRecipes;
+        return { message: 'OK', updatedData: latestRecipes, statusCode: 200 };
     }
     async getSimplifiedUserRecipesByUserId(userId) {
         let userRecipes;
@@ -106,7 +110,7 @@ let RecipesService = class RecipesService {
     }
     async getSingleRecipe(recipeId) {
         const recipe = await this.findRecipeById(recipeId);
-        return recipe;
+        return { message: 'OK', updatedData: recipe, statusCode: 200 };
     }
     async findRecipeById(id) {
         let recipe;
@@ -134,7 +138,7 @@ let RecipesService = class RecipesService {
                 { recipeType: { $in: recipeType } }
             ]
         }).exec();
-        return filteredRecipes;
+        return { message: 'OK', updatedData: filteredRecipes, statusCode: 200 };
     }
     async deleteRecipe(userId, recipeId) {
         await this.getSimplifiedUserRecipesByUserId(userId);

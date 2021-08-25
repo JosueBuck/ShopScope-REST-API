@@ -13,14 +13,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListsController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
+const jwt_auth_guard_1 = require("../auth/guards/jwt.auth.guard");
+const user_auth_guard_1 = require("../auth/guards/user.auth.guard");
+const response_model_1 = require("../models/response.model");
 const lists_service_1 = require("./lists.service");
 const list_model_1 = require("./models/list.model");
 let ListsController = class ListsController {
     constructor(listService) {
         this.listService = listService;
     }
-    async createList(newListDto, userId) {
+    async createList(userId, newListDto) {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
@@ -36,57 +41,64 @@ let ListsController = class ListsController {
         const response = await this.listService.deleteSingleUserList(userId, listId);
         return response;
     }
-    async addWeekRecipesToList(listId, weekRecipes) {
+    async addWeekRecipesToList(userId, listId, weekRecipes) {
         const response = await this.listService.addWeekRecipesToList(listId, weekRecipes.recipes);
         return response;
     }
-    async removeWeekRecipesFromList(listId, recipesIds) {
+    async removeWeekRecipesFromList(userId, listId, recipesIds) {
         const response = await this.listService.removeWeekRecipeFromList(listId, recipesIds.ids);
         return response;
     }
-    async updateWeekRecipeIngredient(listId, ingredient) {
+    async updateWeekRecipeIngredientInList(userId, listId, ingredient) {
         const response = await this.listService.updateWeekRecipeIngredient(listId, ingredient);
         return response;
     }
-    async addListItem(listId, newListItem) {
+    async addListItem(userId, listId, newListItem) {
         const response = await this.listService.addListItem(listId, newListItem);
         return response;
     }
-    async updateListItem(updatedListItemDto) {
-        const listId = updatedListItemDto.listId;
+    async updateListItem(userId, listId, updatedListItemDto) {
         const updatedListItem = updatedListItemDto.updatedListItem;
         const response = await this.listService.updateListItem(listId, updatedListItem);
         return response;
     }
-    async deleteListItem(listId, itemId) {
+    async deleteListItem(userId, listId, itemId) {
         const response = await this.listService.deleteListItem(listId, itemId);
         return response;
     }
 };
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Post('createList/:userId'),
-    __param(0, common_1.Body()),
-    __param(1, common_1.Param('userId')),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [list_model_1.NewListDto, String]),
+    __metadata("design:paramtypes", [String, list_model_1.NewListDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Get('getSimplifiedUserListsInfo/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "getSimplifiedUserListsInfo", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
     common_1.Get('getSingleList/:listId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('listId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "getSingleList", null);
 __decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('deleteSingleList/:userId/:listId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
     __metadata("design:type", Function),
@@ -94,53 +106,74 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "deleteSingleList", null);
 __decorate([
-    common_1.Post('addWeekRecipesToList/:listId'),
-    __param(0, common_1.Param('listId')),
-    __param(1, common_1.Body()),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Post('addWeekRecipesToList/:userId/:listId'),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, list_model_1.UserListRecipesDto]),
+    __metadata("design:paramtypes", [String, String, list_model_1.UserListRecipesDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "addWeekRecipesToList", null);
 __decorate([
-    common_1.Delete('removeWeekRecipesFromList/:listId'),
-    __param(0, common_1.Param('listId')),
-    __param(1, common_1.Body()),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Delete('removeWeekRecipesFromList/:userId/:listId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, list_model_1.WeekRecipesIds]),
+    __metadata("design:paramtypes", [String, String, list_model_1.WeekRecipesIds]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "removeWeekRecipesFromList", null);
 __decorate([
-    common_1.Patch('updateWeekRecipeIngredient/:listId'),
-    __param(0, common_1.Param('listId')),
-    __param(1, common_1.Body()),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Patch('updateWeekRecipeIngredientInList/:userId/:listId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, list_model_1.UpdatedWeekRecipeIngredient]),
+    __metadata("design:paramtypes", [String, String, list_model_1.UpdatedWeekRecipeIngredient]),
     __metadata("design:returntype", Promise)
-], ListsController.prototype, "updateWeekRecipeIngredient", null);
+], ListsController.prototype, "updateWeekRecipeIngredientInList", null);
 __decorate([
-    common_1.Post('addListItem/:listId'),
-    __param(0, common_1.Param('listId')),
-    __param(1, common_1.Body()),
+    openapi.ApiOperation({ description: "TO-DO: add addNormalRecipesToList -> use a new variable to store added recipes" }),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Post('addListItem/:userId/:listId'),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, list_model_1.NewListItemDto]),
+    __metadata("design:paramtypes", [String, String, list_model_1.NewListItemDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "addListItem", null);
 __decorate([
-    common_1.Patch('updateListItem'),
-    __param(0, common_1.Body()),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Patch('updateListItem/:userId/:listId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [list_model_1.UpdatedListItemDto]),
+    __metadata("design:paramtypes", [String, String, list_model_1.UpdatedListItemDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "updateListItem", null);
 __decorate([
-    common_1.Delete('deleteListItem/:listId/:itemId'),
-    __param(0, common_1.Param('listId')),
-    __param(1, common_1.Param('itemId')),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Delete('deleteListItem/:userId/:listId/:itemId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Param('itemId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "deleteListItem", null);
 ListsController = __decorate([
+    swagger_1.ApiTags('lists'),
     common_1.Controller('lists'),
     __metadata("design:paramtypes", [lists_service_1.ListsService])
 ], ListsController);

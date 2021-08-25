@@ -6,7 +6,7 @@ import { WeeksService } from './weeks.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: 'UserWeek', schema: UserWeekSchema}]),
+    MongooseModule.forFeature([{name: 'UserWeek', schema: UserWeekSchema}])
   ],
   controllers: [WeeksController],
   providers: [WeeksService],

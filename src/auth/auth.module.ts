@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from '../user/models/user.model';
-import { UserModule } from 'src/user/user.module';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
     imports: [
@@ -15,13 +15,12 @@ import { UserModule } from 'src/user/user.module';
             inject: [ConfigService],
             useFactory: async (configService: ConfigService) => ({
                 secret: process.env.JWT_SECRET,
-                signOptions: {expiresIn: '1000s'}
+                signOptions: {expiresIn: '100000s'}
             })
-        }),
-        UserModule
+        })
     ],
     controllers: [AuthController],
-    providers: [AuthService],
-    //exports: [AuthService]
+    providers: [AuthService, JwtStrategy],
+    exports: [AuthService]
 })
 export class AuthModule {}

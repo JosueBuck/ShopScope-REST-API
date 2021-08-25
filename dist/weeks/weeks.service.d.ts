@@ -4,7 +4,7 @@ import { INewUserDayRecipeData, IUserDayRecipeData, IUserWeek, IUserWeekMongoose
 export declare class WeeksService {
     private readonly userWeekModel;
     constructor(userWeekModel: Model<IUserWeek>);
-    getUserWeek(userId: string): Promise<IUserWeekMongoose>;
+    getUserWeek(userId: string): Promise<IResponse>;
     addRecipeToDay(userId: string, userDayRecipe: INewUserDayRecipeData): Promise<IResponse>;
     removeRecipeFromDay(userId: string, userDayRecipe: IUserDayRecipeData): Promise<IResponse>;
     removeAllRecipesFromWeek(userId: string): Promise<IResponse>;

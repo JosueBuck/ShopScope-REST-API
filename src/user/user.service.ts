@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IRegisterData } from 'src/auth/models/registerData.model';
+import { AuthService } from 'src/auth/auth.service';
 import { ListsService } from 'src/lists/lists.service';
 import { ISimplifiedList, IUserListsMongoose } from 'src/lists/models/list.model';
+import { IResponse } from 'src/models/response.model';
 import { ISimplifiedRecipe, IUserRecipesMongoose } from 'src/recipes/models/recipe.model';
 import { RecipesService } from 'src/recipes/recipes.service';
 import { WeeksService } from 'src/weeks/weeks.service';
-import { IUser, IUserMongoose } from './models/user.model';
+import { ILoginData, IRegisterData, IUser, IUserMongoose } from './models/user.model';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,8 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<IUser>,
         private readonly recipeService: RecipesService,
         private readonly listsService: ListsService,
-        private readonly weeksService: WeeksService
+        private readonly weeksService: WeeksService,
+        private readonly authService: AuthService
     ) { }
 
     async createNewUser(userRegisterData: IRegisterData): Promise<IUser> {
@@ -43,7 +45,7 @@ export class UserService {
 
     }
 
-    async deleteUser(userId: string) {
+    async deleteUser(userId: string): Promise<IResponse> {
 
         await this.findUserById(userId);
 
@@ -69,10 +71,10 @@ export class UserService {
             throw new RequestTimeoutException();
         }
         
-        return { message: 'Deleted', userId: userId, statusCode: 200 };
+        return { message: 'Deleted', updatedData: userId, statusCode: 200 };
     }
 
-    async findUserByName(username: string): Promise<IUser> {
+    async findUserByName(username: string): Promise<IUserMongoose> {
 
         let user: IUserMongoose;
         
@@ -102,6 +104,38 @@ export class UserService {
 
         return user;
         
+    }
+
+    async loginUser(loginData: ILoginData): Promise<IResponse> {
+
+        const user = await this.findUserByName(loginData.username);
+
+        const authenticationResponse = await this.authService.authenticateUser(loginData, user);
+
+        return { message: 'Created', updatedData: authenticationResponse, statusCode: 201 };
+
+    }
+
+    async registerUser(registerData: IRegisterData): Promise<IResponse> {
+
+        const existingUsers: IUser = await this.findUserByName(registerData.username);
+        
+        if (existingUsers) {
+            throw new ConflictException('User with this name already exists');
+        }
+
+        const hashedPassword = await this.authService.hashPassword(registerData.password);
+
+        const userRegisterData: IRegisterData = {
+            username: registerData.username,
+            password: hashedPassword,
+            email: registerData.email
+        }
+
+        const newUser = await this.createNewUser(userRegisterData);
+
+        return { message: 'Created', updatedData: { username: newUser.username, email: newUser.email, id: newUser.id }, statusCode: 201 }  
+
     }
 
 }

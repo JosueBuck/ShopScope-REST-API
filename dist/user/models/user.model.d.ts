@@ -15,3 +15,21 @@ export interface IUser {
 export interface IMongooseIdArray {
     id: string;
 }
+export declare class LoginDataDto {
+    username: string;
+    password: string;
+}
+export interface ILoginData {
+    username: string;
+    password: string;
+}
+export declare class RegisterDataDto {
+    username: string;
+    password: string;
+    email: string;
+}
+export interface IRegisterData {
+    username: string;
+    password: string;
+    email: string;
+}

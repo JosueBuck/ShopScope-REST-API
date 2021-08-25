@@ -13,11 +13,26 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
+const auth_service_1 = require("../auth/auth.service");
+const jwt_auth_guard_1 = require("../auth/guards/jwt.auth.guard");
+const user_auth_guard_1 = require("../auth/guards/user.auth.guard");
+const response_model_1 = require("../models/response.model");
+const user_model_1 = require("./models/user.model");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
+    }
+    async login(loginData) {
+        const response = await this.userService.loginUser(loginData);
+        return response;
+    }
+    async register(registerData) {
+        const response = await this.userService.registerUser(registerData);
+        return response;
     }
     async deleteUser(userId) {
         const response = await this.userService.deleteUser(userId);
@@ -25,13 +40,32 @@ let UserController = class UserController {
     }
 };
 __decorate([
+    common_1.Post('login'),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_model_1.LoginDataDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
+__decorate([
+    common_1.Post('register'),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_model_1.RegisterDataDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "register", null);
+__decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('deleteUser/:userId'),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
 UserController = __decorate([
+    swagger_1.ApiTags('user'),
     common_1.Controller('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
