@@ -33,37 +33,37 @@ export class RecipesController {
     }
 
     @UseGuards(JwtAuthGuard, UserGuard)
-    @Get('getSimplifiedUserRecipesInfo/:userId')
-        async getSimplifiedUserRecipesInfo(@Param('userId') userId: string) {
+    @Get('getSimplifiedUserRecipes/:userId')
+        async getSimplifiedUserRecipes(@Param('userId') userId: string) {
 
-        const response: IResponse = await this.recipesService.getSimplifiedUserRecipesInfoRequest(userId);
+        const response: IResponse = await this.recipesService.getSimplifiedUserRecipesRequest(userId);
         return response;
 
     }
 
     @UseGuards(JwtAuthGuard, UserGuard)
-    @Get('getUsersLatestRecipesIds/:userId')
-    async getUsersLatestRecipesIds(@Param('userId') userId: string) {
+    @Get('getLatestSimplifiedUserRecipes/:userId')
+    async getLatestSimplifiedUserRecipes(@Param('userId') userId: string) {
 
-        const response: IResponse = await this.recipesService.getUsersLatestRecipesIds(userId);
+        const response: IResponse = await this.recipesService.getLatestSimplifiedUserRecipes(userId);
+        return response;
+
+    }
+
+    @UseGuards(JwtAuthGuard, UserGuard)
+    @Get('getSimplifiedUserRecipesOfRecipeType/:userId')
+    async getSimplifiedUserRecipesOfRecipeType(@Param("userId") userId: string, @Body() recipeType: RecipeTypeDto) {
+
+        const response: IResponse = await this.recipesService.getSimplifiedUserRecipesOfRecipeType(recipeType.recipeType, userId);
         return response;
 
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('getSingleRecipe/:recipeId')
-    async getSingleRecipe(@Param('recipeId') recipeId: string) {
+    @Get('getRecipe/:recipeId')
+    async getRecipe(@Param('recipeId') recipeId: string) {
 
-        const response: IResponse = await this.recipesService.getSingleRecipe(recipeId);
-        return response;
-
-    }
-
-    @UseGuards(JwtAuthGuard, UserGuard)
-    @Get('getUserRecipesOfRecipeType/:userId')
-    async getUserRecipesOfRecipeType(@Param("userId") userId: string, @Body() recipeType: RecipeTypeDto) {
-
-        const response: IResponse = await this.recipesService.getUserRecipesOfRecipeType(recipeType.recipeType, userId);
+        const response: IResponse = await this.recipesService.getRecipe(recipeId);
         return response;
 
     }

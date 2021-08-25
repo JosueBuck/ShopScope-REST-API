@@ -26,28 +26,28 @@ export class ListsController {
     }
 
     @UseGuards(JwtAuthGuard, UserGuard)
-    @Get('getSimplifiedUserListsInfo/:userId')
-    async getSimplifiedUserListsInfo(@Param('userId') userId: string) {
+    @Get('getSimplifiedUserLists/:userId')
+    async getSimplifiedUserLists(@Param('userId') userId: string) {
 
-        const response: IResponse = await this.listService.getSimplifiedUserListsInfo(userId);
+        const response: IResponse = await this.listService.getSimplifiedUserLists(userId);
         return response;
 
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('getSingleList/:listId')
-    async getSingleList(@Param('listId') listId: string) {
+    @Get('getList/:listId')
+    async getList(@Param('listId') listId: string) {
 
-        const response: IResponse = await this.listService.getSingleList(listId);
+        const response: IResponse = await this.listService.getList(listId);
         return response;
 
     }
 
     @UseGuards(JwtAuthGuard, UserGuard)
-    @Delete('deleteSingleList/:userId/:listId')
-    async deleteSingleList(@Param('userId') userId: string, @Param('listId') listId: string) {
+    @Delete('deleteList/:userId/:listId')
+    async deleteList(@Param('userId') userId: string, @Param('listId') listId: string) {
 
-        const response: IResponse = await this.listService.deleteSingleUserList(userId, listId);
+        const response: IResponse = await this.listService.deleteUserList(userId, listId);
         return response;
 
     }

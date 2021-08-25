@@ -12,7 +12,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('ShopeScope')
     .setDescription('The official documentation for the ShopeScope REST APi')
-    .setVersion('0.1')
+    .setVersion('0.0.1')
     .addTag('user')
     .addTag('weeks')
     .addTag('recipes')

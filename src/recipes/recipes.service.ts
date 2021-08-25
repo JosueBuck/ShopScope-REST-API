@@ -55,7 +55,7 @@ export class RecipesService {
 
     }
 
-    async getSimplifiedUserRecipesInfoRequest(userId: string): Promise<IResponse> {
+    async getSimplifiedUserRecipesRequest(userId: string): Promise<IResponse> {
 
         const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
 
@@ -72,7 +72,7 @@ export class RecipesService {
 
     }
 
-    async getUsersLatestRecipesIds(userId: string): Promise<IResponse> {
+    async getLatestSimplifiedUserRecipes(userId: string): Promise<IResponse> {
 
         const userRecipes: IUserRecipesMongoose = await this.getSimplifiedUserRecipesByUserId(userId);
 
@@ -131,7 +131,7 @@ export class RecipesService {
 
     }
 
-    async getSingleRecipe(recipeId: string): Promise<IResponse> {
+    async getRecipe(recipeId: string): Promise<IResponse> {
 
         const recipe: IRecipeMongoose = await this.findRecipeById(recipeId);
 
@@ -165,7 +165,7 @@ export class RecipesService {
 
     }
 
-    async getUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IResponse> {
+    async getSimplifiedUserRecipesOfRecipeType(recipeType: RecipeType[], userId: string): Promise<IResponse> {
 
         const userRecipesIds: ISimplifiedRecipe[] = await this.getSimplifiedUserRecipesInfo(userId);
 
