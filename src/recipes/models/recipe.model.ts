@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { IsString, IsNumber, IsNotEmpty, IsArray, ValidateNested, ArrayMinSize, IsEnum, ArrayUnique } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ItemType } from 'src/lists/models/list.model';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum RecipeType {
 
@@ -73,10 +74,16 @@ export interface IIngredient {
 
 export class NewRecipeDto {
 
+    @ApiProperty({
+        example: 'testRecipe'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
+    })
     @IsEnum(RecipeType, {each: true})
     @IsNotEmpty()
     @IsArray()
@@ -84,10 +91,16 @@ export class NewRecipeDto {
     @ArrayUnique()
     recipeType: RecipeType[];
 
+    @ApiProperty({
+        example: 30
+    })
     @IsNumber()
     @IsNotEmpty()
     cookingTime: number;
 
+    @ApiProperty({
+        example: 'This is a test desciption'
+    })
     @IsString()
     @IsNotEmpty()
     description: string;
@@ -95,10 +108,13 @@ export class NewRecipeDto {
     @IsArray()
     @ValidateNested()
     @IsNotEmpty()
-    @ArrayMinSize(2)
+    @ArrayMinSize(1)
     @Type(() => NewIngredientDto)
     ingredients: NewIngredientDto[];
 
+    @ApiProperty({
+        example: ['Instruction 1', 'Instruction 2']
+    })
     @IsArray()
     @IsString({each: true})
     @IsNotEmpty()
@@ -109,16 +125,28 @@ export class NewRecipeDto {
 
 export class NewIngredientDto {
 
+    @ApiProperty({
+        example: 'testIngredient'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        example: 1
+    })
     @IsNumber()
     amount: number;
 
+    @ApiProperty({
+        example: 'testUnit'
+    })
     @IsString()
     unit: string;
 
+    @ApiProperty({
+        example: ItemType.SNACKS
+    })
     @IsEnum(ItemType)
     @IsNotEmpty()
     itemType: ItemType;
@@ -127,20 +155,40 @@ export class NewIngredientDto {
 
 export class IngredientDto {
 
+    @ApiProperty({
+        description: 'Ingredient id',
+        example: 'This is a test description'
+    })
     @IsString()
     @IsNotEmpty()
     _id: string;
 
+    @ApiProperty({
+        description: 'Ingredient name',
+        example: 'updatedIngredientName'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        description: 'Ingredient amount',
+        example: '1'
+    })
     @IsNumber()
     amount: number;
 
+    @ApiProperty({
+        description: 'Ingredient amount unit',
+        example: 'updatedTestUnit'
+    })
     @IsString()
     unit: string;
 
+    @ApiProperty({
+        description: 'Ingredient type',
+        example: ItemType.SNACKS
+    })
     itemType: ItemType;
 
 }
@@ -148,14 +196,26 @@ export class IngredientDto {
 
 export class UpdatedRecipeDto {
 
+    @ApiProperty({
+        description: 'Recipe id',
+        example: '612d0b3cd963d505785851dd'
+    })
     @IsString()
     @IsNotEmpty()
     id: string;
 
+    @ApiProperty({
+        description: 'Name of the recipe',
+        example: 'updatedTestRecipe'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        description: 'Recipe Type',
+        example: RecipeType.FASTFOOD
+    })
     @IsEnum(RecipeType, {each: true})
     @IsNotEmpty()
     @IsArray()
@@ -163,10 +223,18 @@ export class UpdatedRecipeDto {
     @ArrayUnique()
     recipeType: RecipeType[];
 
+    @ApiProperty({
+        description: 'Recipe cooking Time',
+        example: 20
+    })
     @IsNumber()
     @IsNotEmpty()
     cookingTime: number;
 
+    @ApiProperty({
+        description: 'Recipe description',
+        example: 'This is a test description'
+    })
     @IsString()
     @IsNotEmpty()
     description: string;
@@ -174,10 +242,14 @@ export class UpdatedRecipeDto {
     @IsArray()
     @ValidateNested()
     @IsNotEmpty()
-    @ArrayMinSize(2)
+    @ArrayMinSize(1)
     @Type(() => IngredientDto)
     ingredients: IngredientDto[];
 
+    @ApiProperty({
+        description: 'Recipe instructions',
+        example: ['Updated instruction 1', 'Updated instruction 2']
+    })
     @IsArray()
     @IsString({each: true})
     @IsNotEmpty()

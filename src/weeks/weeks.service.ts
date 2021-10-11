@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
@@ -15,7 +15,7 @@ export class WeeksService {
 
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
 
-        return { message: 'OK', updatedData: userWeek, statusCode: 200 };
+        return { message: 'OK', responseData: userWeek, statusCode: 200 };
 
     }
 
@@ -52,9 +52,9 @@ export class WeeksService {
 
         if (wasAdded) {
             userWeek.save();
-            return { message: 'Added', updatedData: userWeek, statusCode: 200 };
+            return { message: 'Added', responseData: userWeek, statusCode: 200 };
         } else {
-            throw new NotFoundException('No day with this id was found!');
+            throw new NotFoundException('No day with this id was found');
         } 
 
     }
@@ -105,9 +105,9 @@ export class WeeksService {
 
         if (wasRemoved) {
             userWeek.save();
-            return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
+            return { message: 'Removed', responseData: userWeek, statusCode: 200 };
         } else {
-            throw new NotFoundException('Could not delete recipe!');
+            throw new NotFoundException('Could not delete recipe');
         }
 
     }
@@ -124,10 +124,10 @@ export class WeeksService {
         try {
             userWeek.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
-        return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
+        return { message: 'Removed', responseData: userWeek, statusCode: 200 };
 
     }
 
@@ -138,7 +138,7 @@ export class WeeksService {
         try {
             userWeek = await this.userWeekModel.findOne({ userId: userId }).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
         if (!userWeek) {
@@ -204,7 +204,7 @@ export class WeeksService {
         try {
             await userWeek.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
     }
@@ -214,7 +214,7 @@ export class WeeksService {
         try {
             await this.userWeekModel.deleteOne({ userId: userId });
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
     }

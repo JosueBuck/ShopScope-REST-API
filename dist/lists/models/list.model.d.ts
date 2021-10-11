@@ -85,10 +85,15 @@ export declare class UpdatedListItemDto {
 export declare class UserListRecipesDto {
     recipes: UserDayRecipeDto[];
 }
-export declare class WeekRecipesIds {
+export declare class WeekRecipesIdsDto {
     ids: string[];
 }
-export declare class UpdatedWeekRecipeIngredient {
+export declare class UpdatedWeekRecipeIngredientDto {
+    recipeId: string;
+    ingredientId: string;
+    isDone: boolean;
+}
+export interface IUpdatedWeekRecipeIngredient {
     recipeId: string;
     ingredientId: string;
     isDone: boolean;

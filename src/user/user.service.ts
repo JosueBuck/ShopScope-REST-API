@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
@@ -8,7 +8,7 @@ import { IResponse } from 'src/models/response.model';
 import { ISimplifiedRecipe, IUserRecipesMongoose } from 'src/recipes/models/recipe.model';
 import { RecipesService } from 'src/recipes/recipes.service';
 import { WeeksService } from 'src/weeks/weeks.service';
-import { ILoginData, IRegisterData, IUser, IUserMongoose } from './models/user.model';
+import { ILoginData, IRegisterData, ISuccessfullLoginData, IUpdatedUser, IUser, IUserMongoose } from './models/user.model';
 
 @Injectable()
 export class UserService {
@@ -25,6 +25,8 @@ export class UserService {
 
         const newUser: IUserMongoose = new this.userModel(
             { 
+                firstname: userRegisterData.firstname,
+                lastname: userRegisterData.lastname,
                 username: userRegisterData.username,
                 password: userRegisterData.password,
                 email: userRegisterData.email,
@@ -40,7 +42,7 @@ export class UserService {
                 await newUser.save();
                 return newUser;
             } catch {
-                throw new RequestTimeoutException();
+                throw new InternalServerErrorException();
             }
 
     }
@@ -68,10 +70,10 @@ export class UserService {
             await this.weeksService.deleteUserWeeksModel(userId);
             await this.userModel.deleteOne({ _id: userId });
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
-        return { message: 'Deleted', updatedData: userId, statusCode: 200 };
+        return { message: 'Deleted', responseData: userId, statusCode: 200 };
     }
 
     async findUserByName(username: string): Promise<IUserMongoose> {
@@ -81,7 +83,7 @@ export class UserService {
         try {
             user = await this.userModel.findOne({ username: new RegExp('^' + username + '$', "i") });;
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException('A problem occured while trying to find the user.');
         }
 
         return user;
@@ -95,11 +97,11 @@ export class UserService {
         try {
             user = await this.userModel.findOne({ _id: userId }).exec();
         } catch {
-            throw new NotFoundException('Invalid user id');
+            throw new NotFoundException('Invalid user id.');
         }
 
         if (!user) {
-            throw new NotFoundException('Could not find user');
+            throw new NotFoundException('No user with this id.');
         }
 
         return user;
@@ -109,10 +111,22 @@ export class UserService {
     async loginUser(loginData: ILoginData): Promise<IResponse> {
 
         const user = await this.findUserByName(loginData.username);
+        if (!user) {
+            throw new NotFoundException('Wrong username or password.');
+        }
 
         const authenticationResponse = await this.authService.authenticateUser(loginData, user);
 
-        return { message: 'Created', updatedData: authenticationResponse, statusCode: 201 };
+        user.password = 'xxxx';
+
+        const successfullLoginData: ISuccessfullLoginData = {
+
+            user: user,
+            jwt: authenticationResponse
+
+        }
+
+        return { message: 'Created', responseData: successfullLoginData, statusCode: 201 };
 
     }
 
@@ -121,20 +135,42 @@ export class UserService {
         const existingUsers: IUser = await this.findUserByName(registerData.username);
         
         if (existingUsers) {
-            throw new ConflictException('User with this name already exists');
+            throw new ConflictException('User with this username already exists.');
         }
 
         const hashedPassword = await this.authService.hashPassword(registerData.password);
 
         const userRegisterData: IRegisterData = {
+            firstname: registerData.firstname,
+            lastname: registerData.lastname,
             username: registerData.username,
             password: hashedPassword,
             email: registerData.email
         }
 
         const newUser = await this.createNewUser(userRegisterData);
+        newUser.password = 'xxxx';
 
-        return { message: 'Created', updatedData: { username: newUser.username, email: newUser.email, id: newUser.id }, statusCode: 201 }  
+        return { message: 'Created', responseData: newUser, statusCode: 201 }  
+
+    }
+
+    async updateUserInformations(userId: string, updatedUser: IUpdatedUser): Promise<IResponse> {
+
+        const user: IUserMongoose = await this.findUserById(userId);
+        user.firstname = updatedUser.firstname;
+        user.lastname = updatedUser.lastname;
+        user.email = updatedUser.email;
+
+        try {
+            await user.save();
+        } catch {
+            throw new InternalServerErrorException('A problem occured while processing the api call');
+        }
+
+        user.password = 'xxxx';
+
+        return { message: 'OK', responseData: user, statusCode: 200 }
 
     }
 

@@ -1,10 +1,9 @@
 import { Controller, Get, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { UserGuard } from 'src/auth/guards/user.auth.guard';
-import { NewListItemDto } from 'src/lists/models/list.model';
-import { IResponse } from 'src/models/response.model';
-import { IUserWeek, NewUserDayRecipeDataDto, UserDayRecipeDataDto } from './models/week.model';
+import { AddRecipeToDayResponse, GetUserWeekResponse, IResponse, RemoveAllRecipesFromWeekResponse, RemoveRecipeFromDayResponse } from 'src/models/response.model';
+import { NewUserDayRecipeDataDto, UserDayRecipeDataDto } from './models/week.model';
 import { WeeksService } from './weeks.service';
 
 @ApiTags('weeks')
@@ -17,6 +16,16 @@ export class WeeksController {
 
         @UseGuards(JwtAuthGuard, UserGuard)
         @Get('getUserWeek/:userId')
+        @ApiOkResponse({
+            description: 'OK',
+            type: GetUserWeekResponse
+        })
+        @ApiInternalServerErrorResponse({
+            description: 'A problem occured while processing the api call'
+        })
+        @ApiNotFoundResponse({
+            description: 'Could not find user week'
+        })
         async getUserWeek(@Param('userId') userId: string) {
 
             const response: IResponse = await this.weeksService.getUserWeek(userId);
@@ -26,6 +35,16 @@ export class WeeksController {
 
         @UseGuards(JwtAuthGuard, UserGuard)
         @Put('addRecipeToDay/:userId')
+        @ApiOkResponse({
+            description: 'OK',
+            type: AddRecipeToDayResponse
+        })
+        @ApiInternalServerErrorResponse({
+            description: 'A problem occured while processing the api call'
+        })
+        @ApiNotFoundResponse({
+            description: 'Could not find user week | No day with this id was found'
+        })
         async addRecipeToDay(@Param('userId') userId: string, @Body() userDayRecipe: NewUserDayRecipeDataDto) {
 
             const response: IResponse = await this.weeksService.addRecipeToDay(userId, userDayRecipe);
@@ -35,6 +54,16 @@ export class WeeksController {
 
         @UseGuards(JwtAuthGuard, UserGuard)
         @Delete('removeRecipeFromDay/:userId')
+        @ApiOkResponse({
+            description: 'OK',
+            type: RemoveRecipeFromDayResponse
+        })
+        @ApiInternalServerErrorResponse({
+            description: 'A problem occured while processing the api call'
+        })
+        @ApiNotFoundResponse({
+            description: 'Could not find user week | Could not delete recipe'
+        })
         async removeRecipeFromDay(@Param('userId') userId: string, @Body() userDayRecipe: UserDayRecipeDataDto) {
 
             const response: IResponse = await this.weeksService.removeRecipeFromDay(userId, userDayRecipe);
@@ -44,6 +73,16 @@ export class WeeksController {
 
         @UseGuards(JwtAuthGuard, UserGuard)
         @Delete('removeAllRecipesFromWeek/:userId')
+        @ApiOkResponse({
+            description: 'OK',
+            type: RemoveAllRecipesFromWeekResponse
+        })
+        @ApiInternalServerErrorResponse({
+            description: 'A problem occured while processing the api call'
+        })
+        @ApiNotFoundResponse({
+            description: 'Could not find user week'
+        })
         async removeAllRecipesFromWeek(@Param('userId') userId: string) {
 
             const response: IResponse = await this.weeksService.removeAllRecipesFromWeek(userId);

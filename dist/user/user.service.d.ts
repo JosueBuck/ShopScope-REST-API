@@ -4,7 +4,7 @@ import { ListsService } from 'src/lists/lists.service';
 import { IResponse } from 'src/models/response.model';
 import { RecipesService } from 'src/recipes/recipes.service';
 import { WeeksService } from 'src/weeks/weeks.service';
-import { ILoginData, IRegisterData, IUser, IUserMongoose } from './models/user.model';
+import { ILoginData, IRegisterData, IUpdatedUser, IUser, IUserMongoose } from './models/user.model';
 export declare class UserService {
     private readonly userModel;
     private readonly recipeService;
@@ -18,4 +18,5 @@ export declare class UserService {
     findUserById(userId: string): Promise<IUserMongoose>;
     loginUser(loginData: ILoginData): Promise<IResponse>;
     registerUser(registerData: IRegisterData): Promise<IResponse>;
+    updateUserInformations(userId: string, updatedUser: IUpdatedUser): Promise<IResponse>;
 }

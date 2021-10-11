@@ -23,7 +23,7 @@ let WeeksService = class WeeksService {
     }
     async getUserWeek(userId) {
         let userWeek = await this.findUserWeekById(userId);
-        return { message: 'OK', updatedData: userWeek, statusCode: 200 };
+        return { message: 'OK', responseData: userWeek, statusCode: 200 };
     }
     async addRecipeToDay(userId, userDayRecipe) {
         let userWeek = await this.findUserWeekById(userId);
@@ -51,10 +51,10 @@ let WeeksService = class WeeksService {
         });
         if (wasAdded) {
             userWeek.save();
-            return { message: 'Added', updatedData: userWeek, statusCode: 200 };
+            return { message: 'Added', responseData: userWeek, statusCode: 200 };
         }
         else {
-            throw new common_1.NotFoundException('No day with this id was found!');
+            throw new common_1.NotFoundException('No day with this id was found');
         }
     }
     async removeRecipeFromDay(userId, userDayRecipe) {
@@ -95,10 +95,10 @@ let WeeksService = class WeeksService {
         });
         if (wasRemoved) {
             userWeek.save();
-            return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
+            return { message: 'Removed', responseData: userWeek, statusCode: 200 };
         }
         else {
-            throw new common_1.NotFoundException('Could not delete recipe!');
+            throw new common_1.NotFoundException('Could not delete recipe');
         }
     }
     async removeAllRecipesFromWeek(userId) {
@@ -112,9 +112,9 @@ let WeeksService = class WeeksService {
             userWeek.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Removed', updatedData: userWeek, statusCode: 200 };
+        return { message: 'Removed', responseData: userWeek, statusCode: 200 };
     }
     async findUserWeekById(userId) {
         let userWeek;
@@ -122,7 +122,7 @@ let WeeksService = class WeeksService {
             userWeek = await this.userWeekModel.findOne({ userId: userId }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
         if (!userWeek) {
             throw new common_1.NotFoundException('Could not find user week');
@@ -181,7 +181,7 @@ let WeeksService = class WeeksService {
             await userWeek.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteUserWeeksModel(userId) {
@@ -189,7 +189,7 @@ let WeeksService = class WeeksService {
             await this.userWeekModel.deleteOne({ userId: userId });
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
 };

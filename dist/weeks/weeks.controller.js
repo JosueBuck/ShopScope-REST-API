@@ -18,7 +18,6 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const jwt_auth_guard_1 = require("../auth/guards/jwt.auth.guard");
 const user_auth_guard_1 = require("../auth/guards/user.auth.guard");
-const list_model_1 = require("../lists/models/list.model");
 const response_model_1 = require("../models/response.model");
 const week_model_1 = require("./models/week.model");
 const weeks_service_1 = require("./weeks.service");
@@ -46,6 +45,16 @@ let WeeksController = class WeeksController {
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Get('getUserWeek/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.GetUserWeekResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Could not find user week'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
@@ -55,6 +64,16 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Put('addRecipeToDay/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.AddRecipeToDayResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Could not find user week | No day with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
@@ -65,6 +84,16 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('removeRecipeFromDay/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.RemoveRecipeFromDayResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Could not find user week | Could not delete recipe'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
@@ -75,6 +104,16 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('removeAllRecipesFromWeek/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.RemoveAllRecipesFromWeekResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Could not find user week'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),

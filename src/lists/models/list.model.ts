@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UserDayRecipeDto } from 'src/weeks/models/week.model';
+import { ApiProperty } from '@nestjs/swagger';
 
 
 export enum ItemType {
@@ -93,10 +94,18 @@ export interface IUserListRecipe {
 
 export class NewListDto {
 
+    @ApiProperty({
+        description: 'List name',
+        example: 'testList'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        description: 'Description of the list',
+        example: 'This is a test description'
+    })
     @IsString()
     description: string;
 
@@ -114,20 +123,40 @@ export class NewListDto {
 
 export class NewListItemDto {
 
+    @ApiProperty({
+        description: 'Ingredient name',
+        example: 'testIngredient'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        description: 'Amount of the specific ingredient',
+        example: 1
+    })
     @IsNumber()
     amount: number;
 
+    @ApiProperty({
+        description: 'The unit regarding the amount',
+        example: 'testUnit'
+    })
     @IsString()
     unit: string; 
 
+    @ApiProperty({
+        description: 'Defines what type of the item',
+        example: ItemType.SNACKS
+    })
     @IsEnum(ItemType)
     @IsNotEmpty()
     itemType: ItemType;
 
+    @ApiProperty({
+        description: 'Holds the information, if the ingredient is already in your shopping cart',
+        example: false
+    })
     @IsBoolean()
     isDone: boolean;
 
@@ -135,26 +164,50 @@ export class NewListItemDto {
 
 export class ListItemDto {
 
+    @ApiProperty({
+        description: 'Ingredient id',
+        example: '612cb926a6effb11a4dbb963'
+    })
     @IsString()
     @IsNotEmpty()
     _id: string;
 
+    @ApiProperty({
+        description: 'Ingredient name',
+        example: 'testIngredient'
+    })
     @IsString()
     @IsNotEmpty()
     name: string;
 
+    @ApiProperty({
+        description: 'Amount of the specific ingredient',
+        example: 1
+    })
     @IsNumber()
     @IsNotEmpty()
     amount: number;
 
+    @ApiProperty({
+        description: 'The unit regarding the amount',
+        example: 'testUnit'
+    })
     @IsString()
     @IsNotEmpty()
     unit: string;
 
+    @ApiProperty({
+        description: 'Defines what type of the item',
+        example: ItemType.SNACKS
+    })
     @IsEnum(ItemType)
     @IsNotEmpty()
     itemType: ItemType;
 
+    @ApiProperty({
+        description: 'Holds the information, if the ingredient is already in your shopping cart',
+        example: false
+    })
     @IsBoolean()
     @IsNotEmpty()
     isDone: boolean;
@@ -181,26 +234,46 @@ export class UserListRecipesDto {
 
 }
 
-export class WeekRecipesIds {
+export class WeekRecipesIdsDto {
 
+    @ApiProperty({
+        example: ['612cb926a6effb11a4dbb962']
+    })
     @IsString({each: true})
     @IsNotEmpty({each: true})
     ids: string[]
 
 }
 
-export class UpdatedWeekRecipeIngredient {
+export class UpdatedWeekRecipeIngredientDto {
 
+    @ApiProperty({
+        example: '612cb926a6effb11a4dbb962'
+    })
     @IsNotEmpty()
     @IsString()
     recipeId: string;
 
+    @ApiProperty({
+        example: '612cb926a6effb11a4dbb963'
+    })
     @IsNotEmpty()
     @IsString()
     ingredientId: string;
 
+    @ApiProperty({
+        example: true
+    })
     @IsNotEmpty()
     @IsBoolean()
+    isDone: boolean;
+
+}
+
+export interface IUpdatedWeekRecipeIngredient {
+
+    recipeId: string;
+    ingredientId: string;
     isDone: boolean;
 
 }

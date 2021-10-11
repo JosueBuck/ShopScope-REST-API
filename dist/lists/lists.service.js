@@ -36,9 +36,9 @@ let ListsService = class ListsService {
             await newList.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Created', updatedData: newList, statusCode: 201 };
+        return { message: 'Created', responseData: newList, statusCode: 201 };
     }
     async addListToUserLists(list, userId) {
         const simplifiedList = {
@@ -51,13 +51,13 @@ let ListsService = class ListsService {
             await userLists.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
-    async getSimplifiedUserListsInfo(userId) {
+    async getSimplifiedUserLists(userId) {
         const userLists = await this.getSimplifiedUserListsByUserId(userId);
         const userListsIds = userLists.lists;
-        return { message: 'OK', updatedData: userListsIds, statusCode: 200 };
+        return { message: 'OK', responseData: userListsIds, statusCode: 200 };
     }
     async getSimplifiedUserListsByUserId(userId) {
         let userLists;
@@ -72,9 +72,9 @@ let ListsService = class ListsService {
         }
         return userLists;
     }
-    async getSingleList(listId) {
+    async getList(listId) {
         const list = await this.findListById(listId);
-        return { message: 'OK', updatedData: list, statusCode: 200 };
+        return { message: 'OK', responseData: list, statusCode: 200 };
     }
     async findListById(listId) {
         let list;
@@ -85,7 +85,7 @@ let ListsService = class ListsService {
             throw new common_1.NotFoundException('Invalid list id');
         }
         if (!list) {
-            throw new common_1.NotFoundException('No list with this id was found!');
+            throw new common_1.NotFoundException('No list with this id was found');
         }
         return list;
     }
@@ -96,19 +96,19 @@ let ListsService = class ListsService {
             list.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Created', updatedData: weekRecipes, statusCode: 201 };
+        return { message: 'Created', responseData: list, statusCode: 201 };
     }
     async removeWeekRecipeFromList(listId, recipesIds) {
         const list = await this.findListById(listId);
         try {
-            list.update({ $pull: { weekRecipes: { _id: { $in: recipesIds } } } }, { new: true }).exec();
+            await list.update({ $pull: { weekRecipes: { _id: { $in: recipesIds } } } }, { new: true }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: "Removed", updatedData: list, statusCode: 200 };
+        return { message: "Removed", responseData: list, statusCode: 200 };
     }
     async updateWeekRecipeIngredient(listId, ingredient) {
         const list = await this.findListById(listId);
@@ -125,9 +125,9 @@ let ListsService = class ListsService {
             list.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Changed', updatedData: list, statusCode: 200 };
+        return { message: 'Changed', responseData: list, statusCode: 200 };
     }
     async addListItem(listId, listItem) {
         let list = await this.findListById(listId);
@@ -136,9 +136,9 @@ let ListsService = class ListsService {
             list.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Created', updatedData: list, statusCode: 201 };
+        return { message: 'Created', responseData: list, statusCode: 201 };
     }
     async updateListItem(listId, updatedListItem) {
         let list = await this.findListById(listId);
@@ -155,23 +155,23 @@ let ListsService = class ListsService {
             list.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Updated', updatedData: list, statusCode: 200 };
+        return { message: 'Updated', responseData: list, statusCode: 200 };
     }
-    async deleteSingleUserList(userId, listId) {
+    async deleteUserList(userId, listId) {
         await this.getSimplifiedUserListsByUserId(userId);
         await this.findListById(listId);
         await this.deleteList(listId);
         await this.deleteUserListId(userId, listId);
-        return { message: 'Deleted', updatedData: listId, statusCode: 200 };
+        return { message: 'Deleted', responseData: listId, statusCode: 200 };
     }
     async deleteList(listId) {
         try {
             await this.listModel.deleteOne({ _id: listId }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteUserListId(userId, listId) {
@@ -179,7 +179,7 @@ let ListsService = class ListsService {
             await this.userListsModel.findOneAndUpdate({ userId: userId }, { $pull: { lists: { _id: listId } } }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteManyLists(lists) {
@@ -188,7 +188,7 @@ let ListsService = class ListsService {
             await this.listModel.deleteMany({ _id: { $in: listIdArray } }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     getIdsFromSimplifiedLists(lists) {
@@ -203,9 +203,9 @@ let ListsService = class ListsService {
             await list.update({ $pull: { listItems: { _id: itemId } } }, { multi: true, new: true }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Deleted', updatedData: list, statusCode: 200 };
+        return { message: 'Deleted', responseData: list, statusCode: 200 };
     }
     async createNewUserListsModel(userId) {
         const userLists = new this.userListsModel({
@@ -215,7 +215,7 @@ let ListsService = class ListsService {
             await userLists.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteUserListsModel(userId) {
@@ -223,7 +223,7 @@ let ListsService = class ListsService {
             await this.userListsModel.deleteOne({ userId: userId });
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
 };

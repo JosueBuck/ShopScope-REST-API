@@ -9,12 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserListsSchema = exports.UpdatedWeekRecipeIngredient = exports.WeekRecipesIds = exports.UserListRecipesDto = exports.UpdatedListItemDto = exports.ListItemDto = exports.NewListItemDto = exports.NewListDto = exports.ListSchema = exports.ItemType = void 0;
+exports.UserListsSchema = exports.UpdatedWeekRecipeIngredientDto = exports.WeekRecipesIdsDto = exports.UserListRecipesDto = exports.UpdatedListItemDto = exports.ListItemDto = exports.NewListItemDto = exports.NewListDto = exports.ListSchema = exports.ItemType = void 0;
 const openapi = require("@nestjs/swagger");
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const week_model_1 = require("../../weeks/models/week.model");
+const swagger_1 = require("@nestjs/swagger");
 var ItemType;
 (function (ItemType) {
     ItemType["FRUITS"] = "FRUITS";
@@ -44,11 +45,19 @@ class NewListDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'List name',
+        example: 'testList'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewListDto.prototype, "name", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Description of the list',
+        example: 'This is a test description'
+    }),
     class_validator_1.IsString(),
     __metadata("design:type", String)
 ], NewListDto.prototype, "description", void 0);
@@ -71,24 +80,44 @@ class NewListItemDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Ingredient name',
+        example: 'testIngredient'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewListItemDto.prototype, "name", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Amount of the specific ingredient',
+        example: 1
+    }),
     class_validator_1.IsNumber(),
     __metadata("design:type", Number)
 ], NewListItemDto.prototype, "amount", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'The unit regarding the amount',
+        example: 'testUnit'
+    }),
     class_validator_1.IsString(),
     __metadata("design:type", String)
 ], NewListItemDto.prototype, "unit", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Defines what type of the item',
+        example: ItemType.SNACKS
+    }),
     class_validator_1.IsEnum(ItemType),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewListItemDto.prototype, "itemType", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Holds the information, if the ingredient is already in your shopping cart',
+        example: false
+    }),
     class_validator_1.IsBoolean(),
     __metadata("design:type", Boolean)
 ], NewListItemDto.prototype, "isDone", void 0);
@@ -99,31 +128,55 @@ class ListItemDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Ingredient id',
+        example: '612cb926a6effb11a4dbb963'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "_id", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Ingredient name',
+        example: 'testIngredient'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "name", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Amount of the specific ingredient',
+        example: 1
+    }),
     class_validator_1.IsNumber(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], ListItemDto.prototype, "amount", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'The unit regarding the amount',
+        example: 'testUnit'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "unit", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Defines what type of the item',
+        example: ItemType.SNACKS
+    }),
     class_validator_1.IsEnum(ItemType),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "itemType", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Holds the information, if the ingredient is already in your shopping cart',
+        example: false
+    }),
     class_validator_1.IsBoolean(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", Boolean)
@@ -155,38 +208,50 @@ __decorate([
     __metadata("design:type", Array)
 ], UserListRecipesDto.prototype, "recipes", void 0);
 exports.UserListRecipesDto = UserListRecipesDto;
-class WeekRecipesIds {
+class WeekRecipesIdsDto {
     static _OPENAPI_METADATA_FACTORY() {
         return { ids: { required: true, type: () => [String] } };
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        example: ['612cb926a6effb11a4dbb962']
+    }),
     class_validator_1.IsString({ each: true }),
     class_validator_1.IsNotEmpty({ each: true }),
     __metadata("design:type", Array)
-], WeekRecipesIds.prototype, "ids", void 0);
-exports.WeekRecipesIds = WeekRecipesIds;
-class UpdatedWeekRecipeIngredient {
+], WeekRecipesIdsDto.prototype, "ids", void 0);
+exports.WeekRecipesIdsDto = WeekRecipesIdsDto;
+class UpdatedWeekRecipeIngredientDto {
     static _OPENAPI_METADATA_FACTORY() {
         return { recipeId: { required: true, type: () => String }, ingredientId: { required: true, type: () => String }, isDone: { required: true, type: () => Boolean } };
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        example: '612cb926a6effb11a4dbb962'
+    }),
     class_validator_1.IsNotEmpty(),
     class_validator_1.IsString(),
     __metadata("design:type", String)
-], UpdatedWeekRecipeIngredient.prototype, "recipeId", void 0);
+], UpdatedWeekRecipeIngredientDto.prototype, "recipeId", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        example: '612cb926a6effb11a4dbb963'
+    }),
     class_validator_1.IsNotEmpty(),
     class_validator_1.IsString(),
     __metadata("design:type", String)
-], UpdatedWeekRecipeIngredient.prototype, "ingredientId", void 0);
+], UpdatedWeekRecipeIngredientDto.prototype, "ingredientId", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        example: true
+    }),
     class_validator_1.IsNotEmpty(),
     class_validator_1.IsBoolean(),
     __metadata("design:type", Boolean)
-], UpdatedWeekRecipeIngredient.prototype, "isDone", void 0);
-exports.UpdatedWeekRecipeIngredient = UpdatedWeekRecipeIngredient;
+], UpdatedWeekRecipeIngredientDto.prototype, "isDone", void 0);
+exports.UpdatedWeekRecipeIngredientDto = UpdatedWeekRecipeIngredientDto;
 exports.UserListsSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     lists: { type: [{ _id: String, listName: String }] }

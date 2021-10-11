@@ -34,10 +34,10 @@ let RecipesService = class RecipesService {
         await this.addRecipeToUserRecipes(newRecipe, userId);
         try {
             await newRecipe.save();
-            return { message: 'Created', updatedData: newRecipe, statusCode: 201 };
+            return { message: 'Created', responseData: newRecipe, statusCode: 201 };
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async addRecipeToUserRecipes(recipe, userId) {
@@ -53,23 +53,23 @@ let RecipesService = class RecipesService {
             return userRecipes.recipes;
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
-    async getSimplifiedUserRecipesInfoRequest(userId) {
+    async getSimplifiedUserRecipesRequest(userId) {
         const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
-        return { message: 'OK', updatedData: userRecipesIds, statusCode: 200 };
+        return { message: 'OK', responseData: userRecipesIds, statusCode: 200 };
     }
     async getSimplifiedUserRecipesInfo(userId) {
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         const userRecipeIds = userRecipes.recipes;
         return userRecipeIds;
     }
-    async getUsersLatestRecipesIds(userId) {
+    async getLatestSimplifiedUserRecipes(userId) {
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         const recipes = userRecipes.recipes;
         const latestRecipes = recipes.slice(-4);
-        return { message: 'OK', updatedData: latestRecipes, statusCode: 200 };
+        return { message: 'OK', responseData: latestRecipes, statusCode: 200 };
     }
     async getSimplifiedUserRecipesByUserId(userId) {
         let userRecipes;
@@ -104,13 +104,13 @@ let RecipesService = class RecipesService {
             await recipe.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Updated', updatedData: recipe, statusCode: 200 };
+        return { message: 'Updated', responseData: recipe, statusCode: 200 };
     }
-    async getSingleRecipe(recipeId) {
+    async getRecipe(recipeId) {
         const recipe = await this.findRecipeById(recipeId);
-        return { message: 'OK', updatedData: recipe, statusCode: 200 };
+        return { message: 'OK', responseData: recipe, statusCode: 200 };
     }
     async findRecipeById(id) {
         let recipe;
@@ -130,15 +130,21 @@ let RecipesService = class RecipesService {
         ;
         return recipes;
     }
-    async getUserRecipesOfRecipeType(recipeType, userId) {
+    async getSimplifiedUserRecipesOfRecipeType(recipeType, userId) {
         const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
-        const filteredRecipes = await this.recipeModel.find({
-            $and: [
-                { _id: { $in: userRecipesIds } },
-                { recipeType: { $in: recipeType } }
-            ]
-        }).exec();
-        return { message: 'OK', updatedData: filteredRecipes, statusCode: 200 };
+        let filteredRecipes;
+        try {
+            filteredRecipes = await this.recipeModel.find({
+                $and: [
+                    { _id: { $in: userRecipesIds } },
+                    { recipeType: { $in: recipeType } }
+                ]
+            }).exec();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException();
+        }
+        return { message: 'OK', responseData: filteredRecipes, statusCode: 200 };
     }
     async deleteRecipe(userId, recipeId) {
         await this.getSimplifiedUserRecipesByUserId(userId);
@@ -148,9 +154,9 @@ let RecipesService = class RecipesService {
             await this.userRecipesModel.findOneAndUpdate({ userId: userId }, { $pull: { recipes: { _id: recipeId } } }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Deleted', updatedData: recipeId, statusCode: 200 };
+        return { message: 'Deleted', responseData: recipeId, statusCode: 200 };
     }
     async deleteManyRecipes(recipes) {
         const recipeIdArray = this.getIdsFromUserRecipes(recipes);
@@ -158,7 +164,7 @@ let RecipesService = class RecipesService {
             await this.recipeModel.deleteMany({ _id: { $in: recipeIdArray } }).exec();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     getIdsFromUserRecipes(recipes) {
@@ -175,7 +181,7 @@ let RecipesService = class RecipesService {
             await userRecipes.save();
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteUserRecipeModel(userId) {
@@ -183,7 +189,7 @@ let RecipesService = class RecipesService {
             await this.userRecipesModel.deleteOne({ userId: userId });
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
 };

@@ -9,6 +9,6 @@ export class AppController {
   @ApiExcludeEndpoint()
   @Get()
   getHello(@Res() res: any) {
-    res.redirect(HttpStatus.MOVED_PERMANENTLY, `api`);
+    res.redirect(HttpStatus.MOVED_PERMANENTLY, `api-doc`);
   }
 }

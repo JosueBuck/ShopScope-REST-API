@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
-import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, UpdatedWeekRecipeIngredient } from './models/list.model';
+import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient } from './models/list.model';
 
 @Injectable()
 export class ListsService {
@@ -29,10 +29,10 @@ export class ListsService {
         try {
             await newList.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
-        return { message: 'Created', updatedData: newList, statusCode: 201 };
+        return { message: 'Created', responseData: newList, statusCode: 201 };
 
     }
 
@@ -49,7 +49,7 @@ export class ListsService {
         try {
             await userLists.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         } 
     }
 
@@ -59,7 +59,7 @@ export class ListsService {
 
         const userListsIds: ISimplifiedList[] = userLists.lists;
 
-        return { message: 'OK', updatedData: userListsIds, statusCode: 200 };
+        return { message: 'OK', responseData: userListsIds, statusCode: 200 };
 
     }
 
@@ -85,7 +85,7 @@ export class ListsService {
 
         const list: IListMongoose = await this.findListById(listId);
 
-        return { message: 'OK', updatedData: list, statusCode: 200 };
+        return { message: 'OK', responseData: list, statusCode: 200 };
 
     }
 
@@ -100,7 +100,7 @@ export class ListsService {
         }
 
         if (!list) {
-            throw new NotFoundException('No list with this id was found!');
+            throw new NotFoundException('No list with this id was found');
         }
 
         return list;
@@ -115,10 +115,10 @@ export class ListsService {
         try {
             list.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
-        return { message: 'Created', updatedData: weekRecipes, statusCode: 201 }
+        return { message: 'Created', responseData: list, statusCode: 201 }
 
     }
 
@@ -127,19 +127,19 @@ export class ListsService {
         const list: IListMongoose = await this.findListById(listId);
 
         try {
-            list.update(
+            await list.update(
                 { $pull: { weekRecipes: { _id: { $in: recipesIds  }}} },
                 { new: true }
             ).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
-        return { message: "Removed", updatedData: list, statusCode: 200 };
+        return { message: "Removed", responseData: list, statusCode: 200 };
 
     }
 
-    async updateWeekRecipeIngredient(listId: string, ingredient: UpdatedWeekRecipeIngredient): Promise<IResponse> {
+    async updateWeekRecipeIngredient(listId: string, ingredient: IUpdatedWeekRecipeIngredient): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
         list.weekRecipes.map((recipe) => {
@@ -155,10 +155,10 @@ export class ListsService {
         try {
             list.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
-        return { message: 'Changed', updatedData: list, statusCode: 200 }
+        return { message: 'Changed', responseData: list, statusCode: 200 }
 
     }
 
@@ -170,10 +170,10 @@ export class ListsService {
         try {
             list.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
-        return { message: 'Created', updatedData: list, statusCode: 201 }
+        return { message: 'Created', responseData: list, statusCode: 201 }
         
     }
 
@@ -196,10 +196,10 @@ export class ListsService {
         try {
             list.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
-        return { message: 'Updated', updatedData: list, statusCode: 200 }
+        return { message: 'Updated', responseData: list, statusCode: 200 }
 
     }
 
@@ -211,7 +211,7 @@ export class ListsService {
         await this.deleteList(listId);
         await this.deleteUserListId(userId, listId);
 
-        return { message: 'Deleted', updatedData: listId, statusCode: 200 };
+        return { message: 'Deleted', responseData: listId, statusCode: 200 };
 
     }
 
@@ -220,7 +220,7 @@ export class ListsService {
         try {
             await this.listModel.deleteOne({_id: listId}).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
     }
@@ -233,7 +233,7 @@ export class ListsService {
                 { $pull: { lists: { _id: listId} }}
             ).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
     }
@@ -245,7 +245,7 @@ export class ListsService {
         try {
             await this.listModel.deleteMany({ _id: { $in: listIdArray }}).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         } 
 
     }
@@ -269,10 +269,10 @@ export class ListsService {
                 { multi: true, new: true }
             ).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
-        return { message: 'Deleted', updatedData: list, statusCode: 200 }
+        return { message: 'Deleted', responseData: list, statusCode: 200 }
         
     }
 
@@ -288,7 +288,7 @@ export class ListsService {
         try {
             await userLists.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
     }
@@ -298,7 +298,7 @@ export class ListsService {
         try {
             await this.userListsModel.deleteOne({ userId: userId });
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
     }

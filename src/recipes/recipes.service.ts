@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
@@ -29,9 +29,9 @@ export class RecipesService {
 
         try {
             await newRecipe.save();
-            return { message: 'Created', updatedData: newRecipe, statusCode: 201 } 
+            return { message: 'Created', responseData: newRecipe, statusCode: 201 } 
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         } 
     }
 
@@ -50,7 +50,7 @@ export class RecipesService {
             await userRecipes.save();
             return userRecipes.recipes;
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         } 
 
     }
@@ -59,7 +59,7 @@ export class RecipesService {
 
         const userRecipesIds = await this.getSimplifiedUserRecipesInfo(userId);
 
-        return { message: 'OK', updatedData: userRecipesIds, statusCode: 200 }
+        return { message: 'OK', responseData: userRecipesIds, statusCode: 200 }
 
     }
 
@@ -80,7 +80,7 @@ export class RecipesService {
 
         const latestRecipes: ISimplifiedRecipe[] = recipes.slice(-4);
 
-        return { message: 'OK', updatedData: latestRecipes, statusCode: 200 };
+        return { message: 'OK', responseData: latestRecipes, statusCode: 200 };
 
     }
 
@@ -124,10 +124,10 @@ export class RecipesService {
             await userRecipes.save();
             await recipe.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         } 
 
-        return { message: 'Updated', updatedData: recipe, statusCode: 200 };
+        return { message: 'Updated', responseData: recipe, statusCode: 200 };
 
     }
 
@@ -135,7 +135,7 @@ export class RecipesService {
 
         const recipe: IRecipeMongoose = await this.findRecipeById(recipeId);
 
-        return  { message: 'OK', updatedData: recipe, statusCode: 200 };
+        return  { message: 'OK', responseData: recipe, statusCode: 200 };
 
     }
 
@@ -169,14 +169,21 @@ export class RecipesService {
 
         const userRecipesIds: ISimplifiedRecipe[] = await this.getSimplifiedUserRecipesInfo(userId);
 
-        const filteredRecipes: IRecipeMongoose[] = await this.recipeModel.find({
-            $and: [
-                {_id: { $in: userRecipesIds}},
-                {recipeType: { $in: recipeType}}
-            ]
-        }).exec();
+        let filteredRecipes: IRecipeMongoose[]
 
-        return { message: 'OK', updatedData: filteredRecipes, statusCode: 200 };
+        try {
+            filteredRecipes = await this.recipeModel.find({
+                $and: [
+                    {_id: { $in: userRecipesIds}},
+                    {recipeType: { $in: recipeType}}
+                ]
+            }).exec();
+        } catch {
+            throw new InternalServerErrorException();
+        }
+        
+
+        return { message: 'OK', responseData: filteredRecipes, statusCode: 200 };
 
     }
 
@@ -192,10 +199,10 @@ export class RecipesService {
                 { $pull: { recipes: { _id: recipeId } }}
             ).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
-        return { message: 'Deleted', updatedData: recipeId, statusCode: 200 };
+        return { message: 'Deleted', responseData: recipeId, statusCode: 200 };
 
     }
 
@@ -206,7 +213,7 @@ export class RecipesService {
         try {
             await this.recipeModel.deleteMany({ _id: { $in: recipeIdArray }}).exec();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }        
     }
 
@@ -230,7 +237,7 @@ export class RecipesService {
         try {
             await userRecipes.save();
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
 
     }
@@ -240,7 +247,7 @@ export class RecipesService {
         try {
             await this.userRecipesModel.deleteOne({ userId: userId });
         } catch {
-            throw new RequestTimeoutException();
+            throw new InternalServerErrorException();
         }
         
     }
