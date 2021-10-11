@@ -29,16 +29,16 @@ let ListsController = class ListsController {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
-    async getSimplifiedUserListsInfo(userId) {
-        const response = await this.listService.getSimplifiedUserListsInfo(userId);
+    async getSimplifiedUserLists(userId) {
+        const response = await this.listService.getSimplifiedUserLists(userId);
         return response;
     }
-    async getSingleList(listId) {
-        const response = await this.listService.getSingleList(listId);
+    async getList(listId) {
+        const response = await this.listService.getList(listId);
         return response;
     }
-    async deleteSingleList(userId, listId) {
-        const response = await this.listService.deleteSingleUserList(userId, listId);
+    async deleteList(userId, listId) {
+        const response = await this.listService.deleteUserList(userId, listId);
         return response;
     }
     async addWeekRecipesToList(userId, listId, weekRecipes) {
@@ -70,6 +70,16 @@ let ListsController = class ListsController {
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Post('createList/:userId'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Created',
+        type: response_model_1.CreateListResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find user lists'
+    }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Body()),
@@ -79,35 +89,69 @@ __decorate([
 ], ListsController.prototype, "createList", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Get('getSimplifiedUserListsInfo/:userId'),
+    common_1.Get('getSimplifiedUserLists/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.GetSimplifiedUserListsResponse
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find user lists'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], ListsController.prototype, "getSimplifiedUserListsInfo", null);
+], ListsController.prototype, "getSimplifiedUserLists", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
-    common_1.Get('getSingleList/:listId'),
+    common_1.Get('getList/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.GetListResponse
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('listId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], ListsController.prototype, "getSingleList", null);
+], ListsController.prototype, "getList", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Delete('deleteSingleList/:userId/:listId'),
+    common_1.Delete('deleteList/:userId/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.DeleteListResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | Invalid list id | Could not find user lists | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
-], ListsController.prototype, "deleteSingleList", null);
+], ListsController.prototype, "deleteList", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Post('addWeekRecipesToList/:userId/:listId'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Created',
+        type: response_model_1.AddWeekRecipesToList
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
@@ -119,29 +163,59 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('removeWeekRecipesFromList/:userId/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.RemoveWeekRecipeFromListResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
     __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, list_model_1.WeekRecipesIds]),
+    __metadata("design:paramtypes", [String, String, list_model_1.WeekRecipesIdsDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "removeWeekRecipesFromList", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Patch('updateWeekRecipeIngredientInList/:userId/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.UpdateWeekRecipeIngredientInList
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
     __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, list_model_1.UpdatedWeekRecipeIngredient]),
+    __metadata("design:paramtypes", [String, String, list_model_1.UpdatedWeekRecipeIngredientDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "updateWeekRecipeIngredientInList", null);
 __decorate([
     openapi.ApiOperation({ description: "TO-DO: add addNormalRecipesToList -> use a new variable to store added recipes" }),
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Post('addListItem/:userId/:listId'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Created',
+        type: response_model_1.AddListItemResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
@@ -153,6 +227,16 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Patch('updateListItem/:userId/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'Created',
+        type: response_model_1.UpdateListItemResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),
@@ -164,6 +248,16 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('deleteListItem/:userId/:listId/:itemId'),
+    swagger_1.ApiOkResponse({
+        description: 'Created',
+        type: response_model_1.DeleteListItemResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid list id | No list with this id was found'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __param(1, common_1.Param('listId')),

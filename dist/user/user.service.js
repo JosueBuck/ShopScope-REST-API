@@ -33,6 +33,8 @@ let UserService = class UserService {
     }
     async createNewUser(userRegisterData) {
         const newUser = new this.userModel({
+            firstname: userRegisterData.firstname,
+            lastname: userRegisterData.lastname,
             username: userRegisterData.username,
             password: userRegisterData.password,
             email: userRegisterData.email,
@@ -45,7 +47,7 @@ let UserService = class UserService {
             return newUser;
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
     }
     async deleteUser(userId) {
@@ -64,9 +66,9 @@ let UserService = class UserService {
             await this.userModel.deleteOne({ _id: userId });
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException();
         }
-        return { message: 'Deleted', updatedData: userId, statusCode: 200 };
+        return { message: 'Deleted', responseData: userId, statusCode: 200 };
     }
     async findUserByName(username) {
         let user;
@@ -75,7 +77,7 @@ let UserService = class UserService {
             ;
         }
         catch (_a) {
-            throw new common_1.RequestTimeoutException();
+            throw new common_1.InternalServerErrorException('A problem occured while trying to find the user.');
         }
         return user;
     }
@@ -85,31 +87,56 @@ let UserService = class UserService {
             user = await this.userModel.findOne({ _id: userId }).exec();
         }
         catch (_a) {
-            throw new common_1.NotFoundException('Invalid user id');
+            throw new common_1.NotFoundException('Invalid user id.');
         }
         if (!user) {
-            throw new common_1.NotFoundException('Could not find user');
+            throw new common_1.NotFoundException('No user with this id.');
         }
         return user;
     }
     async loginUser(loginData) {
         const user = await this.findUserByName(loginData.username);
+        if (!user) {
+            throw new common_1.NotFoundException('Wrong username or password.');
+        }
         const authenticationResponse = await this.authService.authenticateUser(loginData, user);
-        return { message: 'Created', updatedData: authenticationResponse, statusCode: 201 };
+        user.password = 'xxxx';
+        const successfullLoginData = {
+            user: user,
+            jwt: authenticationResponse
+        };
+        return { message: 'Created', responseData: successfullLoginData, statusCode: 201 };
     }
     async registerUser(registerData) {
         const existingUsers = await this.findUserByName(registerData.username);
         if (existingUsers) {
-            throw new common_1.ConflictException('User with this name already exists');
+            throw new common_1.ConflictException('User with this username already exists.');
         }
         const hashedPassword = await this.authService.hashPassword(registerData.password);
         const userRegisterData = {
+            firstname: registerData.firstname,
+            lastname: registerData.lastname,
             username: registerData.username,
             password: hashedPassword,
             email: registerData.email
         };
         const newUser = await this.createNewUser(userRegisterData);
-        return { message: 'Created', updatedData: { username: newUser.username, email: newUser.email, id: newUser.id }, statusCode: 201 };
+        newUser.password = 'xxxx';
+        return { message: 'Created', responseData: newUser, statusCode: 201 };
+    }
+    async updateUserInformations(userId, updatedUser) {
+        const user = await this.findUserById(userId);
+        user.firstname = updatedUser.firstname;
+        user.lastname = updatedUser.lastname;
+        user.email = updatedUser.email;
+        try {
+            await user.save();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException('A problem occured while processing the api call');
+        }
+        user.password = 'xxxx';
+        return { message: 'OK', responseData: user, statusCode: 200 };
     }
 };
 UserService = __decorate([

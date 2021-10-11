@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { IsString, IsNotEmpty, ValidateNested, IsArray, ArrayMinSize } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IListItem, INewListItem, ListItemDto, NewListItemDto } from 'src/lists/models/list.model';
+import { ApiProperty } from '@nestjs/swagger';
 
 export const UserWeekSchema = new mongoose.Schema({
 
@@ -78,6 +79,10 @@ export interface IUserDayRecipe {
 
 export class NewUserDayRecipeDto {
 
+    @ApiProperty({
+        description: 'Recipe name',
+        example: 'testRecipe'
+    })
     @IsString()
     @IsNotEmpty()
     recipeName: string;
@@ -92,10 +97,18 @@ export class NewUserDayRecipeDto {
 }
 export class UserDayRecipeDto {
     
+    @ApiProperty({
+        description: 'Recipe id',
+        example: '612cb926a6effb11a4dbb962'
+    })
     @IsString()
     @IsNotEmpty()
     _id: string;
 
+    @ApiProperty({
+        description: 'Recipe name',
+        example: 'testRecipe'
+    })
     @IsString()
     @IsNotEmpty()
     recipeName: string;
@@ -111,10 +124,18 @@ export class UserDayRecipeDto {
 
 export class NewUserDayRecipeDataDto {
 
+    @ApiProperty({
+        description: 'Id of a day',
+        example: '612caa8c026d490b4b4c8d02'
+    })
     @IsString()
     @IsNotEmpty()
     dayId: string;
 
+    @ApiProperty({
+        description: 'Defines what type of meal this is',
+        example: 'lunch'
+    })
     @IsString()
     @IsNotEmpty()
     type: string;
@@ -128,10 +149,18 @@ export class NewUserDayRecipeDataDto {
 
 export class UserDayRecipeDataDto {
 
+    @ApiProperty({
+        description: 'Id of a day',
+        example: '612caa8c026d490b4b4c8d02'
+    })
     @IsString()
     @IsNotEmpty()
     dayId: string;
 
+    @ApiProperty({
+        description: 'Defines what type of meal this is',
+        example: 'lunch'
+    })
     @IsString()
     @IsNotEmpty()
     type: string;

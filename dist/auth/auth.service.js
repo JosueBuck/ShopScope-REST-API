@@ -18,12 +18,11 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async authenticateUser(loginData, user) {
-        if (!user) {
-            throw new common_1.NotFoundException('no user was found');
-        }
         const comparePasswordsResult = await this.comparePasswords(loginData.password, user.password);
         const userPayloadData = {
             _id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
             username: user.username,
             email: user.email
         };
@@ -31,7 +30,7 @@ let AuthService = class AuthService {
             return this.generateJWT({ userPayloadData });
         }
         else {
-            throw new common_1.UnauthorizedException('wrong password');
+            throw new common_1.UnauthorizedException('Wrong username or password.');
         }
     }
     async generateJWT(payload) {

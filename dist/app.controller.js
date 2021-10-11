@@ -22,7 +22,7 @@ let AppController = class AppController {
         this.appService = appService;
     }
     getHello(res) {
-        res.redirect(common_1.HttpStatus.MOVED_PERMANENTLY, `api`);
+        res.redirect(common_1.HttpStatus.MOVED_PERMANENTLY, `api-doc`);
     }
 };
 __decorate([

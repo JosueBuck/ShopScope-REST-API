@@ -16,7 +16,6 @@ exports.UserController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const auth_service_1 = require("../auth/auth.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt.auth.guard");
 const user_auth_guard_1 = require("../auth/guards/user.auth.guard");
 const response_model_1 = require("../models/response.model");
@@ -38,9 +37,27 @@ let UserController = class UserController {
         const response = await this.userService.deleteUser(userId);
         return response;
     }
+    async updateUserInformations(userId, updatedUser) {
+        const response = await this.userService.updateUserInformations(userId, updatedUser);
+        ;
+        return response;
+    }
 };
 __decorate([
     common_1.Post('login'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Created',
+        type: response_model_1.LoginResponse,
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Wrong username or password'
+    }),
+    swagger_1.ApiUnauthorizedResponse({
+        description: 'Wrong username or password'
+    }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
@@ -48,7 +65,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
+    openapi.ApiOperation({ description: "Add jwt token to response, so the user doesnt need to login again" }),
     common_1.Post('register'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Created',
+        type: response_model_1.RegisterResponse,
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiConflictResponse({
+        description: 'User with this name already exists'
+    }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
@@ -58,12 +86,42 @@ __decorate([
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Delete('deleteUser/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.DeleteUserResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | No user with this id.'
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
+__decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Put('updateUserInformations/:userId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.UpdateUserInformationsResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | No user with this id.'
+    }),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_model_1.UpdatedUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateUserInformations", null);
 UserController = __decorate([
     swagger_1.ApiTags('user'),
     common_1.Controller('user'),

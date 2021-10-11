@@ -15,6 +15,7 @@ const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const list_model_1 = require("../../lists/models/list.model");
+const swagger_1 = require("@nestjs/swagger");
 exports.UserWeekSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     week: { type: [
@@ -33,6 +34,10 @@ class NewUserDayRecipeDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Recipe name',
+        example: 'testRecipe'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
@@ -52,11 +57,19 @@ class UserDayRecipeDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Recipe id',
+        example: '612cb926a6effb11a4dbb962'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "_id", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Recipe name',
+        example: 'testRecipe'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
@@ -76,11 +89,19 @@ class NewUserDayRecipeDataDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Id of a day',
+        example: '612caa8c026d490b4b4c8d02'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDataDto.prototype, "dayId", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Defines what type of meal this is',
+        example: 'lunch'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
@@ -98,11 +119,19 @@ class UserDayRecipeDataDto {
     }
 }
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Id of a day',
+        example: '612caa8c026d490b4b4c8d02'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDataDto.prototype, "dayId", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Defines what type of meal this is',
+        example: 'lunch'
+    }),
     class_validator_1.IsString(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)

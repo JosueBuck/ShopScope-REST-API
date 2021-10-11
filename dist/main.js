@@ -11,14 +11,14 @@ async function bootstrap() {
     const config = new swagger_1.DocumentBuilder()
         .setTitle('ShopeScope')
         .setDescription('The official documentation for the ShopeScope REST APi')
-        .setVersion('0.1')
+        .setVersion('0.0.1')
         .addTag('user')
         .addTag('weeks')
         .addTag('recipes')
         .addTag('lists')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
-    swagger_1.SwaggerModule.setup('api', app, document);
+    swagger_1.SwaggerModule.setup('api-doc', app, document);
     await app.listen(process.env.PORT || 8080);
 }
 bootstrap();
