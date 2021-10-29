@@ -25,11 +25,13 @@ let RecipesService = class RecipesService {
     async createRecipe(recipe, userId) {
         const newRecipe = new this.recipeModel({
             name: recipe.name,
+            garnish: recipe.garnish,
             recipeType: recipe.recipeType,
             cookingTime: recipe.cookingTime,
             description: recipe.description,
             ingredients: recipe.ingredients,
-            instructions: recipe.instructions
+            instructions: recipe.instructions,
+            recipePictureUrl: recipe.recipePictureUrl
         });
         await this.addRecipeToUserRecipes(newRecipe, userId);
         try {
@@ -44,7 +46,10 @@ let RecipesService = class RecipesService {
         const recipeInfo = {
             _id: recipe.id,
             recipeName: recipe.name,
-            recipeType: recipe.recipeType
+            garnish: recipe.garnish,
+            cookingTime: recipe.cookingTime,
+            recipeType: recipe.recipeType,
+            recipePictureUrl: recipe.recipePictureUrl
         };
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         userRecipes.recipes.push(recipeInfo);
@@ -87,16 +92,20 @@ let RecipesService = class RecipesService {
     async updateRecipe(userId, updatedRecipe) {
         let recipe = await this.findRecipeById(updatedRecipe.id);
         recipe.name = updatedRecipe.name;
+        recipe.garnish = updatedRecipe.garnish;
         recipe.recipeType = updatedRecipe.recipeType;
         recipe.cookingTime = updatedRecipe.cookingTime;
         recipe.description = updatedRecipe.description;
         recipe.ingredients = updatedRecipe.ingredients;
         recipe.instructions = updatedRecipe.instructions;
+        recipe.recipePictureUrl = updatedRecipe.recipePictureUrl;
         const userRecipes = await this.getSimplifiedUserRecipesByUserId(userId);
         userRecipes.recipes.map((recipeInfo) => {
             if (recipeInfo._id == recipe.id) {
                 recipeInfo.recipeName = updatedRecipe.name;
+                recipeInfo.garnish = updatedRecipe.garnish;
                 recipeInfo.recipeType = updatedRecipe.recipeType;
+                recipeInfo.recipePictureUrl = updatedRecipe.recipePictureUrl;
             }
         });
         try {

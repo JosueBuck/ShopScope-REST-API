@@ -29,15 +29,17 @@ var RecipeType;
 })(RecipeType = exports.RecipeType || (exports.RecipeType = {}));
 exports.RecipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    garnish: { type: String, required: true },
     recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
     ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String }], required: true },
-    instructions: [{ type: String, required: true }]
+    instructions: [{ type: String, required: true }],
+    recipePictureUrl: { type: String, required: true }
 });
 class NewRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { name: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").NewIngredientDto] }, instructions: { required: true, type: () => [String] } };
+        return { name: { required: true, type: () => String }, garnish: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").NewIngredientDto] }, instructions: { required: true, type: () => [String] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -48,6 +50,14 @@ __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'testGarnish'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewRecipeDto.prototype, "garnish", void 0);
 __decorate([
     swagger_1.ApiProperty({
         example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
@@ -93,6 +103,14 @@ __decorate([
     class_validator_1.ArrayMinSize(1),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "instructions", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'testUrl'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewRecipeDto = NewRecipeDto;
 class NewIngredientDto {
     static _OPENAPI_METADATA_FACTORY() {
@@ -179,7 +197,7 @@ __decorate([
 exports.IngredientDto = IngredientDto;
 class UpdatedRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String }, name: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").IngredientDto] }, instructions: { required: true, type: () => [String] } };
+        return { id: { required: true, type: () => String }, name: { required: true, type: () => String }, garnish: { required: true, type: () => String }, recipeType: { required: true, enum: require("./recipe.model").RecipeType, isArray: true }, cookingTime: { required: true, type: () => Number }, description: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("./recipe.model").IngredientDto] }, instructions: { required: true, type: () => [String] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -200,6 +218,13 @@ __decorate([
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'testGarnish'
+    }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], UpdatedRecipeDto.prototype, "garnish", void 0);
 __decorate([
     swagger_1.ApiProperty({
         description: 'Recipe Type',
@@ -249,6 +274,14 @@ __decorate([
     class_validator_1.ArrayMinSize(1),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "instructions", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'www.nicepics.com/recipePicture01'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UpdatedRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UpdatedRecipeDto = UpdatedRecipeDto;
 class RecipeTypeDto {
     static _OPENAPI_METADATA_FACTORY() {
@@ -266,6 +299,6 @@ __decorate([
 exports.RecipeTypeDto = RecipeTypeDto;
 exports.UserRecipesSchema = new mongoose.Schema({
     userId: { type: String, required: true },
-    recipes: { type: [{ _id: String, recipeName: String, recipeType: [String] }] }
+    recipes: { type: [{ _id: String, recipeName: String, garnish: String, cookingTime: Number, recipeType: [String], recipePictureUrl: String }] }
 });
 //# sourceMappingURL=recipe.model.js.map

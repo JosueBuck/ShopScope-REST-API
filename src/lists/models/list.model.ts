@@ -19,7 +19,7 @@ export enum ItemType {
     DRINKS = "DRINKS",
     SNACKS = "SNACKS",
     SWEETS = "SWEETS",
-
+    OTHERS = "OTHERS"
 }
 
 export const ListSchema = new mongoose.Schema({
@@ -88,7 +88,9 @@ export interface IUserListRecipe {
 
     _id: string;
     recipeName: string;
+    garnish: string;
     ingredients: ListItemDto[];
+    recipePictureUrl: string;
 
 }
 

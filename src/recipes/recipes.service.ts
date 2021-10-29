@@ -17,11 +17,13 @@ export class RecipesService {
         const newRecipe: IRecipeMongoose = new this.recipeModel(
             {
                 name: recipe.name,
+                garnish: recipe.garnish,
                 recipeType: recipe.recipeType,
                 cookingTime: recipe.cookingTime,
                 description: recipe.description,
                 ingredients: recipe.ingredients,
-                instructions: recipe.instructions
+                instructions: recipe.instructions,
+                recipePictureUrl: recipe.recipePictureUrl
             }
         );
 
@@ -31,6 +33,7 @@ export class RecipesService {
             await newRecipe.save();
             return { message: 'Created', responseData: newRecipe, statusCode: 201 } 
         } catch {
+            //remove recipe from user recipes
             throw new InternalServerErrorException();
         } 
     }
@@ -40,7 +43,10 @@ export class RecipesService {
         const recipeInfo: ISimplifiedRecipe = {
             _id: recipe.id,
             recipeName: recipe.name,
-            recipeType: recipe.recipeType
+            garnish: recipe.garnish,
+            cookingTime: recipe.cookingTime,
+            recipeType: recipe.recipeType,
+            recipePictureUrl: recipe.recipePictureUrl
         }
 
         const userRecipes: IUserRecipesMongoose = await this.getSimplifiedUserRecipesByUserId(userId);
@@ -106,17 +112,21 @@ export class RecipesService {
 
         let recipe: IRecipeMongoose = await this.findRecipeById(updatedRecipe.id);
         recipe.name = updatedRecipe.name;
+        recipe.garnish = updatedRecipe.garnish;
         recipe.recipeType = updatedRecipe.recipeType;
         recipe.cookingTime = updatedRecipe.cookingTime;
         recipe.description = updatedRecipe.description;
         recipe.ingredients = updatedRecipe.ingredients;
         recipe.instructions = updatedRecipe.instructions;
+        recipe.recipePictureUrl = updatedRecipe.recipePictureUrl;
 
         const userRecipes: IUserRecipesMongoose = await this.getSimplifiedUserRecipesByUserId(userId);
         userRecipes.recipes.map((recipeInfo) => {
             if (recipeInfo._id == recipe.id) {
                 recipeInfo.recipeName = updatedRecipe.name;
+                recipeInfo.garnish = updatedRecipe.garnish;
                 recipeInfo.recipeType = updatedRecipe.recipeType;
+                recipeInfo.recipePictureUrl = updatedRecipe.recipePictureUrl;
             }
         })
 

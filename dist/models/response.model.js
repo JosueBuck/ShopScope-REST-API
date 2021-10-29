@@ -220,6 +220,7 @@ __decorate([
                         {
                             '_id': '612cb926a6effb11a4dbb962',
                             'recipeName': 'testRecipe5',
+                            'garnish': 'testGarnish',
                             'ingredients': [
                                 {
                                     '_id': '612cb926a6effb11a4dbb963',
@@ -229,7 +230,8 @@ __decorate([
                                     'itemType': 'SNACKS',
                                     'isDone': false
                                 }
-                            ]
+                            ],
+                            'recipePictureUrl': 'testUrl',
                         }
                     ],
                     'dinner': []
@@ -471,6 +473,7 @@ __decorate([
             ],
             '_id': '612d0b3cd963d505785851dd',
             'name': 'testRecipe',
+            'garnish': 'testGarnish',
             'cookingTime': 30,
             'description': 'This is a test description',
             'ingredients': [
@@ -482,6 +485,7 @@ __decorate([
                     'itemType': 'SNACKS'
                 }
             ],
+            'recipePictureUrl': 'testUrl',
             '__v': 0
         }
     }),
@@ -516,7 +520,8 @@ __decorate([
                 'Updated instruction 2'
             ],
             '_id': '612d0b3cd963d505785851dd',
-            'name': 'updatedTestIngredient',
+            'name': 'updatedRecipe',
+            'garnish': 'updatedGarnish',
             'cookingTime': 20,
             'description': 'This is a test description',
             'ingredients': [
@@ -528,6 +533,7 @@ __decorate([
                     'itemType': 'SNACKS'
                 }
             ],
+            'recipePictureUrl': 'testUrl',
             '__v': 1
         }
     }),
@@ -559,14 +565,20 @@ __decorate([
                     'FASTFOOD'
                 ],
                 '_id': '612d0b3cd963d505785851dd',
-                'recipeName': 'updatedTestRecipe'
+                'recipeName': 'testRecipe',
+                'garnish': 'testGarnish',
+                'cookingTime': 30,
+                'recipePictureUrl': 'testUrl'
             },
             {
                 'recipeType': [
                     'FASTFOOD'
                 ],
                 '_id': '612d11228dafa20782cce9fa',
-                'recipeName': 'testRecipe'
+                'recipeName': 'testRecipe',
+                'garnish': 'testGarnish',
+                'cookingTime': 30,
+                'recipePictureUrl': 'testUrl',
             }
         ]
     }),
@@ -604,6 +616,7 @@ __decorate([
                 ],
                 '_id': '612d1cd0677c0c08912bae54',
                 'name': 'testRecipe',
+                'garnish': 'testGarnish',
                 'cookingTime': 30,
                 'description': 'This is a test description',
                 'ingredients': [
@@ -615,6 +628,7 @@ __decorate([
                         'itemType': 'SNACKS'
                     }
                 ],
+                'recipePictureUrl': 'testUrl',
                 '__v': 0
             }
         ]
@@ -653,6 +667,7 @@ __decorate([
                 ],
                 '_id': '612d1cd0677c0c08912bae54',
                 'name': 'testRecipe',
+                'garnish': 'testGarnish',
                 'cookingTime': 30,
                 'description': 'This is a test description',
                 'ingredients': [
@@ -664,6 +679,7 @@ __decorate([
                         'itemType': 'SNACKS'
                     }
                 ],
+                'recipePictureUrl': 'testUrl',
                 '__v': 0
             }
         ]
@@ -738,6 +754,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -747,7 +764,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -836,6 +854,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -845,7 +864,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -930,6 +950,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -939,7 +960,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1053,6 +1075,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1062,7 +1085,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1122,6 +1146,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1131,7 +1156,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1191,6 +1217,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1200,7 +1227,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1260,6 +1288,7 @@ __decorate([
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1269,7 +1298,8 @@ __decorate([
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [],

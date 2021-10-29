@@ -30,6 +30,7 @@ var ItemType;
     ItemType["DRINKS"] = "DRINKS";
     ItemType["SNACKS"] = "SNACKS";
     ItemType["SWEETS"] = "SWEETS";
+    ItemType["OTHERS"] = "OTHERS";
 })(ItemType = exports.ItemType || (exports.ItemType = {}));
 exports.ListSchema = new mongoose.Schema({
     name: { type: String, required: true },

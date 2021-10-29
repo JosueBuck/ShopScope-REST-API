@@ -12,7 +12,8 @@ export declare enum ItemType {
     HYGIENEPRODUCTS = "HYGIENEPRODUCTS",
     DRINKS = "DRINKS",
     SNACKS = "SNACKS",
-    SWEETS = "SWEETS"
+    SWEETS = "SWEETS",
+    OTHERS = "OTHERS"
 }
 export declare const ListSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IListMongoose extends mongoose.Document {
@@ -56,7 +57,9 @@ export interface INewListItem {
 export interface IUserListRecipe {
     _id: string;
     recipeName: string;
+    garnish: string;
     ingredients: ListItemDto[];
+    recipePictureUrl: string;
 }
 export declare class NewListDto {
     name: string;

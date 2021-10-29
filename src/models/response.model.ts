@@ -190,6 +190,7 @@ export class AddRecipeToDayResponse {
                             {
                                 '_id': '612cb926a6effb11a4dbb962',
                                 'recipeName': 'testRecipe5',
+                                'garnish': 'testGarnish',
                                 'ingredients': [
                                     {
                                         '_id': '612cb926a6effb11a4dbb963',
@@ -199,7 +200,8 @@ export class AddRecipeToDayResponse {
                                         'itemType': 'SNACKS',
                                         'isDone': false
                                     }
-                                ]
+                                ],
+                                'recipePictureUrl': 'testUrl',
                             }
                         ],
                         'dinner': []
@@ -427,6 +429,7 @@ export class CreateRecipeResponse {
             ],
             '_id': '612d0b3cd963d505785851dd',
             'name': 'testRecipe',
+            'garnish': 'testGarnish',
             'cookingTime': 30,
             'description': 'This is a test description',
             'ingredients': [
@@ -438,6 +441,7 @@ export class CreateRecipeResponse {
                     'itemType': 'SNACKS'
                 }
             ],
+            'recipePictureUrl': 'testUrl',
             '__v': 0
         }
     })
@@ -467,7 +471,8 @@ export class UpdateRecipeResponse {
                 'Updated instruction 2'
             ],
             '_id': '612d0b3cd963d505785851dd',
-            'name': 'updatedTestIngredient',
+            'name': 'updatedRecipe',
+            'garnish': 'updatedGarnish',
             'cookingTime': 20,
             'description': 'This is a test description',
             'ingredients': [
@@ -479,6 +484,7 @@ export class UpdateRecipeResponse {
                     'itemType': 'SNACKS'
                 }
             ],
+            'recipePictureUrl': 'testUrl',
             '__v': 1
         }
     })
@@ -505,14 +511,20 @@ export class GetSimplifiedUserRecipesResponse {
                     'FASTFOOD'
                 ],
                 '_id': '612d0b3cd963d505785851dd',
-                'recipeName': 'updatedTestRecipe'
+                'recipeName': 'testRecipe',
+                'garnish': 'testGarnish',
+                'cookingTime': 30,
+                'recipePictureUrl': 'testUrl'
             },
             {
                 'recipeType': [
                     'FASTFOOD'
                 ],
                 '_id': '612d11228dafa20782cce9fa',
-                'recipeName': 'testRecipe'
+                'recipeName': 'testRecipe',
+                'garnish': 'testGarnish',
+                'cookingTime': 30,
+                'recipePictureUrl': 'testUrl',
             }
         ]
     })
@@ -545,6 +557,7 @@ export class getSimplifiedUserRecipesOfRecipeTypeResponse {
                 ],
                 '_id': '612d1cd0677c0c08912bae54',
                 'name': 'testRecipe',
+                'garnish': 'testGarnish',
                 'cookingTime': 30,
                 'description': 'This is a test description',
                 'ingredients': [
@@ -556,6 +569,7 @@ export class getSimplifiedUserRecipesOfRecipeTypeResponse {
                         'itemType': 'SNACKS'
                     }
                 ],
+                'recipePictureUrl': 'testUrl',
                 '__v': 0
             }
         ]
@@ -589,6 +603,7 @@ export class GetRecipeResponse {
                 ],
                 '_id': '612d1cd0677c0c08912bae54',
                 'name': 'testRecipe',
+                'garnish': 'testGarnish',
                 'cookingTime': 30,
                 'description': 'This is a test description',
                 'ingredients': [
@@ -600,6 +615,7 @@ export class GetRecipeResponse {
                         'itemType': 'SNACKS'
                     }
                 ],
+                'recipePictureUrl': 'testUrl',
                 '__v': 0
             }
         ]
@@ -666,6 +682,7 @@ export class CreateListResponse {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -675,7 +692,8 @@ export class CreateListResponse {
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -754,6 +772,7 @@ export class GetListResponse {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -763,7 +782,8 @@ export class GetListResponse {
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -838,6 +858,7 @@ export class AddWeekRecipesToList {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -847,7 +868,8 @@ export class AddWeekRecipesToList {
                             'itemType': 'SNACKS',
                             'isDone': false
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -951,6 +973,7 @@ export class UpdateWeekRecipeIngredientInList {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -960,7 +983,8 @@ export class UpdateWeekRecipeIngredientInList {
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1015,6 +1039,7 @@ export class AddListItemResponse {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1024,7 +1049,8 @@ export class AddListItemResponse {
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1079,6 +1105,7 @@ export class UpdateListItemResponse {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1088,7 +1115,8 @@ export class UpdateListItemResponse {
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [
@@ -1143,6 +1171,7 @@ export class DeleteListItemResponse {
                 {
                     '_id': '612cb926a6effb11a4dbb962',
                     'recipeName': 'testRecipe',
+                    'garnish': 'testGarnish',
                     'ingredients': [
                         {
                             '_id': '612cb926a6effb11a4dbb963',
@@ -1152,7 +1181,8 @@ export class DeleteListItemResponse {
                             'itemType': 'SNACKS',
                             'isDone': true
                         }
-                    ]
+                    ],
+                    'recipePictureUrl': 'testUrl'
                 }
             ],
             'listItems': [],

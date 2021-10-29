@@ -30,21 +30,29 @@ export interface IUserDayRecipeData {
 }
 export interface INewUserDayRecipe {
     recipeName: string;
+    garnish: string;
     ingredients: INewListItem[];
+    recipePictureUrl: string;
 }
 export interface IUserDayRecipe {
     _id?: string;
     recipeName: string;
+    garnish: string;
     ingredients: IListItem[];
+    recipePictureUrl: string;
 }
 export declare class NewUserDayRecipeDto {
     recipeName: string;
+    garnish: string;
     ingredients: NewListItemDto[];
+    recipePictureUrl: string;
 }
 export declare class UserDayRecipeDto {
     _id: string;
     recipeName: string;
+    garnish: string;
     ingredients: ListItemDto[];
+    recipePictureUrl: string;
 }
 export declare class NewUserDayRecipeDataDto {
     dayId: string;

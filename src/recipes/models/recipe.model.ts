@@ -20,11 +20,13 @@ export enum RecipeType {
 export const RecipeSchema = new mongoose.Schema({
 
     name: { type: String, required: true },
+    garnish: { type: String, required: true },
     recipeType: [{ type: String, required: true }],
     cookingTime: { type: Number, required: true },
     description: { type: String, required: true },
     ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String}], required: true },
-    instructions: [{ type: String, required: true }]
+    instructions: [{ type: String, required: true }],
+    recipePictureUrl: { type: String, required: true }
 
 });
 
@@ -32,11 +34,13 @@ export interface IRecipeMongoose extends mongoose.Document {
 
     id: string;
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 
 }
 
@@ -44,22 +48,26 @@ export interface IRecipe {
 
     id: string;
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 
 }
 
 export interface INewRecipe {
 
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 
 }
 
@@ -80,6 +88,13 @@ export class NewRecipeDto {
     @IsString()
     @IsNotEmpty()
     name: string;
+
+    @ApiProperty({
+        example: 'testGarnish'
+    })
+    @IsString()
+    @IsNotEmpty()
+    garnish: string;
 
     @ApiProperty({
         example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
@@ -120,6 +135,13 @@ export class NewRecipeDto {
     @IsNotEmpty()
     @ArrayMinSize(1)
     instructions: string[];
+
+    @ApiProperty({
+        example: 'testUrl'
+    })
+    @IsString()
+    @IsNotEmpty()
+    recipePictureUrl: string;
 
 }
 
@@ -213,6 +235,12 @@ export class UpdatedRecipeDto {
     name: string;
 
     @ApiProperty({
+        example: 'testGarnish'
+    })
+    @IsString()
+    garnish: string;
+
+    @ApiProperty({
         description: 'Recipe Type',
         example: RecipeType.FASTFOOD
     })
@@ -256,6 +284,13 @@ export class UpdatedRecipeDto {
     @ArrayMinSize(1)
     instructions: string[];
 
+    @ApiProperty({
+        example: 'www.nicepics.com/recipePicture01'
+    })
+    @IsString()
+    @IsNotEmpty()
+    recipePictureUrl: string;
+
 }
 
 export class RecipeTypeDto {
@@ -274,7 +309,7 @@ export class RecipeTypeDto {
 export const UserRecipesSchema = new mongoose.Schema({
 
     userId: { type: String, required: true},
-    recipes: { type: [{ _id: String, recipeName: String, recipeType: [String] }] }
+    recipes: { type: [{ _id: String, recipeName: String, garnish: String, cookingTime: Number,  recipeType: [String], recipePictureUrl: String }] }
 
 });
 
@@ -298,6 +333,9 @@ export interface ISimplifiedRecipe {
 
     _id: string;
     recipeName: string;
+    garnish: string;
+    cookingTime: number;
     recipeType: RecipeType[];
+    recipePictureUrl: String;
     
 }

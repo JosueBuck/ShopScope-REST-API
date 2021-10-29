@@ -11,9 +11,9 @@ export const UserWeekSchema = new mongoose.Schema({
         [ 
             { 
                 name: String, 
-                breakfast: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
-                lunch: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
-                dinner: { type: [ { recipeName: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] } ,
+                breakfast: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] }, recipePictureUrl: String } ] } ,
+                lunch: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
+                dinner: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
             } 
         ] 
     }
@@ -65,7 +65,9 @@ export interface IUserDayRecipeData {
 export interface INewUserDayRecipe {
 
     recipeName: string;
+    garnish: string;
     ingredients: INewListItem[];
+    recipePictureUrl: string;
 
 }
 
@@ -73,7 +75,9 @@ export interface IUserDayRecipe {
 
     _id?: string;
     recipeName: string;
+    garnish: string;
     ingredients: IListItem[];
+    recipePictureUrl: string;
 
 }
 
@@ -87,12 +91,27 @@ export class NewUserDayRecipeDto {
     @IsNotEmpty()
     recipeName: string;
 
+    @ApiProperty({
+        description: 'Garnish name',
+        example: 'testGarnish'
+    })
+    @IsString()
+    @IsNotEmpty()
+    garnish: string;
+
     @IsArray()
     @ValidateNested()
     @IsNotEmpty()
     @ArrayMinSize(1)
     @Type(() => NewListItemDto)
     ingredients: NewListItemDto[];
+
+    @ApiProperty({
+        example: 'testUrl'
+    })
+    @IsString()
+    @IsNotEmpty()
+    recipePictureUrl: string;
 
 }
 export class UserDayRecipeDto {
@@ -113,12 +132,27 @@ export class UserDayRecipeDto {
     @IsNotEmpty()
     recipeName: string;
 
+    @ApiProperty({
+        description: 'Garnish name',
+        example: 'testGarnish'
+    })
+    @IsString()
+    @IsNotEmpty()
+    garnish: string;
+
     @IsArray()
     @ValidateNested()
     @IsNotEmpty()
     @ArrayMinSize(1)
     @Type(() => ListItemDto)
     ingredients: ListItemDto[];
+
+    @ApiProperty({
+        example: 'testUrl'
+    })
+    @IsString()
+    @IsNotEmpty()
+    recipePictureUrl: string;
 
 }
 

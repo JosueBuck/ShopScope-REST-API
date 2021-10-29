@@ -14,28 +14,34 @@ export declare const RecipeSchema: mongoose.Schema<mongoose.Document<any, any>, 
 export interface IRecipeMongoose extends mongoose.Document {
     id: string;
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 }
 export interface IRecipe {
     id: string;
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 }
 export interface INewRecipe {
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IIngredient[];
     instructions: string[];
+    recipePictureUrl: string;
 }
 export interface IIngredient {
     name: string;
@@ -45,11 +51,13 @@ export interface IIngredient {
 }
 export declare class NewRecipeDto {
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: NewIngredientDto[];
     instructions: string[];
+    recipePictureUrl: string;
 }
 export declare class NewIngredientDto {
     name: string;
@@ -67,11 +75,13 @@ export declare class IngredientDto {
 export declare class UpdatedRecipeDto {
     id: string;
     name: string;
+    garnish: string;
     recipeType: RecipeType[];
     cookingTime: number;
     description: string;
     ingredients: IngredientDto[];
     instructions: string[];
+    recipePictureUrl: string;
 }
 export declare class RecipeTypeDto {
     recipeType: RecipeType[];
@@ -90,5 +100,8 @@ export interface IUserRecipes {
 export interface ISimplifiedRecipe {
     _id: string;
     recipeName: string;
+    garnish: string;
+    cookingTime: number;
     recipeType: RecipeType[];
+    recipePictureUrl: String;
 }

@@ -21,16 +21,16 @@ exports.UserWeekSchema = new mongoose.Schema({
     week: { type: [
             {
                 name: String,
-                breakfast: { type: [{ recipeName: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
-                lunch: { type: [{ recipeName: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
-                dinner: { type: [{ recipeName: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
+                breakfast: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
+                lunch: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
+                dinner: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
             }
         ]
     }
 });
 class NewUserDayRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { recipeName: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").NewListItemDto] } };
+        return { recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").NewListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -43,6 +43,15 @@ __decorate([
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "recipeName", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Garnish name',
+        example: 'testGarnish'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewUserDayRecipeDto.prototype, "garnish", void 0);
+__decorate([
     class_validator_1.IsArray(),
     class_validator_1.ValidateNested(),
     class_validator_1.IsNotEmpty(),
@@ -50,10 +59,18 @@ __decorate([
     class_transformer_1.Type(() => list_model_1.NewListItemDto),
     __metadata("design:type", Array)
 ], NewUserDayRecipeDto.prototype, "ingredients", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'testUrl'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewUserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewUserDayRecipeDto = NewUserDayRecipeDto;
 class UserDayRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { _id: { required: true, type: () => String }, recipeName: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").ListItemDto] } };
+        return { _id: { required: true, type: () => String }, recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").ListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -75,6 +92,15 @@ __decorate([
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "recipeName", void 0);
 __decorate([
+    swagger_1.ApiProperty({
+        description: 'Garnish name',
+        example: 'testGarnish'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UserDayRecipeDto.prototype, "garnish", void 0);
+__decorate([
     class_validator_1.IsArray(),
     class_validator_1.ValidateNested(),
     class_validator_1.IsNotEmpty(),
@@ -82,6 +108,14 @@ __decorate([
     class_transformer_1.Type(() => list_model_1.ListItemDto),
     __metadata("design:type", Array)
 ], UserDayRecipeDto.prototype, "ingredients", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        example: 'testUrl'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UserDayRecipeDto = UserDayRecipeDto;
 class NewUserDayRecipeDataDto {
     static _OPENAPI_METADATA_FACTORY() {
