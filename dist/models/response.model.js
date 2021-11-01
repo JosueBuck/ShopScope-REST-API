@@ -778,6 +778,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
     }),
@@ -806,7 +807,8 @@ __decorate([
         example: [
             {
                 '_id': '612df114d5f15405daeb8b86',
-                'listName': 'testList'
+                'listName': 'testList',
+                'listPictureUrl': 'www.testUrl.com',
             }
         ]
     }),
@@ -878,6 +880,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
     }),
@@ -974,6 +977,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 1
         }
     }),
@@ -1028,6 +1032,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 2
         }
     }),
@@ -1099,6 +1104,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 3
         }
     }),
@@ -1170,6 +1176,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 4
         }
     }),
@@ -1241,6 +1248,7 @@ __decorate([
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
     }),
@@ -1303,6 +1311,7 @@ __decorate([
                 }
             ],
             'listItems': [],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
     }),

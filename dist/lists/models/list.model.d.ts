@@ -23,6 +23,7 @@ export interface IListMongoose extends mongoose.Document {
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    listPictureUrl: string;
 }
 export interface IList {
     id: string;
@@ -31,12 +32,19 @@ export interface IList {
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    listPictureUrl: string;
 }
 export interface INewList {
     name: string;
     description: string;
     weekRecipes: UserDayRecipeDto[];
     listItems: INewListItem[];
+    listPictureUrl: string;
+}
+export interface IUpdatedList {
+    name: string;
+    description: string;
+    listPictureUrl: string;
 }
 export interface IListItem {
     _id?: string;
@@ -66,6 +74,12 @@ export declare class NewListDto {
     description: string;
     weekRecipes: UserDayRecipeDto[];
     listItems: NewListItemDto[];
+    listPictureUrl: string;
+}
+export declare class UpdatedListDto {
+    name: string;
+    description: string;
+    listPictureUrl: string;
 }
 export declare class NewListItemDto {
     name: string;
@@ -115,6 +129,7 @@ export interface IUserLists {
 export interface ISimplifiedList {
     _id: string;
     listName: string;
+    listPictureUrl: string;
 }
 export interface IMongooseIdArray {
     id: string;

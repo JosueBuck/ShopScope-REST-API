@@ -40,10 +40,35 @@ let ListsService = class ListsService {
         }
         return { message: 'Created', responseData: newList, statusCode: 201 };
     }
+    async updateListSettings(updatedList, listId) {
+        const list = await this.findListById(listId);
+        list.name = updatedList.name;
+        list.description = updatedList.description;
+        list.listPictureUrl = updatedList.listPictureUrl;
+        try {
+            list.save();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException();
+        }
+        return { message: 'OK', responseData: list, statusCode: 201 };
+    }
+    async clearList(listId) {
+        const list = await this.findListById(listId);
+        list.listItems = [];
+        try {
+            list.save();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException();
+        }
+        return { message: 'OK', responseData: list, statusCode: 201 };
+    }
     async addListToUserLists(list, userId) {
         const simplifiedList = {
             _id: list.id,
-            listName: list.name
+            listName: list.name,
+            listPictureUrl: list.listPictureUrl
         };
         const userLists = await this.getSimplifiedUserListsByUserId(userId);
         userLists.lists.push(simplifiedList);

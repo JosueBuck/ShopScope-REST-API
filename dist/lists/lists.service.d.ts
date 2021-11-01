@@ -1,11 +1,13 @@
 import { Model } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
-import { IList, IListItem, IListMongoose, INewList, INewListItem, ISimplifiedList, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient } from './models/list.model';
+import { IList, IListItem, IListMongoose, INewList, INewListItem, ISimplifiedList, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient, IUpdatedList } from './models/list.model';
 export declare class ListsService {
     private readonly listModel;
     private readonly userListsModel;
     constructor(listModel: Model<IList>, userListsModel: Model<IUserLists>);
     createList(list: INewList, userId: string): Promise<IResponse>;
+    updateListSettings(updatedList: IUpdatedList, listId: string): Promise<IResponse>;
+    clearList(listId: string): Promise<IResponse>;
     addListToUserLists(list: IListMongoose, userId: string): Promise<void>;
     getSimplifiedUserLists(userId: string): Promise<IResponse>;
     getSimplifiedUserListsByUserId(userId: string): Promise<IUserListsMongoose>;

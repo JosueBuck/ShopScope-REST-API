@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserListsSchema = exports.UpdatedWeekRecipeIngredientDto = exports.WeekRecipesIdsDto = exports.UserListRecipesDto = exports.UpdatedListItemDto = exports.ListItemDto = exports.NewListItemDto = exports.NewListDto = exports.ListSchema = exports.ItemType = void 0;
+exports.UserListsSchema = exports.UpdatedWeekRecipeIngredientDto = exports.WeekRecipesIdsDto = exports.UserListRecipesDto = exports.UpdatedListItemDto = exports.ListItemDto = exports.NewListItemDto = exports.UpdatedListDto = exports.NewListDto = exports.ListSchema = exports.ItemType = void 0;
 const openapi = require("@nestjs/swagger");
 const mongoose = require("mongoose");
 const class_validator_1 = require("class-validator");
@@ -38,11 +38,14 @@ exports.ListSchema = new mongoose.Schema({
     itemTypes: [{ type: String, required: true }],
     weekRecipes: { type: [{ recipeName: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
     listItems: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true },
+    listPictureUrl: { type: String, required: true }
 });
+;
+;
 ;
 class NewListDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, weekRecipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] }, listItems: { required: true, type: () => [require("./list.model").NewListItemDto] } };
+        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, weekRecipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] }, listItems: { required: true, type: () => [require("./list.model").NewListItemDto] }, listPictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -74,7 +77,48 @@ __decorate([
     class_transformer_1.Type(() => NewListItemDto),
     __metadata("design:type", Array)
 ], NewListDto.prototype, "listItems", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'Url of the picture which is used for the list.',
+        example: 'www.testUrl.com'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewListDto.prototype, "listPictureUrl", void 0);
 exports.NewListDto = NewListDto;
+class UpdatedListDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, listPictureUrl: { required: true, type: () => String } };
+    }
+}
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'List name',
+        example: 'testList'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UpdatedListDto.prototype, "name", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'Description of the list',
+        example: 'This is a test description'
+    }),
+    class_validator_1.IsString(),
+    __metadata("design:type", String)
+], UpdatedListDto.prototype, "description", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'Url of the picture which is used for the list.',
+        example: 'www.testUrl.com'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UpdatedListDto.prototype, "listPictureUrl", void 0);
+exports.UpdatedListDto = UpdatedListDto;
 class NewListItemDto {
     static _OPENAPI_METADATA_FACTORY() {
         return { name: { required: true, type: () => String }, amount: { required: true, type: () => Number }, unit: { required: true, type: () => String }, itemType: { required: true, enum: require("./list.model").ItemType }, isDone: { required: true, type: () => Boolean } };
@@ -255,6 +299,6 @@ __decorate([
 exports.UpdatedWeekRecipeIngredientDto = UpdatedWeekRecipeIngredientDto;
 exports.UserListsSchema = new mongoose.Schema({
     userId: { type: String, required: true },
-    lists: { type: [{ _id: String, listName: String }] }
+    lists: { type: [{ _id: String, listName: String, listPictureUrl: String }] }
 });
 //# sourceMappingURL=list.model.js.map

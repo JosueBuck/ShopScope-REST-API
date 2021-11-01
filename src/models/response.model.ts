@@ -706,6 +706,7 @@ export class CreateListResponse {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
     })
@@ -729,7 +730,8 @@ export class GetSimplifiedUserListsResponse {
         example: [
             {
                 '_id': '612df114d5f15405daeb8b86',
-                'listName': 'testList'
+                'listName': 'testList',
+                'listPictureUrl': 'www.testUrl.com',
             }
         ]
     })
@@ -796,6 +798,7 @@ export class GetListResponse {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
     })
@@ -882,6 +885,7 @@ export class AddWeekRecipesToList {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 1
         }
     })
@@ -931,6 +935,7 @@ export class RemoveWeekRecipeFromListResponse {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 2
         }
     })
@@ -997,6 +1002,7 @@ export class UpdateWeekRecipeIngredientInList {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 3
         }
     })
@@ -1063,6 +1069,7 @@ export class AddListItemResponse {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 4
         }
     })
@@ -1129,6 +1136,7 @@ export class UpdateListItemResponse {
                     'isDone': false
                 }
             ],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
     })
@@ -1186,6 +1194,7 @@ export class DeleteListItemResponse {
                 }
             ],
             'listItems': [],
+            'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
     })

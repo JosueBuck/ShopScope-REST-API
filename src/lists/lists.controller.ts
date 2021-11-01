@@ -5,7 +5,7 @@ import { UserGuard } from 'src/auth/guards/user.auth.guard';
 import { AddListItemResponse, AddWeekRecipesToList, CreateListResponse, DeleteListItemResponse, DeleteListResponse, GetListResponse, GetSimplifiedUserListsResponse, IResponse, RemoveWeekRecipeFromListResponse, UpdateListItemResponse, UpdateWeekRecipeIngredientInList } from 'src/models/response.model';
 
 import { ListsService } from './lists.service';
-import { NewListItemDto, NewListDto, UpdatedListItemDto, UserListRecipesDto, WeekRecipesIdsDto, ListItemDto, IListItem, ISimplifiedList, UpdatedWeekRecipeIngredientDto } from './models/list.model';
+import { NewListItemDto, NewListDto, UpdatedListItemDto, UserListRecipesDto, WeekRecipesIdsDto, ListItemDto, IListItem, ISimplifiedList, UpdatedWeekRecipeIngredientDto, UpdatedListDto } from './models/list.model';
 
 @ApiTags('lists')
 @Controller('lists')
@@ -31,6 +31,44 @@ export class ListsController {
     async createList(@Param('userId') userId: string, @Body() newListDto: NewListDto) {
 
         const response: IResponse = await this.listService.createList(newListDto, userId);
+        return response;
+
+    }
+
+    @UseGuards(JwtAuthGuard, UserGuard)
+    @Delete('clearList/:userId/:listId')
+    @ApiCreatedResponse({
+        description: 'Deleted',
+        type: CreateListResponse
+    })
+    @ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    })
+    @ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find list'
+    })
+    async clearList(@Param('userId') userId: string, @Param('listId') listId: string) {
+
+        const response: IResponse = await this.listService.clearList(listId);
+        return response;
+
+    }
+
+    @UseGuards(JwtAuthGuard, UserGuard)
+    @Post('updateListSettings/:userId/:listId')
+    @ApiCreatedResponse({
+        description: 'OK',
+        type: CreateListResponse
+    })
+    @ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    })
+    @ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find list'
+    })
+    async updateListSettings(@Param('userId') userId: string, @Param('listId') listId: string, @Body() updatedListDto: UpdatedListDto) {
+
+        const response: IResponse = await this.listService.updateListSettings(updatedListDto, listId);
         return response;
 
     }

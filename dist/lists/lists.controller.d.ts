@@ -1,10 +1,12 @@
 import { IResponse } from 'src/models/response.model';
 import { ListsService } from './lists.service';
-import { NewListItemDto, NewListDto, UpdatedListItemDto, UserListRecipesDto, WeekRecipesIdsDto, UpdatedWeekRecipeIngredientDto } from './models/list.model';
+import { NewListItemDto, NewListDto, UpdatedListItemDto, UserListRecipesDto, WeekRecipesIdsDto, UpdatedWeekRecipeIngredientDto, UpdatedListDto } from './models/list.model';
 export declare class ListsController {
     private listService;
     constructor(listService: ListsService);
     createList(userId: string, newListDto: NewListDto): Promise<IResponse>;
+    clearList(userId: string, listId: string): Promise<IResponse>;
+    updateListSettings(userId: string, listId: string, updatedListDto: UpdatedListDto): Promise<IResponse>;
     getSimplifiedUserLists(userId: string): Promise<IResponse>;
     getList(listId: string): Promise<IResponse>;
     deleteList(userId: string, listId: string): Promise<IResponse>;

@@ -29,6 +29,14 @@ let ListsController = class ListsController {
         const response = await this.listService.createList(newListDto, userId);
         return response;
     }
+    async clearList(userId, listId) {
+        const response = await this.listService.clearList(listId);
+        return response;
+    }
+    async updateListSettings(userId, listId, updatedListDto) {
+        const response = await this.listService.updateListSettings(updatedListDto, listId);
+        return response;
+    }
     async getSimplifiedUserLists(userId) {
         const response = await this.listService.getSimplifiedUserLists(userId);
         return response;
@@ -87,6 +95,47 @@ __decorate([
     __metadata("design:paramtypes", [String, list_model_1.NewListDto]),
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "createList", null);
+__decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Delete('clearList/:userId/:listId'),
+    swagger_1.ApiCreatedResponse({
+        description: 'Deleted',
+        type: response_model_1.CreateListResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find user lists'
+    }),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "clearList", null);
+__decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Post('updateListSettings/:userId/:listId'),
+    swagger_1.ApiCreatedResponse({
+        description: 'OK',
+        type: response_model_1.CreateListResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Invalid user id | Could not find user lists'
+    }),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __param(2, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, list_model_1.UpdatedListDto]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "updateListSettings", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Get('getSimplifiedUserLists/:userId'),

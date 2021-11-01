@@ -29,6 +29,7 @@ export const ListSchema = new mongoose.Schema({
     itemTypes: [{ type: String, required: true }],
     weekRecipes: { type: [ { recipeName: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] },
     listItems: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true},
+    listPictureUrl: { type: String, required: true}
 
 });
 
@@ -40,6 +41,7 @@ export interface IListMongoose extends mongoose.Document{
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    listPictureUrl: string;
 
 };
 
@@ -51,14 +53,25 @@ export interface IList {
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    listPictureUrl: string;
 
-}
+};
+
 export interface INewList {
 
     name: string;
     description: string;
     weekRecipes: UserDayRecipeDto[];
     listItems: INewListItem[];
+    listPictureUrl: string;
+
+};
+
+export interface IUpdatedList {
+
+    name: string;
+    description: string;
+    listPictureUrl: string;
 
 }
 
@@ -120,6 +133,42 @@ export class NewListDto {
     @ValidateNested()
     @Type(() => NewListItemDto)
     listItems: NewListItemDto[];
+
+
+    @ApiProperty({
+        description: 'Url of the picture which is used for the list.',
+        example: 'www.testUrl.com'
+    })
+    @IsString()
+    @IsNotEmpty()
+    listPictureUrl: string;
+
+}
+
+export class UpdatedListDto {
+
+    @ApiProperty({
+        description: 'List name',
+        example: 'testList'
+    })
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @ApiProperty({
+        description: 'Description of the list',
+        example: 'This is a test description'
+    })
+    @IsString()
+    description: string;
+
+    @ApiProperty({
+        description: 'Url of the picture which is used for the list.',
+        example: 'www.testUrl.com'
+    })
+    @IsString()
+    @IsNotEmpty()
+    listPictureUrl: string;
 
 }
 
@@ -285,7 +334,7 @@ export interface IUpdatedWeekRecipeIngredient {
 export const UserListsSchema = new mongoose.Schema({
 
     userId: { type: String, required: true},
-    lists: { type: [{ _id: String, listName: String }]}
+    lists: { type: [{ _id: String, listName: String, listPictureUrl: String }]}
 
 })
 
@@ -309,6 +358,7 @@ export interface ISimplifiedList {
 
     _id: string;
     listName: string;
+    listPictureUrl: string;
 
 }
 

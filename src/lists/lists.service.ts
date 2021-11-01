@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException, RequestTim
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
-import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient } from './models/list.model';
+import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient, IUpdatedList } from './models/list.model';
 
 @Injectable()
 export class ListsService {
@@ -36,11 +36,46 @@ export class ListsService {
 
     }
 
+    async updateListSettings(updatedList: IUpdatedList, listId: string): Promise<IResponse> {
+
+        const list: IListMongoose = await this.findListById(listId);
+        list.name = updatedList.name;
+        list.description = updatedList.description;
+        list.listPictureUrl = updatedList.listPictureUrl;
+        
+
+        try {
+            list.save();
+        } catch {
+            throw new InternalServerErrorException();
+        }
+
+        return { message: 'OK', responseData: list, statusCode: 201 }
+
+    }
+
+    async clearList(listId: string): Promise<IResponse> {
+
+        const list: IListMongoose = await this.findListById(listId);
+        list.listItems = [];
+        
+
+        try {
+            list.save();
+        } catch {
+            throw new InternalServerErrorException();
+        }
+
+        return { message: 'OK', responseData: list, statusCode: 201 }
+
+    }
+
     async addListToUserLists(list: IListMongoose, userId: string): Promise<void> {
 
         const simplifiedList: ISimplifiedList = {
             _id: list.id,
-            listName: list.name
+            listName: list.name,
+            listPictureUrl: list.listPictureUrl
         }
 
         const userLists: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
