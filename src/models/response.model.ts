@@ -45,9 +45,14 @@ export class RegisterResponse {
     message: string;
 
     @ApiProperty({
-        example: { '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname':'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0 }
+        example: { 
+            newUser: {
+                '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname':'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0
+            }, 
+            jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZERhdGEiOnsiX2lkIjoiNjE4MTQ4ZGE3MzcyZDczNTg4YjBiZjVmIiwiZmlyc3RuYW1lIjoiSm9zdWUiLCJsYXN0bmFtZSI6IkJ1Y2siLCJ1c2VybmFtZSI6InRlc3R1c2VyMSIsImVtYWlsIjoidGVzdG1haWxAbWFpbC5jb20ifSwiaWF0IjoxNjM1ODYyNzQ2LCJleHAiOjE2MzU5NjI3NDZ9.ctcRn4xzZqKlFBNhY0GNDNEQVLkpnIC6kbZBGMboPGw'  
+        }
     })
-    responseData: IUser;
+    responseData: { newUser: IUser, jwt: string };
 
     @ApiProperty({
         example: 201
@@ -157,6 +162,7 @@ export class GetUserWeekResponse {
                 'dinner': []
             }
         ],
+        'selectedWeekList': '618142dc7d2be40d8045e2ec',
         '__v': 0
         }
     })
@@ -249,6 +255,7 @@ export class AddRecipeToDayResponse {
                         'dinner': []
                     }
                 ],
+                'selectedWeekList': '618142dc7d2be40d8045e2ec',
                 '__v': 1
         }
     })
@@ -323,6 +330,7 @@ export class RemoveRecipeFromDayResponse {
                 'dinner': []
             }
         ],
+        'selectedWeekList': '618142dc7d2be40d8045e2ec',
         '__v': 2
         }
     })
@@ -397,6 +405,7 @@ export class RemoveAllRecipesFromWeekResponse {
                 'dinner': []
             }
         ],
+        'selectedWeekList': '618142dc7d2be40d8045e2ec',
         '__v': 4
         }
     })

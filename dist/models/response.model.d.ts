@@ -14,7 +14,10 @@ export declare class LoginResponse {
 }
 export declare class RegisterResponse {
     message: string;
-    responseData: IUser;
+    responseData: {
+        newUser: IUser;
+        jwt: string;
+    };
     statusCode: number;
 }
 export declare class DeleteUserResponse {

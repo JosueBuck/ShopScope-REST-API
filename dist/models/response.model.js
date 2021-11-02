@@ -46,7 +46,7 @@ __decorate([
 exports.LoginResponse = LoginResponse;
 class RegisterResponse {
     static _OPENAPI_METADATA_FACTORY() {
-        return { message: { required: true, type: () => String }, responseData: { required: true, type: () => Object }, statusCode: { required: true, type: () => Number } };
+        return { message: { required: true, type: () => String }, responseData: { required: true, type: () => ({ newUser: { required: true, type: () => Object }, jwt: { required: true, type: () => String } }) }, statusCode: { required: true, type: () => Number } };
     }
 }
 __decorate([
@@ -57,7 +57,12 @@ __decorate([
 ], RegisterResponse.prototype, "message", void 0);
 __decorate([
     swagger_1.ApiProperty({
-        example: { '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname': 'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0 }
+        example: {
+            newUser: {
+                '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname': 'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0
+            },
+            jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUGF5bG9hZERhdGEiOnsiX2lkIjoiNjE4MTQ4ZGE3MzcyZDczNTg4YjBiZjVmIiwiZmlyc3RuYW1lIjoiSm9zdWUiLCJsYXN0bmFtZSI6IkJ1Y2siLCJ1c2VybmFtZSI6InRlc3R1c2VyMSIsImVtYWlsIjoidGVzdG1haWxAbWFpbC5jb20ifSwiaWF0IjoxNjM1ODYyNzQ2LCJleHAiOjE2MzU5NjI3NDZ9.ctcRn4xzZqKlFBNhY0GNDNEQVLkpnIC6kbZBGMboPGw'
+        }
     }),
     __metadata("design:type", Object)
 ], RegisterResponse.prototype, "responseData", void 0);
@@ -183,6 +188,7 @@ __decorate([
                     'dinner': []
                 }
             ],
+            'selectedWeekList': '618142dc7d2be40d8045e2ec',
             '__v': 0
         }
     }),
@@ -279,6 +285,7 @@ __decorate([
                     'dinner': []
                 }
             ],
+            'selectedWeekList': '618142dc7d2be40d8045e2ec',
             '__v': 1
         }
     }),
@@ -358,6 +365,7 @@ __decorate([
                     'dinner': []
                 }
             ],
+            'selectedWeekList': '618142dc7d2be40d8045e2ec',
             '__v': 2
         }
     }),
@@ -437,6 +445,7 @@ __decorate([
                     'dinner': []
                 }
             ],
+            'selectedWeekList': '618142dc7d2be40d8045e2ec',
             '__v': 4
         }
     }),

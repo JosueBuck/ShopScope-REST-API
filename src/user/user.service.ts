@@ -151,7 +151,17 @@ export class UserService {
         const newUser = await this.createNewUser(userRegisterData);
         newUser.password = 'xxxx';
 
-        return { message: 'Created', responseData: newUser, statusCode: 201 }  
+        const userPayloadData = {
+            _id: newUser.id,
+            firstname: newUser.firstname,
+            lastname: newUser.lastname, 
+            username: newUser.username,
+            email: newUser.email
+        }
+
+        const jwt = await this.authService.generateJWT({ userPayloadData });
+
+        return { message: 'Created', responseData: {newUser, jwt}, statusCode: 201 }  
 
     }
 
