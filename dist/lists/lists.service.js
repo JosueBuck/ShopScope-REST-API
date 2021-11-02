@@ -30,6 +30,7 @@ let ListsService = class ListsService {
             itemTypes: Object.keys(list_model_1.ItemType),
             weekRecipes: list.weekRecipes,
             listItems: list.listItems,
+            listPictureUrl: list.listPictureUrl
         });
         await this.addListToUserLists(newList, userId);
         try {

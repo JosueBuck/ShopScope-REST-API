@@ -5,11 +5,13 @@ export interface IUserWeekMongoose extends mongoose.Document {
     id: string;
     userId: string;
     week: IUserDay[];
+    selectedWeekList: string;
 }
 export interface IUserWeek {
     id: string;
     userId: string;
     week: IUserDay[];
+    selectedWeekList: string;
 }
 export interface IUserDay {
     _id: string;

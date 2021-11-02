@@ -29,6 +29,10 @@ let WeeksController = class WeeksController {
         const response = await this.weeksService.getUserWeek(userId);
         return response;
     }
+    async setSelectedWeekList(userId, listId) {
+        const response = await this.weeksService.setSelectedWeekList(userId, listId);
+        return response;
+    }
     async addRecipeToDay(userId, userDayRecipe) {
         const response = await this.weeksService.addRecipeToDay(userId, userDayRecipe);
         return response;
@@ -61,6 +65,26 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "getUserWeek", null);
+__decorate([
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    common_1.Post('setSelectedWeekList/:userId/:listId'),
+    swagger_1.ApiOkResponse({
+        description: 'OK',
+        type: response_model_1.GetUserWeekResponse
+    }),
+    swagger_1.ApiInternalServerErrorResponse({
+        description: 'A problem occured while processing the api call'
+    }),
+    swagger_1.ApiNotFoundResponse({
+        description: 'Could not find user week | Could not find list'
+    }),
+    openapi.ApiResponse({ status: 201, type: Object }),
+    __param(0, common_1.Param('userId')),
+    __param(1, common_1.Param('listId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], WeeksController.prototype, "setSelectedWeekList", null);
 __decorate([
     common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
     common_1.Put('addRecipeToDay/:userId'),

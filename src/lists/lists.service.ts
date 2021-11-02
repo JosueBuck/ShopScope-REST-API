@@ -21,6 +21,7 @@ export class ListsService {
                 itemTypes: Object.keys(ItemType),
                 weekRecipes: list.weekRecipes,
                 listItems: list.listItems,
+                listPictureUrl: list.listPictureUrl
             }
         );
         

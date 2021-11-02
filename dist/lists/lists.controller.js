@@ -106,7 +106,7 @@ __decorate([
         description: 'A problem occured while processing the api call'
     }),
     swagger_1.ApiNotFoundResponse({
-        description: 'Invalid user id | Could not find user lists'
+        description: 'Invalid user id | Could not find list'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, common_1.Param('userId')),
@@ -126,7 +126,7 @@ __decorate([
         description: 'A problem occured while processing the api call'
     }),
     swagger_1.ApiNotFoundResponse({
-        description: 'Invalid user id | Could not find user lists'
+        description: 'Invalid user id | Could not find list'
     }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, common_1.Param('userId')),

@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ListsService } from 'src/lists/lists.service';
 import { IResponse } from 'src/models/response.model';
 import { INewUserDayRecipeData, IUserDay, IUserDayRecipeData, IUserWeek, IUserWeekMongoose } from './models/week.model';
 
@@ -9,11 +10,29 @@ export class WeeksService {
 
     constructor(
         @InjectModel('UserWeek') private readonly userWeekModel: Model<IUserWeek>,
+        private readonly listsService: ListsService,
     ) { }
 
     async getUserWeek(userId: string): Promise<IResponse> {
 
         let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
+
+        return { message: 'OK', responseData: userWeek, statusCode: 200 };
+
+    }
+
+    async setSelectedWeekList(userId: string, listId: string): Promise<IResponse> {
+
+        await this.listsService.findListById(listId);
+
+        let userWeek: IUserWeekMongoose = await this.findUserWeekById(userId);
+        userWeek.selectedWeekList = listId;
+
+        try {
+            await userWeek.save();
+        } catch {
+            throw new InternalServerErrorException();
+        }
 
         return { message: 'OK', responseData: userWeek, statusCode: 200 };
 
@@ -197,9 +216,12 @@ export class WeeksService {
                         lunch: [],
                         dinner: []
                     }
-                ]
+                ],
+                selectedWeekList: ''
             }
-        )
+        );
+
+        console.log("error fixing test...");
 
         try {
             await userWeek.save();

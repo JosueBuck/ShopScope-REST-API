@@ -12,11 +12,13 @@ const mongoose_1 = require("@nestjs/mongoose");
 const week_model_1 = require("./models/week.model");
 const weeks_controller_1 = require("./weeks.controller");
 const weeks_service_1 = require("./weeks.service");
+const lists_module_1 = require("../lists/lists.module");
 let WeeksModule = class WeeksModule {
 };
 WeeksModule = __decorate([
     common_1.Module({
         imports: [
+            lists_module_1.ListsModule,
             mongoose_1.MongooseModule.forFeature([{ name: 'UserWeek', schema: week_model_1.UserWeekSchema }])
         ],
         controllers: [weeks_controller_1.WeeksController],

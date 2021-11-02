@@ -16,7 +16,8 @@ export const UserWeekSchema = new mongoose.Schema({
                 dinner: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
             } 
         ] 
-    }
+    },
+    selectedWeekList: { type: String }
 
 });
 
@@ -25,6 +26,7 @@ export interface IUserWeekMongoose extends mongoose.Document {
     id: string;
     userId: string;
     week: IUserDay[];
+    selectedWeekList: string;
 
 }
 
@@ -33,6 +35,7 @@ export interface IUserWeek {
     id: string;
     userId: string;
     week: IUserDay[];
+    selectedWeekList: string;
 
 }
 

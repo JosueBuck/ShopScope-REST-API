@@ -16,13 +16,27 @@ exports.WeeksService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const lists_service_1 = require("../lists/lists.service");
 const response_model_1 = require("../models/response.model");
 let WeeksService = class WeeksService {
-    constructor(userWeekModel) {
+    constructor(userWeekModel, listsService) {
         this.userWeekModel = userWeekModel;
+        this.listsService = listsService;
     }
     async getUserWeek(userId) {
         let userWeek = await this.findUserWeekById(userId);
+        return { message: 'OK', responseData: userWeek, statusCode: 200 };
+    }
+    async setSelectedWeekList(userId, listId) {
+        await this.listsService.findListById(listId);
+        let userWeek = await this.findUserWeekById(userId);
+        userWeek.selectedWeekList = listId;
+        try {
+            await userWeek.save();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException();
+        }
         return { message: 'OK', responseData: userWeek, statusCode: 200 };
     }
     async addRecipeToDay(userId, userDayRecipe) {
@@ -175,8 +189,10 @@ let WeeksService = class WeeksService {
                     lunch: [],
                     dinner: []
                 }
-            ]
+            ],
+            selectedWeekList: ''
         });
+        console.log("error fixing test...");
         try {
             await userWeek.save();
         }
@@ -196,7 +212,8 @@ let WeeksService = class WeeksService {
 WeeksService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_1.InjectModel('UserWeek')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        lists_service_1.ListsService])
 ], WeeksService);
 exports.WeeksService = WeeksService;
 //# sourceMappingURL=weeks.service.js.map

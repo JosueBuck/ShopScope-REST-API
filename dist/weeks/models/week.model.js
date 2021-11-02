@@ -26,7 +26,8 @@ exports.UserWeekSchema = new mongoose.Schema({
                 dinner: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
             }
         ]
-    }
+    },
+    selectedWeekList: { type: String }
 });
 class NewUserDayRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {

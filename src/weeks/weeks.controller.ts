@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Param, Body, UseGuards, Post } from '@nestjs/common';
 import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { UserGuard } from 'src/auth/guards/user.auth.guard';
@@ -29,6 +29,25 @@ export class WeeksController {
         async getUserWeek(@Param('userId') userId: string) {
 
             const response: IResponse = await this.weeksService.getUserWeek(userId);
+            return response;
+
+        }
+
+        @UseGuards(JwtAuthGuard, UserGuard)
+        @Post('setSelectedWeekList/:userId/:listId')
+        @ApiOkResponse({
+            description: 'OK',
+            type: GetUserWeekResponse
+        })
+        @ApiInternalServerErrorResponse({
+            description: 'A problem occured while processing the api call'
+        })
+        @ApiNotFoundResponse({
+            description: 'Could not find user week | Could not find list'
+        })
+        async setSelectedWeekList(@Param('userId') userId: string, @Param('listId') listId: string) {
+
+            const response: IResponse = await this.weeksService.setSelectedWeekList(userId, listId);
             return response;
 
         }
