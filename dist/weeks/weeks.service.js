@@ -192,7 +192,6 @@ let WeeksService = class WeeksService {
             ],
             selectedWeekList: ''
         });
-        console.log("error fixing test...");
         try {
             await userWeek.save();
         }

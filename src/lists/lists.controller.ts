@@ -49,7 +49,7 @@ export class ListsController {
     })
     async clearList(@Param('userId') userId: string, @Param('listId') listId: string) {
 
-        const response: IResponse = await this.listService.clearList(listId);
+        const response: IResponse = await this.listService.clearList(userId, listId);
         return response;
 
     }
@@ -138,7 +138,7 @@ export class ListsController {
     })
     async addWeekRecipesToList(@Param('userId') userId: string, @Param('listId') listId: string, @Body() weekRecipes: UserListRecipesDto) {
 
-        const response: IResponse = await this.listService.addWeekRecipesToList(listId, weekRecipes.recipes);
+        const response: IResponse = await this.listService.addWeekRecipesToList(userId, listId, weekRecipes.recipes);
         return response;
 
     }
@@ -157,7 +157,7 @@ export class ListsController {
     })
     async removeWeekRecipesFromList(@Param('userId') userId: string, @Param('listId') listId: string, @Body() recipesIds: WeekRecipesIdsDto) {
 
-        const response: IResponse = await this.listService.removeWeekRecipeFromList(listId, recipesIds.ids);
+        const response: IResponse = await this.listService.removeWeekRecipeFromList(userId, listId, recipesIds.ids);
         return response;
 
     }
@@ -197,7 +197,7 @@ export class ListsController {
     })
     async addListItem(@Param('userId') userId: string, @Param('listId') listId: string, @Body() newListItem: NewListItemDto) {
 
-        const response: IResponse = await this.listService.addListItem(listId, newListItem);
+        const response: IResponse = await this.listService.addListItem(userId, listId, newListItem);
         return response;
 
     }
@@ -237,7 +237,7 @@ export class ListsController {
     })
     async deleteListItem(@Param('userId') userId: string, @Param('listId') listId: string, @Param('itemId') itemId: string) {
 
-        const response: IResponse = await this.listService.deleteListItem(listId, itemId);
+        const response: IResponse = await this.listService.deleteListItem(userId, listId, itemId);
         return response;
         
     }

@@ -30,6 +30,7 @@ let ListsService = class ListsService {
             itemTypes: Object.keys(list_model_1.ItemType),
             weekRecipes: list.weekRecipes,
             listItems: list.listItems,
+            itemCounter: this.getListsOverallItemCounter(list),
             listPictureUrl: list.listPictureUrl
         });
         await this.addListToUserLists(newList, userId);
@@ -54,9 +55,12 @@ let ListsService = class ListsService {
         }
         return { message: 'OK', responseData: list, statusCode: 201 };
     }
-    async clearList(listId) {
+    async clearList(userId, listId) {
         const list = await this.findListById(listId);
         list.listItems = [];
+        const amountOfAllListItems = this.getListsOverallItemCounter(list);
+        list.itemCounter = amountOfAllListItems;
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
         try {
             list.save();
         }
@@ -65,10 +69,31 @@ let ListsService = class ListsService {
         }
         return { message: 'OK', responseData: list, statusCode: 201 };
     }
+    async updateSimpliefiedUserListsItemCounter(userId, list) {
+        const simplifiedUserListsObject = await this.getSimplifiedUserListsByUserId(userId);
+        const simplifiedListindex = simplifiedUserListsObject.lists.findIndex(simplifiedList => simplifiedList._id == list.id);
+        simplifiedUserListsObject.lists[simplifiedListindex].itemCounter = list.itemCounter;
+        try {
+            simplifiedUserListsObject.save();
+        }
+        catch (_a) {
+            throw new common_1.InternalServerErrorException();
+        }
+    }
+    getListsOverallItemCounter(list) {
+        const amountOfNormalListitems = list.listItems.length;
+        let amountOfWeekReceipesItems = 0;
+        list.weekRecipes.map((receipe) => {
+            amountOfWeekReceipesItems += receipe.ingredients.length;
+        });
+        const amountOfAllListItems = amountOfNormalListitems + amountOfWeekReceipesItems;
+        return amountOfAllListItems;
+    }
     async addListToUserLists(list, userId) {
         const simplifiedList = {
             _id: list.id,
             listName: list.name,
+            itemCounter: list.itemCounter,
             listPictureUrl: list.listPictureUrl
         };
         const userLists = await this.getSimplifiedUserListsByUserId(userId);
@@ -115,9 +140,11 @@ let ListsService = class ListsService {
         }
         return list;
     }
-    async addWeekRecipesToList(listId, weekRecipes) {
+    async addWeekRecipesToList(userId, listId, weekRecipes) {
         const list = await this.findListById(listId);
         list.weekRecipes = weekRecipes;
+        list.itemCounter = this.getListsOverallItemCounter(list);
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
         try {
             list.save();
         }
@@ -126,14 +153,23 @@ let ListsService = class ListsService {
         }
         return { message: 'Created', responseData: list, statusCode: 201 };
     }
-    async removeWeekRecipeFromList(listId, recipesIds) {
+    async removeWeekRecipeFromList(userId, listId, recipesIds) {
         const list = await this.findListById(listId);
+        recipesIds.map((id) => {
+            list.weekRecipes.map((recipe, index) => {
+                if (recipe._id == id) {
+                    list.weekRecipes.splice(index, 1);
+                }
+            });
+        });
         try {
-            await list.update({ $pull: { weekRecipes: { _id: { $in: recipesIds } } } }, { new: true }).exec();
+            list.save();
         }
         catch (_a) {
             throw new common_1.InternalServerErrorException();
         }
+        list.itemCounter = this.getListsOverallItemCounter(list);
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
         return { message: "Removed", responseData: list, statusCode: 200 };
     }
     async updateWeekRecipeIngredient(listId, ingredient) {
@@ -155,9 +191,12 @@ let ListsService = class ListsService {
         }
         return { message: 'Changed', responseData: list, statusCode: 200 };
     }
-    async addListItem(listId, listItem) {
+    async addListItem(userId, listId, listItem) {
         let list = await this.findListById(listId);
         list.listItems.push(listItem);
+        const amountOfAllListItems = this.getListsOverallItemCounter(list);
+        list.itemCounter = amountOfAllListItems;
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
         try {
             list.save();
         }
@@ -223,14 +262,20 @@ let ListsService = class ListsService {
         });
         return recipeIdArray;
     }
-    async deleteListItem(listId, itemId) {
+    async deleteListItem(userId, listId, itemId) {
         let list = await this.findListById(listId);
+        list.listItems.map((item, index) => {
+            if (item._id == itemId)
+                list.listItems.splice(index, 1);
+        });
         try {
-            await list.update({ $pull: { listItems: { _id: itemId } } }, { multi: true, new: true }).exec();
+            list.save();
         }
         catch (_a) {
             throw new common_1.InternalServerErrorException();
         }
+        list.itemCounter = this.getListsOverallItemCounter(list);
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
         return { message: 'Deleted', responseData: list, statusCode: 200 };
     }
     async createNewUserListsModel(userId) {

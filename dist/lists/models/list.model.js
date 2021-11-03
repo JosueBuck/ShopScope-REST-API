@@ -38,6 +38,7 @@ exports.ListSchema = new mongoose.Schema({
     itemTypes: [{ type: String, required: true }],
     weekRecipes: { type: [{ recipeName: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
     listItems: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true },
+    itemCounter: { type: Number },
     listPictureUrl: { type: String, required: true }
 });
 ;
@@ -45,7 +46,7 @@ exports.ListSchema = new mongoose.Schema({
 ;
 class NewListDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, weekRecipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] }, listItems: { required: true, type: () => [require("./list.model").NewListItemDto] }, listPictureUrl: { required: true, type: () => String } };
+        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, weekRecipes: { required: true, type: () => [require("../../weeks/models/week.model").UserDayRecipeDto] }, listItems: { required: true, type: () => [require("./list.model").NewListItemDto] }, itemCounter: { required: true, type: () => Number }, listPictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -77,6 +78,15 @@ __decorate([
     class_transformer_1.Type(() => NewListItemDto),
     __metadata("design:type", Array)
 ], NewListDto.prototype, "listItems", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'Number of items inside of a list',
+        example: 0
+    }),
+    class_validator_1.IsNumber(),
+    class_validator_1.Max(0),
+    __metadata("design:type", Number)
+], NewListDto.prototype, "itemCounter", void 0);
 __decorate([
     swagger_1.ApiProperty({
         description: 'Url of the picture which is used for the list.',
@@ -299,6 +309,6 @@ __decorate([
 exports.UpdatedWeekRecipeIngredientDto = UpdatedWeekRecipeIngredientDto;
 exports.UserListsSchema = new mongoose.Schema({
     userId: { type: String, required: true },
-    lists: { type: [{ _id: String, listName: String, listPictureUrl: String }] }
+    lists: { type: [{ _id: String, listName: String, itemCounter: Number, listPictureUrl: String }] }
 });
 //# sourceMappingURL=list.model.js.map

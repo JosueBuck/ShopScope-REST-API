@@ -221,8 +221,6 @@ export class WeeksService {
             }
         );
 
-        console.log("error fixing test...");
-
         try {
             await userWeek.save();
         } catch {

@@ -21,6 +21,7 @@ export class ListsService {
                 itemTypes: Object.keys(ItemType),
                 weekRecipes: list.weekRecipes,
                 listItems: list.listItems,
+                itemCounter: this.getListsOverallItemCounter(list),
                 listPictureUrl: list.listPictureUrl
             }
         );
@@ -55,11 +56,16 @@ export class ListsService {
 
     }
 
-    async clearList(listId: string): Promise<IResponse> {
+    async clearList(userId: string, listId: string): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
         list.listItems = [];
         
+        const amountOfAllListItems = this.getListsOverallItemCounter(list);
+
+        list.itemCounter = amountOfAllListItems;
+
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
 
         try {
             list.save();
@@ -71,11 +77,43 @@ export class ListsService {
 
     }
 
+    async updateSimpliefiedUserListsItemCounter(userId: string, list: IListMongoose) {
+
+        const simplifiedUserListsObject: IUserListsMongoose = await this.getSimplifiedUserListsByUserId(userId);
+
+        const simplifiedListindex: number =  simplifiedUserListsObject.lists.findIndex(simplifiedList => simplifiedList._id == list.id);
+
+        simplifiedUserListsObject.lists[simplifiedListindex].itemCounter = list.itemCounter;
+
+        try {
+            simplifiedUserListsObject.save();
+        } catch {
+            throw new InternalServerErrorException();
+        }
+
+    }
+
+    getListsOverallItemCounter(list: IListMongoose | INewList): number {
+
+        const amountOfNormalListitems: number = list.listItems.length;
+
+        let amountOfWeekReceipesItems: number = 0;
+
+        list.weekRecipes.map((receipe) => {
+            amountOfWeekReceipesItems += receipe.ingredients.length;
+        })
+
+        const amountOfAllListItems: number = amountOfNormalListitems + amountOfWeekReceipesItems;
+
+        return amountOfAllListItems;
+    }
+
     async addListToUserLists(list: IListMongoose, userId: string): Promise<void> {
 
         const simplifiedList: ISimplifiedList = {
             _id: list.id,
             listName: list.name,
+            itemCounter: list.itemCounter,
             listPictureUrl: list.listPictureUrl
         }
 
@@ -143,10 +181,14 @@ export class ListsService {
 
     }
 
-    async addWeekRecipesToList(listId: string, weekRecipes: IUserListRecipe[]): Promise<IResponse> {
+    async addWeekRecipesToList(userId: string, listId: string, weekRecipes: IUserListRecipe[]): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
         list.weekRecipes = weekRecipes;
+
+        list.itemCounter = this.getListsOverallItemCounter(list);
+
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
 
         try {
             list.save();
@@ -158,18 +200,27 @@ export class ListsService {
 
     }
 
-    async removeWeekRecipeFromList(listId: string, recipesIds: string[]): Promise<IResponse> {
+    async removeWeekRecipeFromList(userId: string, listId: string, recipesIds: string[]): Promise<IResponse> {
 
         const list: IListMongoose = await this.findListById(listId);
 
+        recipesIds.map((id) => {
+            list.weekRecipes.map((recipe, index) => {
+                if (recipe._id == id) {
+                    list.weekRecipes.splice(index, 1);
+                }
+            })
+        })
+
         try {
-            await list.update(
-                { $pull: { weekRecipes: { _id: { $in: recipesIds  }}} },
-                { new: true }
-            ).exec();
+            list.save();
         } catch {
             throw new InternalServerErrorException();
         }
+
+        list.itemCounter = this.getListsOverallItemCounter(list);
+
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
 
         return { message: "Removed", responseData: list, statusCode: 200 };
 
@@ -198,10 +249,18 @@ export class ListsService {
 
     }
 
-    async addListItem(listId: string, listItem: INewListItem): Promise<IResponse> {
+    async addListItem(userId: string, listId: string, listItem: INewListItem): Promise<IResponse> {
+
+        
 
         let list: IListMongoose = await this.findListById(listId);
         list.listItems.push(listItem);
+
+        const amountOfAllListItems = this.getListsOverallItemCounter(list);
+        
+        list.itemCounter = amountOfAllListItems;
+
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
 
         try {
             list.save();
@@ -295,18 +354,24 @@ export class ListsService {
 
     }
 
-    async deleteListItem(listId: string, itemId: string): Promise<IResponse> {
+    async deleteListItem(userId: string, listId: string, itemId: string): Promise<IResponse> {
 
         let list: IListMongoose = await this.findListById(listId);
 
+        list.listItems.map((item, index) => {
+           if (item._id == itemId)
+           list.listItems.splice(index, 1);
+        });
+
         try {
-            await list.update(
-                { $pull: { listItems: { _id: itemId }}},
-                { multi: true, new: true }
-            ).exec();
+            list.save();
         } catch {
             throw new InternalServerErrorException();
         }
+
+        list.itemCounter = this.getListsOverallItemCounter(list);
+
+        await this.updateSimpliefiedUserListsItemCounter(userId, list);
 
         return { message: 'Deleted', responseData: list, statusCode: 200 }
         

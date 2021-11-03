@@ -30,7 +30,7 @@ let ListsController = class ListsController {
         return response;
     }
     async clearList(userId, listId) {
-        const response = await this.listService.clearList(listId);
+        const response = await this.listService.clearList(userId, listId);
         return response;
     }
     async updateListSettings(userId, listId, updatedListDto) {
@@ -50,11 +50,11 @@ let ListsController = class ListsController {
         return response;
     }
     async addWeekRecipesToList(userId, listId, weekRecipes) {
-        const response = await this.listService.addWeekRecipesToList(listId, weekRecipes.recipes);
+        const response = await this.listService.addWeekRecipesToList(userId, listId, weekRecipes.recipes);
         return response;
     }
     async removeWeekRecipesFromList(userId, listId, recipesIds) {
-        const response = await this.listService.removeWeekRecipeFromList(listId, recipesIds.ids);
+        const response = await this.listService.removeWeekRecipeFromList(userId, listId, recipesIds.ids);
         return response;
     }
     async updateWeekRecipeIngredientInList(userId, listId, ingredient) {
@@ -62,7 +62,7 @@ let ListsController = class ListsController {
         return response;
     }
     async addListItem(userId, listId, newListItem) {
-        const response = await this.listService.addListItem(listId, newListItem);
+        const response = await this.listService.addListItem(userId, listId, newListItem);
         return response;
     }
     async updateListItem(userId, listId, updatedListItemDto) {
@@ -71,7 +71,7 @@ let ListsController = class ListsController {
         return response;
     }
     async deleteListItem(userId, listId, itemId) {
-        const response = await this.listService.deleteListItem(listId, itemId);
+        const response = await this.listService.deleteListItem(userId, listId, itemId);
         return response;
     }
 };

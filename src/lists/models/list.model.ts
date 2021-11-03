@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize, IsEmpty, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UserDayRecipeDto } from 'src/weeks/models/week.model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -29,6 +29,7 @@ export const ListSchema = new mongoose.Schema({
     itemTypes: [{ type: String, required: true }],
     weekRecipes: { type: [ { recipeName: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] },
     listItems: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true},
+    itemCounter: { type: Number },
     listPictureUrl: { type: String, required: true}
 
 });
@@ -41,6 +42,7 @@ export interface IListMongoose extends mongoose.Document{
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    itemCounter: number;
     listPictureUrl: string;
 
 };
@@ -53,6 +55,7 @@ export interface IList {
     itemTypes: ItemType[];
     weekRecipes: UserDayRecipeDto[];
     listItems: IListItem[];
+    itemCounter: number;
     listPictureUrl: string;
 
 };
@@ -63,6 +66,7 @@ export interface INewList {
     description: string;
     weekRecipes: UserDayRecipeDto[];
     listItems: INewListItem[];
+    itemCounter: number;
     listPictureUrl: string;
 
 };
@@ -134,6 +138,13 @@ export class NewListDto {
     @Type(() => NewListItemDto)
     listItems: NewListItemDto[];
 
+    @ApiProperty({
+        description: 'Number of items inside of a list',
+        example: 0
+    })
+    @IsNumber()
+    @Max(0)
+    itemCounter: number;
 
     @ApiProperty({
         description: 'Url of the picture which is used for the list.',
@@ -334,7 +345,7 @@ export interface IUpdatedWeekRecipeIngredient {
 export const UserListsSchema = new mongoose.Schema({
 
     userId: { type: String, required: true},
-    lists: { type: [{ _id: String, listName: String, listPictureUrl: String }]}
+    lists: { type: [{ _id: String, listName: String, itemCounter: Number, listPictureUrl: String }]}
 
 })
 
@@ -358,6 +369,7 @@ export interface ISimplifiedList {
 
     _id: string;
     listName: string;
+    itemCounter: number;
     listPictureUrl: string;
 
 }

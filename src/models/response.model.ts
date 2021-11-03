@@ -715,6 +715,7 @@ export class CreateListResponse {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
@@ -740,6 +741,7 @@ export class GetSimplifiedUserListsResponse {
             {
                 '_id': '612df114d5f15405daeb8b86',
                 'listName': 'testList',
+                'itemCounter': 2,
                 'listPictureUrl': 'www.testUrl.com',
             }
         ]
@@ -807,6 +809,7 @@ export class GetListResponse {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 0
         }
@@ -894,6 +897,7 @@ export class AddWeekRecipesToList {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 1
         }
@@ -944,6 +948,7 @@ export class RemoveWeekRecipeFromListResponse {
                     'isDone': false
                 }
             ],
+            'itemCounter': 1,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 2
         }
@@ -1011,6 +1016,7 @@ export class UpdateWeekRecipeIngredientInList {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 3
         }
@@ -1078,6 +1084,7 @@ export class AddListItemResponse {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 4
         }
@@ -1145,6 +1152,7 @@ export class UpdateListItemResponse {
                     'isDone': false
                 }
             ],
+            'itemCounter': 2,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
@@ -1203,6 +1211,7 @@ export class DeleteListItemResponse {
                 }
             ],
             'listItems': [],
+            'itemCounter': 1,
             'listPictureUrl': 'www.testUrl.com',
             '__v': 5
         }
