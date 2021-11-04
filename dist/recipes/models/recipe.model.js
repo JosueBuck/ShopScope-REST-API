@@ -26,6 +26,7 @@ var RecipeType;
     RecipeType["ONEPOT"] = "ONEPOT";
     RecipeType["DESSERT"] = "DESSERT";
     RecipeType["DRINKS"] = "DRINKS";
+    RecipeType["OTHERS"] = "OTHERS";
 })(RecipeType = exports.RecipeType || (exports.RecipeType = {}));
 exports.RecipeSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -55,7 +56,6 @@ __decorate([
         example: 'testGarnish'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "garnish", void 0);
 __decorate([
@@ -63,9 +63,7 @@ __decorate([
         example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
     }),
     class_validator_1.IsEnum(RecipeType, { each: true }),
-    class_validator_1.IsNotEmpty(),
     class_validator_1.IsArray(),
-    class_validator_1.ArrayMinSize(1),
     class_validator_1.ArrayUnique(),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "recipeType", void 0);
@@ -74,7 +72,6 @@ __decorate([
         example: 30
     }),
     class_validator_1.IsNumber(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], NewRecipeDto.prototype, "cookingTime", void 0);
 __decorate([
@@ -82,7 +79,6 @@ __decorate([
         example: 'This is a test desciption'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "description", void 0);
 __decorate([
@@ -99,8 +95,6 @@ __decorate([
     }),
     class_validator_1.IsArray(),
     class_validator_1.IsString({ each: true }),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "instructions", void 0);
 __decorate([
@@ -108,7 +102,6 @@ __decorate([
         example: 'testUrl'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewRecipeDto = NewRecipeDto;
@@ -144,7 +137,6 @@ __decorate([
         example: list_model_1.ItemType.SNACKS
     }),
     class_validator_1.IsEnum(list_model_1.ItemType),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewIngredientDto.prototype, "itemType", void 0);
 exports.NewIngredientDto = NewIngredientDto;
@@ -159,6 +151,7 @@ __decorate([
         example: 'This is a test description'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "_id", void 0);
@@ -192,6 +185,7 @@ __decorate([
         description: 'Ingredient type',
         example: list_model_1.ItemType.SNACKS
     }),
+    class_validator_1.IsEnum(list_model_1.ItemType),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "itemType", void 0);
 exports.IngredientDto = IngredientDto;
@@ -206,6 +200,7 @@ __decorate([
         example: '612d0b3cd963d505785851dd'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "id", void 0);
@@ -231,9 +226,7 @@ __decorate([
         example: RecipeType.FASTFOOD
     }),
     class_validator_1.IsEnum(RecipeType, { each: true }),
-    class_validator_1.IsNotEmpty(),
     class_validator_1.IsArray(),
-    class_validator_1.ArrayMinSize(1),
     class_validator_1.ArrayUnique(),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "recipeType", void 0);
@@ -243,7 +236,6 @@ __decorate([
         example: 20
     }),
     class_validator_1.IsNumber(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], UpdatedRecipeDto.prototype, "cookingTime", void 0);
 __decorate([
@@ -252,7 +244,6 @@ __decorate([
         example: 'This is a test description'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "description", void 0);
 __decorate([
@@ -270,8 +261,6 @@ __decorate([
     }),
     class_validator_1.IsArray(),
     class_validator_1.IsString({ each: true }),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "instructions", void 0);
 __decorate([
@@ -279,7 +268,6 @@ __decorate([
         example: 'www.nicepics.com/recipePicture01'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UpdatedRecipeDto = UpdatedRecipeDto;

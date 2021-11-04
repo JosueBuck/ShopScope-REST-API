@@ -17,7 +17,9 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const response_model_1 = require("../models/response.model");
+const week_model_1 = require("../weeks/models/week.model");
 const list_model_1 = require("./models/list.model");
+const mongoose = require('mongoose');
 let ListsService = class ListsService {
     constructor(listModel, userListsModel) {
         this.listModel = listModel;

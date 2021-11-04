@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize, IsEmpty, Max } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean, ValidateNested, IsArray, IsEnum, ArrayMinSize, IsEmpty, Max, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UserDayRecipeDto } from 'src/weeks/models/week.model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -27,7 +27,7 @@ export const ListSchema = new mongoose.Schema({
     name: { type: String, required: true},
     description: { type: String, required: true},
     itemTypes: [{ type: String, required: true }],
-    weekRecipes: { type: [ { recipeName: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] },
+    weekRecipes: { type: [ { recipeName: String, garnish: String, originalRecipeId: String,  ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } } ] },
     listItems: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true},
     itemCounter: { type: Number },
     listPictureUrl: { type: String, required: true}
@@ -106,6 +106,7 @@ export interface IUserListRecipe {
     _id: string;
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: ListItemDto[];
     recipePictureUrl: string;
 
@@ -144,6 +145,7 @@ export class NewListDto {
     })
     @IsNumber()
     @Max(0)
+    @IsNotEmpty()
     itemCounter: number;
 
     @ApiProperty({
@@ -151,7 +153,6 @@ export class NewListDto {
         example: 'www.testUrl.com'
     })
     @IsString()
-    @IsNotEmpty()
     listPictureUrl: string;
 
 }
@@ -178,7 +179,6 @@ export class UpdatedListDto {
         example: 'www.testUrl.com'
     })
     @IsString()
-    @IsNotEmpty()
     listPictureUrl: string;
 
 }
@@ -220,6 +220,7 @@ export class NewListItemDto {
         example: false
     })
     @IsBoolean()
+    @IsNotEmpty()
     isDone: boolean;
 
 }
@@ -231,6 +232,7 @@ export class ListItemDto {
         example: '612cb926a6effb11a4dbb963'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     _id: string;
 
@@ -247,7 +249,6 @@ export class ListItemDto {
         example: 1
     })
     @IsNumber()
-    @IsNotEmpty()
     amount: number;
 
     @ApiProperty({
@@ -255,7 +256,6 @@ export class ListItemDto {
         example: 'testUnit'
     })
     @IsString()
-    @IsNotEmpty()
     unit: string;
 
     @ApiProperty({
@@ -302,6 +302,7 @@ export class WeekRecipesIdsDto {
         example: ['612cb926a6effb11a4dbb962']
     })
     @IsString({each: true})
+    @IsMongoId({each: true})
     @IsNotEmpty({each: true})
     ids: string[]
 
@@ -313,6 +314,7 @@ export class UpdatedWeekRecipeIngredientDto {
         example: '612cb926a6effb11a4dbb962'
     })
     @IsNotEmpty()
+    @IsMongoId()
     @IsString()
     recipeId: string;
 
@@ -320,6 +322,7 @@ export class UpdatedWeekRecipeIngredientDto {
         example: '612cb926a6effb11a4dbb963'
     })
     @IsNotEmpty()
+    @IsMongoId()
     @IsString()
     ingredientId: string;
 

@@ -21,9 +21,9 @@ exports.UserWeekSchema = new mongoose.Schema({
     week: { type: [
             {
                 name: String,
-                breakfast: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
-                lunch: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
-                dinner: { type: [{ recipeName: String, garnish: String, recipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
+                breakfast: { type: [{ recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
+                lunch: { type: [{ recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
+                dinner: { type: [{ recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] }, recipePictureUrl: String }] },
             }
         ]
     },
@@ -31,7 +31,7 @@ exports.UserWeekSchema = new mongoose.Schema({
 });
 class NewUserDayRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").NewListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
+        return { recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, originalRecipeId: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").NewListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -49,9 +49,18 @@ __decorate([
         example: 'testGarnish'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "garnish", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'The id of the original recipe',
+        example: '6183e76ab51d7710948d2d64'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], NewUserDayRecipeDto.prototype, "originalRecipeId", void 0);
 __decorate([
     class_validator_1.IsArray(),
     class_validator_1.ValidateNested(),
@@ -65,13 +74,12 @@ __decorate([
         example: 'testUrl'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewUserDayRecipeDto = NewUserDayRecipeDto;
 class UserDayRecipeDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { _id: { required: true, type: () => String }, recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").ListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
+        return { _id: { required: true, type: () => String }, recipeName: { required: true, type: () => String }, garnish: { required: true, type: () => String }, originalRecipeId: { required: true, type: () => String }, ingredients: { required: true, type: () => [require("../../lists/models/list.model").ListItemDto] }, recipePictureUrl: { required: true, type: () => String } };
     }
 }
 __decorate([
@@ -80,6 +88,7 @@ __decorate([
         example: '612cb926a6effb11a4dbb962'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "_id", void 0);
@@ -98,9 +107,18 @@ __decorate([
         example: 'testGarnish'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "garnish", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'The id of the original recipe',
+        example: '6183e76ab51d7710948d2d64'
+    }),
+    class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], UserDayRecipeDto.prototype, "originalRecipeId", void 0);
 __decorate([
     class_validator_1.IsArray(),
     class_validator_1.ValidateNested(),
@@ -114,7 +132,6 @@ __decorate([
         example: 'testUrl'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UserDayRecipeDto = UserDayRecipeDto;
@@ -129,6 +146,7 @@ __decorate([
         example: '612caa8c026d490b4b4c8d02'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDataDto.prototype, "dayId", void 0);
@@ -159,6 +177,7 @@ __decorate([
         example: '612caa8c026d490b4b4c8d02'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UserDayRecipeDataDto.prototype, "dayId", void 0);

@@ -8,7 +8,8 @@ export declare enum RecipeType {
     HOMECOOKED = "HOMECOOKED",
     ONEPOT = "ONEPOT",
     DESSERT = "DESSERT",
-    DRINKS = "DRINKS"
+    DRINKS = "DRINKS",
+    OTHERS = "OTHERS"
 }
 export declare const RecipeSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
 export interface IRecipeMongoose extends mongoose.Document {

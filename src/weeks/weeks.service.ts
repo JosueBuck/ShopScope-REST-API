@@ -53,7 +53,7 @@ export class WeeksService {
 
             wasAdded = true;
 
-            switch(userDayRecipe.type) {
+            switch(userDayRecipe.type) { 
                 case 'breakfast': {
                     day.breakfast.push(userDayRecipe.recipe);
                     break;

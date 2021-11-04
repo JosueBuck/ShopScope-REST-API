@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsMongoId } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export const UserSchema = new mongoose.Schema({
@@ -142,6 +142,7 @@ export class UpdatedUserDto {
         example: '612caa8c026d490b4b4c8cfc'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     _id: string; 
 
@@ -192,8 +193,8 @@ export interface IUpdatedUser {
     _id: string; 
     firstname: string;  
     lastname: string;
-    username: string;  
-    password: string;
+    //username: string;  
+    //password: string;
     email: string;
 
 }

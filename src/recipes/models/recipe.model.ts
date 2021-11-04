@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNumber, IsNotEmpty, IsArray, ValidateNested, ArrayMinSize, IsEnum, ArrayUnique } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsArray, ValidateNested, ArrayMinSize, IsEnum, ArrayUnique, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ItemType } from 'src/lists/models/list.model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -13,7 +13,8 @@ export enum RecipeType {
     HOMECOOKED = "HOMECOOKED",
     ONEPOT = "ONEPOT",
     DESSERT = "DESSERT",
-    DRINKS = "DRINKS"
+    DRINKS = "DRINKS",
+    OTHERS = "OTHERS"
 
 }
 
@@ -93,16 +94,15 @@ export class NewRecipeDto {
         example: 'testGarnish'
     })
     @IsString()
-    @IsNotEmpty()
     garnish: string;
 
     @ApiProperty({
         example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
     })
     @IsEnum(RecipeType, {each: true})
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @IsArray()
-    @ArrayMinSize(1)
+    //@ArrayMinSize(1)
     @ArrayUnique()
     recipeType: RecipeType[];
 
@@ -110,14 +110,12 @@ export class NewRecipeDto {
         example: 30
     })
     @IsNumber()
-    @IsNotEmpty()
     cookingTime: number;
 
     @ApiProperty({
         example: 'This is a test desciption'
     })
     @IsString()
-    @IsNotEmpty()
     description: string;
 
     @IsArray()
@@ -132,15 +130,14 @@ export class NewRecipeDto {
     })
     @IsArray()
     @IsString({each: true})
-    @IsNotEmpty()
-    @ArrayMinSize(1)
+    //@IsNotEmpty()
+    //@ArrayMinSize(1)
     instructions: string[];
 
     @ApiProperty({
         example: 'testUrl'
     })
     @IsString()
-    @IsNotEmpty()
     recipePictureUrl: string;
 
 }
@@ -170,7 +167,7 @@ export class NewIngredientDto {
         example: ItemType.SNACKS
     })
     @IsEnum(ItemType)
-    @IsNotEmpty()
+    //@IsNotEmpty()
     itemType: ItemType;
 
 }
@@ -182,6 +179,7 @@ export class IngredientDto {
         example: 'This is a test description'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     _id: string;
 
@@ -211,6 +209,8 @@ export class IngredientDto {
         description: 'Ingredient type',
         example: ItemType.SNACKS
     })
+    @IsEnum(ItemType)
+    //@IsNotEmpty()
     itemType: ItemType;
 
 }
@@ -223,6 +223,7 @@ export class UpdatedRecipeDto {
         example: '612d0b3cd963d505785851dd'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     id: string;
 
@@ -245,9 +246,9 @@ export class UpdatedRecipeDto {
         example: RecipeType.FASTFOOD
     })
     @IsEnum(RecipeType, {each: true})
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @IsArray()
-    @ArrayMinSize(1)
+    //@ArrayMinSize(1)
     @ArrayUnique()
     recipeType: RecipeType[];
 
@@ -256,7 +257,6 @@ export class UpdatedRecipeDto {
         example: 20
     })
     @IsNumber()
-    @IsNotEmpty()
     cookingTime: number;
 
     @ApiProperty({
@@ -264,7 +264,6 @@ export class UpdatedRecipeDto {
         example: 'This is a test description'
     })
     @IsString()
-    @IsNotEmpty()
     description: string;
 
     @IsArray()
@@ -280,15 +279,14 @@ export class UpdatedRecipeDto {
     })
     @IsArray()
     @IsString({each: true})
-    @IsNotEmpty()
-    @ArrayMinSize(1)
+    //@IsNotEmpty()
+    //@ArrayMinSize(1)
     instructions: string[];
 
     @ApiProperty({
         example: 'www.nicepics.com/recipePicture01'
     })
     @IsString()
-    @IsNotEmpty()
     recipePictureUrl: string;
 
 }

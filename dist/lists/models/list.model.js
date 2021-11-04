@@ -36,7 +36,7 @@ exports.ListSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     itemTypes: [{ type: String, required: true }],
-    weekRecipes: { type: [{ recipeName: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
+    weekRecipes: { type: [{ recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }] } }] },
     listItems: { type: [{ name: String, amount: Number, unit: String, itemType: String, isDone: Boolean }], required: true },
     itemCounter: { type: Number },
     listPictureUrl: { type: String, required: true }
@@ -85,6 +85,7 @@ __decorate([
     }),
     class_validator_1.IsNumber(),
     class_validator_1.Max(0),
+    class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], NewListDto.prototype, "itemCounter", void 0);
 __decorate([
@@ -93,7 +94,6 @@ __decorate([
         example: 'www.testUrl.com'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], NewListDto.prototype, "listPictureUrl", void 0);
 exports.NewListDto = NewListDto;
@@ -125,7 +125,6 @@ __decorate([
         example: 'www.testUrl.com'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedListDto.prototype, "listPictureUrl", void 0);
 exports.UpdatedListDto = UpdatedListDto;
@@ -174,6 +173,7 @@ __decorate([
         example: false
     }),
     class_validator_1.IsBoolean(),
+    class_validator_1.IsNotEmpty(),
     __metadata("design:type", Boolean)
 ], NewListItemDto.prototype, "isDone", void 0);
 exports.NewListItemDto = NewListItemDto;
@@ -188,6 +188,7 @@ __decorate([
         example: '612cb926a6effb11a4dbb963'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "_id", void 0);
@@ -206,7 +207,6 @@ __decorate([
         example: 1
     }),
     class_validator_1.IsNumber(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", Number)
 ], ListItemDto.prototype, "amount", void 0);
 __decorate([
@@ -215,7 +215,6 @@ __decorate([
         example: 'testUnit'
     }),
     class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], ListItemDto.prototype, "unit", void 0);
 __decorate([
@@ -273,6 +272,7 @@ __decorate([
         example: ['612cb926a6effb11a4dbb962']
     }),
     class_validator_1.IsString({ each: true }),
+    class_validator_1.IsMongoId({ each: true }),
     class_validator_1.IsNotEmpty({ each: true }),
     __metadata("design:type", Array)
 ], WeekRecipesIdsDto.prototype, "ids", void 0);
@@ -287,6 +287,7 @@ __decorate([
         example: '612cb926a6effb11a4dbb962'
     }),
     class_validator_1.IsNotEmpty(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsString(),
     __metadata("design:type", String)
 ], UpdatedWeekRecipeIngredientDto.prototype, "recipeId", void 0);
@@ -295,6 +296,7 @@ __decorate([
         example: '612cb926a6effb11a4dbb963'
     }),
     class_validator_1.IsNotEmpty(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsString(),
     __metadata("design:type", String)
 ], UpdatedWeekRecipeIngredientDto.prototype, "ingredientId", void 0);

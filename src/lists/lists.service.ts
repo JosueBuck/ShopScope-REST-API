@@ -1,8 +1,10 @@
 import { Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model,  } from 'mongoose';
 import { IResponse } from 'src/models/response.model';
+import { UserDayRecipeDto } from 'src/weeks/models/week.model';
 import { IList, IListItem, IListMongoose, IMongooseIdArray, INewList, INewListItem, ISimplifiedList, ItemType, IUserListRecipe, IUserLists, IUserListsMongoose, IUpdatedWeekRecipeIngredient, IUpdatedList } from './models/list.model';
+const mongoose = require('mongoose');
 
 @Injectable()
 export class ListsService {
@@ -13,6 +15,10 @@ export class ListsService {
     ) { }
 
     async createList(list: INewList, userId: string): Promise<IResponse> {
+
+        // object id of the week recipes is created when the recipe is added to the week - its than also used as the _id for the identifier in the lists week recipe
+
+        // this.createObjectIdsForWeekRecipes(list.weekRecipes);
 
         let newList: IListMongoose = new this.listModel(
             {
@@ -37,6 +43,17 @@ export class ListsService {
         return { message: 'Created', responseData: newList, statusCode: 201 };
 
     }
+
+    // object id of the week recipes is created when the recipe is added to the week - its than also used as the _id for the identifier in the lists week recipe >>
+
+    /* createObjectIdsForWeekRecipes(recipes: UserDayRecipeDto[]): UserDayRecipeDto[] {
+
+        recipes.map((recipe) => {
+            recipe._id = new mongoose.Types.ObjectId();
+        })
+
+        return recipes;
+    } */
 
     async updateListSettings(updatedList: IUpdatedList, listId: string): Promise<IResponse> {
 
@@ -182,6 +199,10 @@ export class ListsService {
     }
 
     async addWeekRecipesToList(userId: string, listId: string, weekRecipes: IUserListRecipe[]): Promise<IResponse> {
+
+        // object id of the week recipes is created when the recipe is added to the week - its than also used as the _id for the identifier in the lists week recipe
+
+        // this.createObjectIdsForWeekRecipes(weekRecipes);
 
         const list: IListMongoose = await this.findListById(listId);
         list.weekRecipes = weekRecipes;

@@ -165,7 +165,7 @@ export class UserService {
 
     }
 
-    async updateUserInformations(userId: string, updatedUser: IUpdatedUser): Promise<IResponse> {
+    async updateUserInformations(userId: string, updatedUser: IUpdatedUser): Promise<IResponse> {        
 
         const user: IUserMongoose = await this.findUserById(userId);
         user.firstname = updatedUser.firstname;

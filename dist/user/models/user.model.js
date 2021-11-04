@@ -107,6 +107,7 @@ __decorate([
         example: '612caa8c026d490b4b4c8cfc'
     }),
     class_validator_1.IsString(),
+    class_validator_1.IsMongoId(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "_id", void 0);

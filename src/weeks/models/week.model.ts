@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsString, IsNotEmpty, ValidateNested, IsArray, ArrayMinSize } from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested, IsArray, ArrayMinSize, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IListItem, INewListItem, ListItemDto, NewListItemDto } from 'src/lists/models/list.model';
 import { ApiProperty } from '@nestjs/swagger';
@@ -11,9 +11,9 @@ export const UserWeekSchema = new mongoose.Schema({
         [ 
             { 
                 name: String, 
-                breakfast: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] }, recipePictureUrl: String } ] } ,
-                lunch: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
-                dinner: { type: [ { recipeName: String, garnish: String, recipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
+                breakfast: { type: [ { recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] }, recipePictureUrl: String } ] } ,
+                lunch: { type: [ { recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
+                dinner: { type: [ { recipeName: String, garnish: String, originalRecipeId: String, ingredients: { type: [ { name: String, amount: Number, unit: String, itemType: String, isDone: Boolean } ] } , recipePictureUrl: String } ] } ,
             } 
         ] 
     },
@@ -69,6 +69,7 @@ export interface INewUserDayRecipe {
 
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: INewListItem[];
     recipePictureUrl: string;
 
@@ -79,6 +80,7 @@ export interface IUserDayRecipe {
     _id?: string;
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: IListItem[];
     recipePictureUrl: string;
 
@@ -99,8 +101,16 @@ export class NewUserDayRecipeDto {
         example: 'testGarnish'
     })
     @IsString()
-    @IsNotEmpty()
     garnish: string;
+
+    @ApiProperty({
+        description: 'The id of the original recipe',
+        example: '6183e76ab51d7710948d2d64'
+    })
+    @IsString()
+    @IsMongoId()
+    @IsNotEmpty()
+    originalRecipeId: string;
 
     @IsArray()
     @ValidateNested()
@@ -113,7 +123,6 @@ export class NewUserDayRecipeDto {
         example: 'testUrl'
     })
     @IsString()
-    @IsNotEmpty()
     recipePictureUrl: string;
 
 }
@@ -124,6 +133,7 @@ export class UserDayRecipeDto {
         example: '612cb926a6effb11a4dbb962'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     _id: string;
 
@@ -140,8 +150,16 @@ export class UserDayRecipeDto {
         example: 'testGarnish'
     })
     @IsString()
-    @IsNotEmpty()
     garnish: string;
+
+    @ApiProperty({
+        description: 'The id of the original recipe',
+        example: '6183e76ab51d7710948d2d64'
+    })
+    @IsString()
+    @IsMongoId()
+    @IsNotEmpty()
+    originalRecipeId: string;
 
     @IsArray()
     @ValidateNested()
@@ -154,7 +172,6 @@ export class UserDayRecipeDto {
         example: 'testUrl'
     })
     @IsString()
-    @IsNotEmpty()
     recipePictureUrl: string;
 
 }
@@ -166,6 +183,7 @@ export class NewUserDayRecipeDataDto {
         example: '612caa8c026d490b4b4c8d02'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     dayId: string;
 
@@ -191,6 +209,7 @@ export class UserDayRecipeDataDto {
         example: '612caa8c026d490b4b4c8d02'
     })
     @IsString()
+    @IsMongoId()
     @IsNotEmpty()
     dayId: string;
 

@@ -69,6 +69,7 @@ export interface IUserListRecipe {
     _id: string;
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: ListItemDto[];
     recipePictureUrl: string;
 }

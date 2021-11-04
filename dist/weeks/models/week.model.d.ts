@@ -33,6 +33,7 @@ export interface IUserDayRecipeData {
 export interface INewUserDayRecipe {
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: INewListItem[];
     recipePictureUrl: string;
 }
@@ -40,12 +41,14 @@ export interface IUserDayRecipe {
     _id?: string;
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: IListItem[];
     recipePictureUrl: string;
 }
 export declare class NewUserDayRecipeDto {
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: NewListItemDto[];
     recipePictureUrl: string;
 }
@@ -53,6 +56,7 @@ export declare class UserDayRecipeDto {
     _id: string;
     recipeName: string;
     garnish: string;
+    originalRecipeId: string;
     ingredients: ListItemDto[];
     recipePictureUrl: string;
 }
