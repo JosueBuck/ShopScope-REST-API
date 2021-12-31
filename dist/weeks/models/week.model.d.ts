@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { IListItem, INewListItem, ListItemDto, NewListItemDto } from 'src/lists/models/list.model';
-export declare const UserWeekSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const UserWeekSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IUserWeekMongoose extends mongoose.Document {
     id: string;
     userId: string;

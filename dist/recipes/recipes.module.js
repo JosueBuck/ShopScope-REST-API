@@ -15,7 +15,7 @@ const recipes_service_1 = require("./recipes.service");
 let RecipesModule = class RecipesModule {
 };
 RecipesModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: 'Recipe', schema: recipe_model_1.RecipeSchema }]),
             mongoose_1.MongooseModule.forFeature([{ name: 'UserRecipes', schema: recipe_model_1.UserRecipesSchema }]),

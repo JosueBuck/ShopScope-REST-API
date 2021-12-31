@@ -27,21 +27,21 @@ class LoginDataDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Name of a user',
         example: 'TestUser'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], LoginDataDto.prototype, "username", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Password of a user',
         example: 'TestPassword'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], LoginDataDto.prototype, "password", void 0);
 exports.LoginDataDto = LoginDataDto;
@@ -51,48 +51,48 @@ class RegisterDataDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'First name of a user',
         example: 'Hans'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDataDto.prototype, "firstname", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Last name of a user',
         example: 'Müller'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDataDto.prototype, "lastname", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Name of a user',
         example: 'TestUser'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDataDto.prototype, "username", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Password of a user',
         example: 'TestPassword'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDataDto.prototype, "password", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Email of a user',
         example: 'testUser@mail.com'
     }),
-    class_validator_1.IsEmail(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterDataDto.prototype, "email", void 0);
 exports.RegisterDataDto = RegisterDataDto;
@@ -102,58 +102,58 @@ class UpdatedUserDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Id of a user',
         example: '612caa8c026d490b4b4c8cfc'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "_id", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'First name of a user',
         example: 'Hans'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "firstname", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Last name of a user',
         example: 'Müller'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "lastname", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Name of a user',
         example: 'TestUser'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "username", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Password of a user',
         example: 'TestPassword'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "password", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Email of a user',
         example: 'testUser@mail.com'
     }),
-    class_validator_1.IsEmail(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedUserDto.prototype, "email", void 0);
 exports.UpdatedUserDto = UpdatedUserDto;

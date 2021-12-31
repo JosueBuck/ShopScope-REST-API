@@ -11,7 +11,7 @@ export declare enum RecipeType {
     DRINKS = "DRINKS",
     OTHERS = "OTHERS"
 }
-export declare const RecipeSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const RecipeSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IRecipeMongoose extends mongoose.Document {
     id: string;
     name: string;
@@ -87,7 +87,7 @@ export declare class UpdatedRecipeDto {
 export declare class RecipeTypeDto {
     recipeType: RecipeType[];
 }
-export declare const UserRecipesSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const UserRecipesSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IUserRecipesMongoose extends mongoose.Document {
     id: string;
     userId: string;

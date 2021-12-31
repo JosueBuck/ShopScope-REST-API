@@ -15,7 +15,7 @@ export declare enum ItemType {
     SWEETS = "SWEETS",
     OTHERS = "OTHERS"
 }
-export declare const ListSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const ListSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IListMongoose extends mongoose.Document {
     id: string;
     name: string;
@@ -120,7 +120,7 @@ export interface IUpdatedWeekRecipeIngredient {
     ingredientId: string;
     isDone: boolean;
 }
-export declare const UserListsSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const UserListsSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IUserListsMongoose extends mongoose.Document {
     id: string;
     userId: string;

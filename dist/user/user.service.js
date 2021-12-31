@@ -18,9 +18,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const auth_service_1 = require("../auth/auth.service");
 const lists_service_1 = require("../lists/lists.service");
-const list_model_1 = require("../lists/models/list.model");
-const response_model_1 = require("../models/response.model");
-const recipe_model_1 = require("../recipes/models/recipe.model");
 const recipes_service_1 = require("../recipes/recipes.service");
 const weeks_service_1 = require("../weeks/weeks.service");
 let UserService = class UserService {
@@ -148,8 +145,8 @@ let UserService = class UserService {
     }
 };
 UserService = __decorate([
-    common_1.Injectable(),
-    __param(0, mongoose_1.InjectModel('User')),
+    (0, common_1.Injectable)(),
+    __param(0, (0, mongoose_1.InjectModel)('User')),
     __metadata("design:paramtypes", [mongoose_2.Model,
         recipes_service_1.RecipesService,
         lists_service_1.ListsService,

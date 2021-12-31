@@ -12,11 +12,10 @@ const mongoose_1 = require("@nestjs/mongoose");
 const list_model_1 = require("./models/list.model");
 const lists_controller_1 = require("./lists.controller");
 const lists_service_1 = require("./lists.service");
-const user_module_1 = require("../user/user.module");
 let ListsModule = class ListsModule {
 };
 ListsModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: 'List', schema: list_model_1.ListSchema }]),
             mongoose_1.MongooseModule.forFeature([{ name: 'UserLists', schema: list_model_1.UserListsSchema }]),

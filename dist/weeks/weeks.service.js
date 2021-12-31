@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const lists_service_1 = require("../lists/lists.service");
-const response_model_1 = require("../models/response.model");
 let WeeksService = class WeeksService {
     constructor(userWeekModel, listsService) {
         this.userWeekModel = userWeekModel;
@@ -209,8 +208,8 @@ let WeeksService = class WeeksService {
     }
 };
 WeeksService = __decorate([
-    common_1.Injectable(),
-    __param(0, mongoose_1.InjectModel('UserWeek')),
+    (0, common_1.Injectable)(),
+    __param(0, (0, mongoose_1.InjectModel)('UserWeek')),
     __metadata("design:paramtypes", [mongoose_2.Model,
         lists_service_1.ListsService])
 ], WeeksService);

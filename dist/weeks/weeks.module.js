@@ -16,7 +16,7 @@ const lists_module_1 = require("../lists/lists.module");
 let WeeksModule = class WeeksModule {
 };
 WeeksModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
             lists_module_1.ListsModule,
             mongoose_1.MongooseModule.forFeature([{ name: 'UserWeek', schema: week_model_1.UserWeekSchema }])

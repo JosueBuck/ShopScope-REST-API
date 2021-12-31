@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-export declare const UserSchema: mongoose.Schema<mongoose.Document<any, any>, mongoose.Model<any, any, any>, undefined, any>;
+export declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any>, any>;
 export interface IUserMongoose extends mongoose.Document {
     id: string;
     firstname: string;

@@ -19,7 +19,7 @@ const weeks_module_1 = require("./weeks/weeks.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [auth_module_1.AuthModule, mongoose_1.MongooseModule.forRoot('mongodb+srv://testuser:1234@cluster0.ujifz.mongodb.net/shop-scope?retryWrites=true&w=majority'), user_module_1.UserModule, recipes_module_1.RecipesModule, lists_module_1.ListsModule, weeks_module_1.WeeksModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

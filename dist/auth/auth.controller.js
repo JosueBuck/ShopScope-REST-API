@@ -16,7 +16,7 @@ let AuthController = class AuthController {
     constructor() { }
 };
 AuthController = __decorate([
-    common_1.Controller('auth'),
+    (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [])
 ], AuthController);
 exports.AuthController = AuthController;

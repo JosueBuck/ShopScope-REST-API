@@ -12,23 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteListItemResponse = exports.UpdateListItemResponse = exports.AddListItemResponse = exports.UpdateWeekRecipeIngredientInList = exports.RemoveWeekRecipeFromListResponse = exports.AddWeekRecipesToList = exports.DeleteListResponse = exports.GetListResponse = exports.GetSimplifiedUserListsResponse = exports.CreateListResponse = exports.DeleteRecipeResponse = exports.GetRecipeResponse = exports.getSimplifiedUserRecipesOfRecipeTypeResponse = exports.GetSimplifiedUserRecipesResponse = exports.UpdateRecipeResponse = exports.CreateRecipeResponse = exports.RemoveAllRecipesFromWeekResponse = exports.RemoveRecipeFromDayResponse = exports.AddRecipeToDayResponse = exports.GetUserWeekResponse = exports.UpdateUserInformationsResponse = exports.DeleteUserResponse = exports.RegisterResponse = exports.LoginResponse = void 0;
 const openapi = require("@nestjs/swagger");
 const swagger_1 = require("@nestjs/swagger");
-const list_model_1 = require("../lists/models/list.model");
-const recipe_model_1 = require("../recipes/models/recipe.model");
-const user_model_1 = require("../user/models/user.model");
-const week_model_1 = require("../weeks/models/week.model");
 class LoginResponse {
     static _OPENAPI_METADATA_FACTORY() {
         return { message: { required: true, type: () => String }, responseData: { required: true, type: () => Object }, statusCode: { required: true, type: () => Number } };
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], LoginResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'user': { '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname': 'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0
             },
@@ -38,7 +34,7 @@ __decorate([
     __metadata("design:type", Object)
 ], LoginResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 201
     }),
     __metadata("design:type", Number)
@@ -50,13 +46,13 @@ class RegisterResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], RegisterResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             newUser: {
                 '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname': 'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0
@@ -67,7 +63,7 @@ __decorate([
     __metadata("design:type", Object)
 ], RegisterResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 201
     }),
     __metadata("design:type", Number)
@@ -79,19 +75,19 @@ class DeleteUserResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], DeleteUserResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: '612caa8c026d490b4b4c8cfc'
     }),
     __metadata("design:type", String)
 ], DeleteUserResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -103,19 +99,19 @@ class UpdateUserInformationsResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], UpdateUserInformationsResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: { '_id': '612caa8c026d490b4b4c8cfc', 'firstname': 'Hans', 'lastname': 'Müller', 'username': 'Username', 'password': 'xxxx', 'email': 'user@mail.com', '__v': 0 }
     }),
     __metadata("design:type", Object)
 ], UpdateUserInformationsResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -127,13 +123,13 @@ class GetUserWeekResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], GetUserWeekResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             '_id': '612caa8c026d490b4b4c8d01',
             'userId': '612caa8c026d490b4b4c8cfc',
@@ -195,7 +191,7 @@ __decorate([
     __metadata("design:type", Object)
 ], GetUserWeekResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -207,13 +203,13 @@ class AddRecipeToDayResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], AddRecipeToDayResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             '_id': '612caa8c026d490b4b4c8d01',
             'userId': '612caa8c026d490b4b4c8cfc',
@@ -292,7 +288,7 @@ __decorate([
     __metadata("design:type", Object)
 ], AddRecipeToDayResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -304,13 +300,13 @@ class RemoveRecipeFromDayResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], RemoveRecipeFromDayResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             '_id': '612caa8c026d490b4b4c8d01',
             'userId': '612caa8c026d490b4b4c8cfc',
@@ -372,7 +368,7 @@ __decorate([
     __metadata("design:type", Object)
 ], RemoveRecipeFromDayResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -384,13 +380,13 @@ class RemoveAllRecipesFromWeekResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], RemoveAllRecipesFromWeekResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             '_id': '612caa8c026d490b4b4c8d01',
             'userId': '612caa8c026d490b4b4c8cfc',
@@ -452,7 +448,7 @@ __decorate([
     __metadata("design:type", Object)
 ], RemoveAllRecipesFromWeekResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -464,13 +460,13 @@ class CreateRecipeResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], CreateRecipeResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'recipeType': [
                 'BREAKFAST',
@@ -501,7 +497,7 @@ __decorate([
     __metadata("design:type", Object)
 ], CreateRecipeResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 201
     }),
     __metadata("design:type", Number)
@@ -513,13 +509,13 @@ class UpdateRecipeResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], UpdateRecipeResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'recipeType': [
                 'FASTFOOD'
@@ -549,7 +545,7 @@ __decorate([
     __metadata("design:type", Object)
 ], UpdateRecipeResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -561,13 +557,13 @@ class GetSimplifiedUserRecipesResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], GetSimplifiedUserRecipesResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: [
             {
                 'recipeType': [
@@ -594,7 +590,7 @@ __decorate([
     __metadata("design:type", Array)
 ], GetSimplifiedUserRecipesResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -606,13 +602,13 @@ class getSimplifiedUserRecipesOfRecipeTypeResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], getSimplifiedUserRecipesOfRecipeTypeResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: [
             {
                 'recipeType': [
@@ -645,7 +641,7 @@ __decorate([
     __metadata("design:type", Object)
 ], getSimplifiedUserRecipesOfRecipeTypeResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -657,13 +653,13 @@ class GetRecipeResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], GetRecipeResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: [
             {
                 'recipeType': [
@@ -696,7 +692,7 @@ __decorate([
     __metadata("design:type", Object)
 ], GetRecipeResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -708,13 +704,13 @@ class DeleteRecipeResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], DeleteRecipeResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Id of the deleted recipe',
         type: String,
         example: '612d1cd0677c0c08912bae54'
@@ -722,7 +718,7 @@ __decorate([
     __metadata("design:type", Object)
 ], DeleteRecipeResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -734,13 +730,13 @@ class CreateListResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], CreateListResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -795,7 +791,7 @@ __decorate([
     __metadata("design:type", Object)
 ], CreateListResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 201
     }),
     __metadata("design:type", Number)
@@ -807,13 +803,13 @@ class GetSimplifiedUserListsResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], GetSimplifiedUserListsResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: [
             {
                 '_id': '612df114d5f15405daeb8b86',
@@ -826,7 +822,7 @@ __decorate([
     __metadata("design:type", Array)
 ], GetSimplifiedUserListsResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -838,13 +834,13 @@ class GetListResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], GetListResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -899,7 +895,7 @@ __decorate([
     __metadata("design:type", Object)
 ], GetListResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -911,20 +907,20 @@ class DeleteListResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], DeleteListResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         type: String,
         example: '612df114d5f15405daeb8b86'
     }),
     __metadata("design:type", String)
 ], DeleteListResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -936,13 +932,13 @@ class AddWeekRecipesToList {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], AddWeekRecipesToList.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -997,7 +993,7 @@ __decorate([
     __metadata("design:type", Object)
 ], AddWeekRecipesToList.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -1009,13 +1005,13 @@ class RemoveWeekRecipeFromListResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], RemoveWeekRecipeFromListResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -1053,7 +1049,7 @@ __decorate([
     __metadata("design:type", Object)
 ], RemoveWeekRecipeFromListResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -1065,13 +1061,13 @@ class UpdateWeekRecipeIngredientInList {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], UpdateWeekRecipeIngredientInList.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -1126,7 +1122,7 @@ __decorate([
     __metadata("design:type", Object)
 ], UpdateWeekRecipeIngredientInList.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -1138,13 +1134,13 @@ class AddListItemResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'Created'
     }),
     __metadata("design:type", String)
 ], AddListItemResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -1199,7 +1195,7 @@ __decorate([
     __metadata("design:type", Object)
 ], AddListItemResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 201
     }),
     __metadata("design:type", Number)
@@ -1211,13 +1207,13 @@ class UpdateListItemResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], UpdateListItemResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -1272,7 +1268,7 @@ __decorate([
     __metadata("design:type", Object)
 ], UpdateListItemResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)
@@ -1284,13 +1280,13 @@ class DeleteListItemResponse {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'OK'
     }),
     __metadata("design:type", String)
 ], DeleteListItemResponse.prototype, "message", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: {
             'itemTypes': [
                 'FRUITS',
@@ -1336,7 +1332,7 @@ __decorate([
     __metadata("design:type", Object)
 ], DeleteListItemResponse.prototype, "responseData", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 200
     }),
     __metadata("design:type", Number)

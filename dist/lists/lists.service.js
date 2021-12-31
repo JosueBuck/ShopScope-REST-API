@@ -16,8 +16,6 @@ exports.ListsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const response_model_1 = require("../models/response.model");
-const week_model_1 = require("../weeks/models/week.model");
 const list_model_1 = require("./models/list.model");
 const mongoose = require('mongoose');
 let ListsService = class ListsService {
@@ -301,9 +299,9 @@ let ListsService = class ListsService {
     }
 };
 ListsService = __decorate([
-    common_1.Injectable(),
-    __param(0, mongoose_1.InjectModel('List')),
-    __param(1, mongoose_1.InjectModel('UserLists')),
+    (0, common_1.Injectable)(),
+    __param(0, (0, mongoose_1.InjectModel)('List')),
+    __param(1, (0, mongoose_1.InjectModel)('UserLists')),
     __metadata("design:paramtypes", [mongoose_2.Model,
         mongoose_2.Model])
 ], ListsService);

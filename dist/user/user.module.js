@@ -19,7 +19,7 @@ const user_service_1 = require("./user.service");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
             recipes_module_1.RecipesModule,
             lists_module_1.ListsModule,

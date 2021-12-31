@@ -26,16 +26,16 @@ let AppController = class AppController {
     }
 };
 __decorate([
-    swagger_1.ApiExcludeEndpoint(),
-    common_1.Get(),
+    (0, swagger_1.ApiExcludeEndpoint)(),
+    (0, common_1.Get)(),
     openapi.ApiResponse({ status: 200 }),
-    __param(0, common_1.Res()),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getHello", null);
 AppController = __decorate([
-    common_1.Controller(),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 exports.AppController = AppController;

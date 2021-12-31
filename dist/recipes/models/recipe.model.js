@@ -44,64 +44,64 @@ class NewRecipeDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testRecipe'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "name", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testGarnish'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "garnish", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: [RecipeType.BREAKFAST, RecipeType.VEGAN]
     }),
-    class_validator_1.IsEnum(RecipeType, { each: true }),
-    class_validator_1.IsArray(),
-    class_validator_1.ArrayUnique(),
+    (0, class_validator_1.IsEnum)(RecipeType, { each: true }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "recipeType", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 30
     }),
-    class_validator_1.IsNumber(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], NewRecipeDto.prototype, "cookingTime", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'This is a test desciption'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "description", void 0);
 __decorate([
-    class_validator_1.IsArray(),
-    class_validator_1.ValidateNested(),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
-    class_transformer_1.Type(() => NewIngredientDto),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ArrayMinSize)(1),
+    (0, class_transformer_1.Type)(() => NewIngredientDto),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "ingredients", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: ['Instruction 1', 'Instruction 2']
     }),
-    class_validator_1.IsArray(),
-    class_validator_1.IsString({ each: true }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
     __metadata("design:type", Array)
 ], NewRecipeDto.prototype, "instructions", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testUrl'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewRecipeDto = NewRecipeDto;
@@ -111,32 +111,32 @@ class NewIngredientDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testIngredient'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewIngredientDto.prototype, "name", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 1
     }),
-    class_validator_1.IsNumber(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], NewIngredientDto.prototype, "amount", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testUnit'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewIngredientDto.prototype, "unit", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: list_model_1.ItemType.SNACKS
     }),
-    class_validator_1.IsEnum(list_model_1.ItemType),
+    (0, class_validator_1.IsEnum)(list_model_1.ItemType),
     __metadata("design:type", String)
 ], NewIngredientDto.prototype, "itemType", void 0);
 exports.NewIngredientDto = NewIngredientDto;
@@ -146,46 +146,46 @@ class IngredientDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Ingredient id',
         example: 'This is a test description'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "_id", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Ingredient name',
         example: 'updatedIngredientName'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "name", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Ingredient amount',
         example: '1'
     }),
-    class_validator_1.IsNumber(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], IngredientDto.prototype, "amount", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Ingredient amount unit',
         example: 'updatedTestUnit'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "unit", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Ingredient type',
         example: list_model_1.ItemType.SNACKS
     }),
-    class_validator_1.IsEnum(list_model_1.ItemType),
+    (0, class_validator_1.IsEnum)(list_model_1.ItemType),
     __metadata("design:type", String)
 ], IngredientDto.prototype, "itemType", void 0);
 exports.IngredientDto = IngredientDto;
@@ -195,79 +195,79 @@ class UpdatedRecipeDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe id',
         example: '612d0b3cd963d505785851dd'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "id", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Name of the recipe',
         example: 'updatedTestRecipe'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "name", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testGarnish'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "garnish", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe Type',
         example: RecipeType.FASTFOOD
     }),
-    class_validator_1.IsEnum(RecipeType, { each: true }),
-    class_validator_1.IsArray(),
-    class_validator_1.ArrayUnique(),
+    (0, class_validator_1.IsEnum)(RecipeType, { each: true }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "recipeType", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe cooking Time',
         example: 20
     }),
-    class_validator_1.IsNumber(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], UpdatedRecipeDto.prototype, "cookingTime", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe description',
         example: 'This is a test description'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "description", void 0);
 __decorate([
-    class_validator_1.IsArray(),
-    class_validator_1.ValidateNested(),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
-    class_transformer_1.Type(() => IngredientDto),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ArrayMinSize)(1),
+    (0, class_transformer_1.Type)(() => IngredientDto),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "ingredients", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe instructions',
         example: ['Updated instruction 1', 'Updated instruction 2']
     }),
-    class_validator_1.IsArray(),
-    class_validator_1.IsString({ each: true }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
     __metadata("design:type", Array)
 ], UpdatedRecipeDto.prototype, "instructions", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'www.nicepics.com/recipePicture01'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdatedRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UpdatedRecipeDto = UpdatedRecipeDto;
@@ -277,11 +277,11 @@ class RecipeTypeDto {
     }
 }
 __decorate([
-    class_validator_1.IsEnum(RecipeType, { each: true }),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.IsArray(),
-    class_validator_1.ArrayMinSize(1),
-    class_validator_1.ArrayUnique(),
+    (0, class_validator_1.IsEnum)(RecipeType, { each: true }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayMinSize)(1),
+    (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], RecipeTypeDto.prototype, "recipeType", void 0);
 exports.RecipeTypeDto = RecipeTypeDto;

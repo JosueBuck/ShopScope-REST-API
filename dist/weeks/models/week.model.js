@@ -35,45 +35,45 @@ class NewUserDayRecipeDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe name',
         example: 'testRecipe'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "recipeName", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Garnish name',
         example: 'testGarnish'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "garnish", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'The id of the original recipe',
         example: '6183e76ab51d7710948d2d64'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "originalRecipeId", void 0);
 __decorate([
-    class_validator_1.IsArray(),
-    class_validator_1.ValidateNested(),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
-    class_transformer_1.Type(() => list_model_1.NewListItemDto),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ArrayMinSize)(1),
+    (0, class_transformer_1.Type)(() => list_model_1.NewListItemDto),
     __metadata("design:type", Array)
 ], NewUserDayRecipeDto.prototype, "ingredients", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testUrl'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.NewUserDayRecipeDto = NewUserDayRecipeDto;
@@ -83,55 +83,55 @@ class UserDayRecipeDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe id',
         example: '612cb926a6effb11a4dbb962'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "_id", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Recipe name',
         example: 'testRecipe'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "recipeName", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Garnish name',
         example: 'testGarnish'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "garnish", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'The id of the original recipe',
         example: '6183e76ab51d7710948d2d64'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "originalRecipeId", void 0);
 __decorate([
-    class_validator_1.IsArray(),
-    class_validator_1.ValidateNested(),
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ArrayMinSize(1),
-    class_transformer_1.Type(() => list_model_1.ListItemDto),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ArrayMinSize)(1),
+    (0, class_transformer_1.Type)(() => list_model_1.ListItemDto),
     __metadata("design:type", Array)
 ], UserDayRecipeDto.prototype, "ingredients", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         example: 'testUrl'
     }),
-    class_validator_1.IsString(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserDayRecipeDto.prototype, "recipePictureUrl", void 0);
 exports.UserDayRecipeDto = UserDayRecipeDto;
@@ -141,28 +141,28 @@ class NewUserDayRecipeDataDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Id of a day',
         example: '612caa8c026d490b4b4c8d02'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDataDto.prototype, "dayId", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Defines what type of meal this is',
         example: 'lunch'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], NewUserDayRecipeDataDto.prototype, "type", void 0);
 __decorate([
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ValidateNested(),
-    class_transformer_1.Type(() => NewUserDayRecipeDto),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => NewUserDayRecipeDto),
     __metadata("design:type", NewUserDayRecipeDto)
 ], NewUserDayRecipeDataDto.prototype, "recipe", void 0);
 exports.NewUserDayRecipeDataDto = NewUserDayRecipeDataDto;
@@ -172,28 +172,28 @@ class UserDayRecipeDataDto {
     }
 }
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Id of a day',
         example: '612caa8c026d490b4b4c8d02'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsMongoId(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UserDayRecipeDataDto.prototype, "dayId", void 0);
 __decorate([
-    swagger_1.ApiProperty({
+    (0, swagger_1.ApiProperty)({
         description: 'Defines what type of meal this is',
         example: 'lunch'
     }),
-    class_validator_1.IsString(),
-    class_validator_1.IsNotEmpty(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UserDayRecipeDataDto.prototype, "type", void 0);
 __decorate([
-    class_validator_1.IsNotEmpty(),
-    class_validator_1.ValidateNested(),
-    class_transformer_1.Type(() => UserDayRecipeDto),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => UserDayRecipeDto),
     __metadata("design:type", UserDayRecipeDto)
 ], UserDayRecipeDataDto.prototype, "recipe", void 0);
 exports.UserDayRecipeDataDto = UserDayRecipeDataDto;

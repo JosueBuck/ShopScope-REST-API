@@ -47,106 +47,106 @@ let WeeksController = class WeeksController {
     }
 };
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Get('getUserWeek/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Get)('getUserWeek/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.GetUserWeekResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Could not find user week'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "getUserWeek", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Post('setSelectedWeekList/:userId/:listId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Post)('setSelectedWeekList/:userId/:listId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.GetUserWeekResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Could not find user week | Could not find list'
     }),
     openapi.ApiResponse({ status: 201, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Param('listId')),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('listId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "setSelectedWeekList", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Put('addRecipeToDay/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Put)('addRecipeToDay/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.AddRecipeToDayResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Could not find user week | No day with this id was found'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, week_model_1.NewUserDayRecipeDataDto]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "addRecipeToDay", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Delete('removeRecipeFromDay/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Delete)('removeRecipeFromDay/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.RemoveRecipeFromDayResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Could not find user week | Could not delete recipe'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, week_model_1.UserDayRecipeDataDto]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "removeRecipeFromDay", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Delete('removeAllRecipesFromWeek/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Delete)('removeAllRecipesFromWeek/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.RemoveAllRecipesFromWeekResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Could not find user week'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], WeeksController.prototype, "removeAllRecipesFromWeek", null);
 WeeksController = __decorate([
-    swagger_1.ApiTags('weeks'),
-    common_1.Controller('weeks'),
+    (0, swagger_1.ApiTags)('weeks'),
+    (0, common_1.Controller)('weeks'),
     __metadata("design:paramtypes", [weeks_service_1.WeeksService])
 ], WeeksController);
 exports.WeeksController = WeeksController;

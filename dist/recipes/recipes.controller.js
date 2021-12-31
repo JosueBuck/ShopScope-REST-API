@@ -55,142 +55,142 @@ let RecipesController = class RecipesController {
     }
 };
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Post('createRecipe/:userId'),
-    swagger_1.ApiCreatedResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Post)('createRecipe/:userId'),
+    (0, swagger_1.ApiCreatedResponse)({
         description: 'Created',
         type: response_model_1.CreateRecipeResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 201, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, recipe_model_1.NewRecipeDto]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "createRecipe", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Put('updateRecipe/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Put)('updateRecipe/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.UpdateRecipeResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Body()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, recipe_model_1.UpdatedRecipeDto]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "updateRecipe", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Get('getSimplifiedUserRecipes/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Get)('getSimplifiedUserRecipes/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.GetSimplifiedUserRecipesResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getSimplifiedUserRecipes", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Get('getLatestSimplifiedUserRecipes/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Get)('getLatestSimplifiedUserRecipes/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.GetSimplifiedUserRecipesResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getLatestSimplifiedUserRecipes", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Get('getSimplifiedUserRecipesOfRecipeType/:userId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Get)('getSimplifiedUserRecipesOfRecipeType/:userId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.getSimplifiedUserRecipesOfRecipeTypeResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param("userId")),
-    __param(1, common_1.Body()),
+    __param(0, (0, common_1.Param)("userId")),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, recipe_model_1.RecipeTypeDto]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getSimplifiedUserRecipesOfRecipeType", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
-    common_1.Get('getRecipe/:recipeId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('getRecipe/:recipeId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'OK',
         type: response_model_1.GetRecipeResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
-    swagger_1.ApiNotFoundResponse({
+    (0, swagger_1.ApiNotFoundResponse)({
         description: 'Invalid user id | Could not find user recipes'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('recipeId')),
+    __param(0, (0, common_1.Param)('recipeId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "getRecipe", null);
 __decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
-    common_1.Delete('deleteRecipe/:userId/:recipeId'),
-    swagger_1.ApiOkResponse({
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, user_auth_guard_1.UserGuard),
+    (0, common_1.Delete)('deleteRecipe/:userId/:recipeId'),
+    (0, swagger_1.ApiOkResponse)({
         description: 'Deleted',
         type: response_model_1.DeleteRecipeResponse
     }),
-    swagger_1.ApiInternalServerErrorResponse({
+    (0, swagger_1.ApiInternalServerErrorResponse)({
         description: 'A problem occured while processing the api call'
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('userId')),
-    __param(1, common_1.Param('recipeId')),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('recipeId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], RecipesController.prototype, "deleteRecipe", null);
 RecipesController = __decorate([
-    swagger_1.ApiTags('recipes'),
-    common_1.Controller('recipes'),
+    (0, swagger_1.ApiTags)('recipes'),
+    (0, common_1.Controller)('recipes'),
     __metadata("design:paramtypes", [recipes_service_1.RecipesService])
 ], RecipesController);
 exports.RecipesController = RecipesController;
